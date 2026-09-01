@@ -1,0 +1,538 @@
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  display: grid;
+  place-items: center;
+  background: #050505;
+  transform: translateY(0);
+  will-change: transform;
+}
+
+.loading-screen[data-state='gone'] {
+  display: none;
+}
+
+.loading-icon {
+  width: min(22vw, 5.5rem);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  transform-origin: center;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.loading-icon.is-spinning {
+  animation: artikkan-loader-spin 1s linear infinite;
+}
+
+@keyframes artikkan-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-icon.is-spinning {
+    animation: none !important;
+  }
+}
+
+.site-header {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: var(--z-header);
+  height: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+  color: #f4f1ea;
+  pointer-events: none;
+}
+
+.site-header-backdrop {
+  display: none;
+  pointer-events: none;
+}
+
+.site-chrome.is-on-light .site-header {
+  background: rgb(246 244 240 / 0.55);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  backdrop-filter: blur(24px) saturate(1.2);
+}
+
+.site-header-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  height: var(--header-height);
+  width: 100%;
+}
+
+.site-header-start,
+.site-header-end,
+.site-header-center {
+  pointer-events: auto;
+}
+
+.site-header-start {
+  justify-self: start;
+}
+
+.site-header-end {
+  justify-self: end;
+}
+
+.site-header-center {
+  justify-self: center;
+  display: grid;
+  place-items: center;
+}
+
+.site-header-center > * {
+  grid-area: 1 / 1;
+}
+
+.site-header-logo-slot {
+  width: 115px;
+  aspect-ratio: 1024 / 345;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .site-header-logo-slot {
+    width: 165px;
+  }
+}
+
+.artikkan-wordmark {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent;
+  user-select: none;
+}
+
+.artikkan-wordmark.is-hero {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: clamp(68vw, 72vw, 76vw);
+  max-width: none;
+  z-index: calc(var(--z-header) + 1);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  background: transparent;
+}
+
+@media (min-width: 768px) {
+  .artikkan-wordmark.is-hero {
+    width: min(44vw, 42rem);
+  }
+}
+
+.artikkan-wordmark.is-nav {
+  width: 115px;
+  mix-blend-mode: normal;
+}
+
+@media (min-width: 768px) {
+  .artikkan-wordmark.is-nav {
+    width: 165px;
+  }
+}
+
+.site-header.is-home .site-header-controls {
+  opacity: 0;
+}
+
+.site-header:not(.is-home) .site-header-controls {
+  opacity: 1;
+}
+
+/* !important beats the GSAP-scrubbed inline opacity from the hero timeline,
+   keeping the close button visible until the menu finishes closing. */
+.site-header.is-menu-open .site-header-controls {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.site-chrome.is-on-light .site-header.is-home .site-header-controls {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.site-header.is-interior {
+  color: var(--foreground);
+}
+
+.site-chrome.is-on-light .site-header.is-home {
+  color: var(--foreground);
+}
+
+/* The wordmark PNG is white artwork on real transparency, so brightness(0)
+   recolors only the strokes — never the image bounds. The "-dark" asset is
+   an opaque JPEG and must not be used. */
+.site-chrome.is-on-light .artikkan-wordmark {
+  filter: brightness(0);
+}
+
+.site-chrome.is-menu-open .artikkan-wordmark.is-hero {
+  z-index: var(--z-header);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-chrome.is-nav-ready .site-header.is-home {
+    transition:
+      color 0.28s var(--ease-standard),
+      background 0.28s var(--ease-standard),
+      backdrop-filter 0.28s var(--ease-standard),
+      -webkit-backdrop-filter 0.28s var(--ease-standard);
+  }
+
+  /* Filter only — GSAP owns the transform during the docking animation. */
+  .site-chrome.is-nav-ready .artikkan-wordmark.is-hero {
+    transition: filter 0.28s var(--ease-standard);
+  }
+}
+
+.hamburger-button {
+  width: var(--touch-target);
+  height: var(--touch-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger-icon {
+  position: relative;
+  width: 1.35rem;
+  height: 0.7rem;
+}
+
+.hamburger-icon span {
+  position: absolute;
+  inset-inline: 0;
+  height: 1px;
+  background: currentColor;
+  transform-origin: center;
+  transition:
+    transform var(--duration-base) var(--ease-emphasized),
+    top var(--duration-base) var(--ease-emphasized);
+}
+
+.hamburger-icon span:first-child {
+  top: 0;
+}
+
+.hamburger-icon span:last-child {
+  top: 100%;
+}
+
+.hamburger-button[aria-expanded='true'] .hamburger-icon span:first-child {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.hamburger-button[aria-expanded='true'] .hamburger-icon span:last-child {
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.language-switcher a {
+  min-width: 2.25rem;
+  min-height: var(--touch-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: inherit;
+  opacity: 0.55;
+}
+
+.language-switcher a[aria-current='page'] {
+  opacity: 1;
+}
+
+.language-switcher.is-menu a {
+  min-height: 2.75rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  color: var(--foreground);
+  visibility: hidden;
+  pointer-events: none;
+  overflow: hidden;
+  padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+  padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
+}
+
+.menu-overlay.is-open {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.menu-overlay-curtain,
+.menu-overlay-frost {
+  pointer-events: none;
+}
+
+.menu-overlay-curtain {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.menu-overlay-curtain.is-surface {
+  z-index: 0;
+  background: var(--background);
+}
+
+.menu-overlay-curtain.is-ink {
+  z-index: 2;
+  background: var(--foreground);
+}
+
+.menu-overlay-frost {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  visibility: hidden;
+  opacity: 0;
+  background: rgb(246 244 240 / 0.78);
+  -webkit-backdrop-filter: blur(28px) saturate(1.1);
+  backdrop-filter: blur(28px) saturate(1.1);
+}
+
+.site-chrome.is-menu-open .site-header,
+.site-chrome.is-on-light.is-menu-open .site-header {
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.site-chrome.is-menu-open .artikkan-wordmark,
+.site-chrome.is-on-light.is-menu-open .artikkan-wordmark {
+  filter: brightness(0);
+}
+
+.site-chrome.is-on-light.is-menu-open .menu-overlay-frost {
+  visibility: hidden;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Delay visibility on the way out so the frost fades instead of popping. */
+  .menu-overlay-frost {
+    transition:
+      opacity var(--duration-base) var(--ease-standard),
+      visibility 0s linear var(--duration-base);
+  }
+
+  .site-chrome.is-on-light.is-menu-open .menu-overlay-frost {
+    transition: opacity var(--duration-base) var(--ease-standard);
+  }
+}
+
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .site-chrome.is-on-light .site-header,
+  .site-chrome.is-on-light.is-menu-open .menu-overlay-frost {
+    background: rgb(246 244 240 / 0.94);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-chrome.is-on-light .site-header,
+  .site-chrome.is-on-light.is-menu-open .menu-overlay-frost {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgb(246 244 240 / 0.94);
+  }
+}
+
+.menu-overlay-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding-block: clamp(1.5rem, 6vh, 4rem);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.menu-overlay-inner.is-flowing {
+  padding-block: 0;
+  overflow: clip;
+}
+
+.menu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.35rem, 1.2vh, 0.85rem);
+}
+
+.menu-link {
+  font-family: var(--font-display-current);
+  font-size: clamp(2rem, 7vw, 4.25rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: inherit;
+  width: fit-content;
+  max-width: 100%;
+}
+
+:root[lang='ar'] .menu-link {
+  font-weight: 400;
+}
+
+.menu-link.is-current {
+  opacity: 0.42;
+}
+
+.menu-cta {
+  margin-top: clamp(1.75rem, 5vh, 3.5rem);
+  font-size: clamp(0.9375rem, 1.4vw, 1.125rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  width: fit-content;
+  color: inherit;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.35rem;
+}
+
+.menu-language {
+  margin-top: auto;
+  padding-top: 2.5rem;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: var(--viewport-stable);
+  min-height: var(--viewport-safe);
+  overflow: clip;
+  background: #0c0b0a;
+  --media-focus: 50% 58%;
+}
+
+.hero-media,
+.hero-poster,
+.hero-video,
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+}
+
+.hero-poster,
+.hero-video {
+  object-fit: cover;
+  object-position: var(--media-focus, center);
+}
+
+.hero-canvas {
+  display: block;
+  opacity: 0;
+}
+
+.hero-canvas.is-ready {
+  opacity: 1;
+}
+
+.hero-video {
+  opacity: 0;
+}
+
+.hero.is-fallback .hero-canvas {
+  display: none;
+}
+
+.hero.is-fallback .hero-video.is-ready {
+  opacity: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(8 6 5 / 0.22);
+  pointer-events: none;
+}
+
+.hero-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+main.is-home {
+  padding: 0;
+}
+
+main.has-header-offset {
+  padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video,
+  .hero-canvas {
+    display: none;
+  }
+
+  .menu-overlay,
+  .loading-screen,
+  .artikkan-wordmark.is-hero {
+    will-change: auto;
+  }
+
+  .menu-overlay-curtain {
+    will-change: auto;
+  }
+
+  .menu-overlay.is-open .menu-overlay-inner {
+    visibility: visible;
+    opacity: 1;
+  }
+}

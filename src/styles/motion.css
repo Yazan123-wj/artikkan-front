@@ -1,0 +1,81 @@
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .motion-desktop-only {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.motion-duration-fast {
+  transition-duration: var(--duration-fast);
+}
+
+.motion-duration-base {
+  transition-duration: var(--duration-base);
+}
+
+.motion-duration-slow {
+  transition-duration: var(--duration-slow);
+}
+
+.motion-ease-standard {
+  transition-timing-function: var(--ease-standard);
+}
+
+.motion-ease-emphasized {
+  transition-timing-function: var(--ease-emphasized);
+}
+
+html.is-page-transitioning {
+  overflow: hidden;
+}
+
+.page-transition {
+  position: relative;
+}
+
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  pointer-events: none;
+}
+
+.page-transition-overlay[data-active='true'] {
+  pointer-events: auto;
+}
+
+.page-transition-panel {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+.page-transition-panel.is-surface {
+  background: var(--surface);
+}
+
+.page-transition-panel.is-ink {
+  background: var(--foreground);
+}
+
+.page-transition-content {
+  min-height: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition-overlay {
+    display: none;
+  }
+}

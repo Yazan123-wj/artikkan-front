@@ -1,0 +1,311 @@
+.enquiry-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(1rem, env(safe-area-inset-top, 0px))
+    var(--page-gutter)
+    max(1rem, env(safe-area-inset-bottom, 0px));
+  background: rgb(22 22 22 / 0.52);
+  backdrop-filter: blur(6px);
+}
+
+.enquiry-modal-panel {
+  width: min(100%, 34rem);
+  max-height: min(92dvh, 52rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(1.35rem, 3vw, 2rem);
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.18);
+}
+
+.enquiry-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.enquiry-modal-heading {
+  min-width: 0;
+}
+
+.enquiry-modal-eyebrow {
+  margin: 0;
+  color: var(--muted-foreground);
+}
+
+.enquiry-modal-eyebrow::after {
+  content: '';
+  display: block;
+  width: 2.25rem;
+  height: 1px;
+  margin-block: 0.85rem 1rem;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+.enquiry-modal-title {
+  margin: 0;
+  font-weight: 500;
+}
+
+:root[lang='ar'] .enquiry-modal-title {
+  font-weight: 400;
+}
+
+.enquiry-modal-lede {
+  margin: 0.65rem 0 0;
+  color: var(--muted-foreground);
+  max-width: 34ch;
+}
+
+.enquiry-modal-close {
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--text-nav);
+  letter-spacing: var(--tracking-nav);
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--duration-base) var(--ease-standard);
+}
+
+:root[lang='ar'] .enquiry-modal-close {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .enquiry-modal-close:hover,
+  .enquiry-modal-close:focus-visible {
+    text-decoration-color: currentColor;
+  }
+}
+
+.enquiry-modal-piece {
+  display: grid;
+  grid-template-columns: 4.75rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  margin-block: 1.5rem;
+  padding-block: 1rem;
+  border-block: 1px solid var(--border);
+}
+
+.enquiry-modal-piece-media {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.enquiry-modal-piece-image {
+  object-fit: cover;
+}
+
+.enquiry-modal-piece-copy {
+  min-width: 0;
+}
+
+.enquiry-modal-piece-category {
+  margin: 0;
+  color: var(--muted-foreground);
+}
+
+.enquiry-modal-piece-name {
+  margin: 0.35rem 0 0;
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-heading);
+  font-weight: 500;
+}
+
+:root[lang='ar'] .enquiry-modal-piece-name {
+  font-weight: 400;
+}
+
+.enquiry-modal-piece-ref {
+  margin: 0.3rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+}
+
+.enquiry-modal-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.15rem 1.35rem;
+}
+
+@media (min-width: 560px) {
+  .enquiry-modal-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .enquiry-modal-field.is-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.enquiry-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.enquiry-modal-field label {
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+:root[lang='ar'] .enquiry-modal-field label {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.enquiry-modal-field input,
+.enquiry-modal-field textarea {
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: 0.55rem 0;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.enquiry-modal-field textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.enquiry-modal-field input:focus-visible,
+.enquiry-modal-field textarea:focus-visible {
+  outline: none;
+  border-bottom-color: var(--foreground);
+}
+
+.enquiry-modal-field-error {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #8a3b2c;
+}
+
+.enquiry-modal-privacy {
+  margin: 1.15rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.enquiry-modal-privacy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+.enquiry-modal-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block-start: 1.35rem;
+  min-height: var(--touch-target);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.enquiry-modal-submit-label {
+  position: relative;
+  font-size: var(--text-nav);
+  letter-spacing: var(--tracking-nav);
+  text-transform: uppercase;
+}
+
+:root[lang='ar'] .enquiry-modal-submit-label {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.enquiry-modal-submit-label::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -0.2rem;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(1);
+  transform-origin: left center;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+:root[dir='rtl'] .enquiry-modal-submit-label::after {
+  transform-origin: right center;
+}
+
+.enquiry-modal-submit-arrow {
+  display: inline-flex;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+.enquiry-modal-submit-arrow svg {
+  width: 1.5rem;
+  height: auto;
+}
+
+.enquiry-modal-submit-arrow path {
+  stroke: currentColor;
+  stroke-width: 1.25;
+}
+
+[dir='rtl'] .enquiry-modal-submit-arrow {
+  transform: scaleX(-1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .enquiry-modal-submit:hover .enquiry-modal-submit-arrow,
+  .enquiry-modal-submit:focus-visible .enquiry-modal-submit-arrow {
+    transform: translateX(0.28rem);
+  }
+
+  [dir='rtl'] .enquiry-modal-submit:hover .enquiry-modal-submit-arrow,
+  [dir='rtl'] .enquiry-modal-submit:focus-visible .enquiry-modal-submit-arrow {
+    transform: scaleX(-1) translateX(0.28rem);
+  }
+
+  .enquiry-modal-submit:hover .enquiry-modal-submit-label::after,
+  .enquiry-modal-submit:focus-visible .enquiry-modal-submit-label::after {
+    transform: scaleX(0.72);
+  }
+}
+
+.enquiry-modal-status {
+  min-height: 1.25rem;
+  margin: 0.85rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+html.is-enquiry-open {
+  /* Scroll lock handled in JS; class is for any CSS hooks */
+}

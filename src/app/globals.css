@@ -1,0 +1,66 @@
+@import 'tailwindcss';
+@import '../styles/tokens.css';
+@import '../styles/typography.css';
+@import '../styles/utilities.css';
+@import '../styles/motion.css';
+@import '../styles/entrance.css'; /* site entrance, navbar, hero */
+@import '../styles/home-editorial.css'; /* homepage about + statistics */
+@import '../styles/accordion-gallery.css';
+@import '../styles/circular-gallery.css';
+@import '../styles/flowing-menu.css';
+@import '../styles/featured-products.css';
+@import '../styles/home-projects.css';
+@import '../styles/journal.css';
+@import '../styles/home-contact.css';
+@import '../styles/site-footer.css';
+@import '../styles/image-curtain.css';
+@import '../styles/about-page.css';
+@import '../styles/categories-page.css';
+@import '../styles/products-page.css';
+@import '../styles/interior-pages.css';
+@import '../styles/enquiry-modal.css';
+
+
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
+@custom-variant motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @slot;
+  }
+}
+
+html {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: clip;
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: var(--viewport-safe);
+  max-width: 100%;
+  overflow-x: clip;
+  overscroll-behavior-y: none;
+  background: var(--background);
+}
+
+/* Home hero: if any residual bounce shows, match the dark media plane */
+html:has(main.is-home) {
+  background: #0c0b0a;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+html.is-loading {
+  overflow: hidden;
+}

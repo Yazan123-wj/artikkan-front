@@ -1,0 +1,106 @@
+/*
+  Temporary type stacks until Artikkan confirms brand fonts.
+
+  Replace these stacks with next/font/local files from public/fonts:
+  - English sans
+  - Arabic sans (must retain Arabic shaping and fallbacks)
+  - Optional editorial / display face
+*/
+
+:root {
+  --font-sans-en: var(--font-sans-en-file, system-ui), -apple-system, 'Segoe UI',
+    Helvetica, Arial, sans-serif;
+  --font-sans-ar: var(--font-sans-ar-file, 'Noto Sans Arabic'), 'Segoe UI',
+    Tahoma, Arial, sans-serif;
+  --font-display-en: var(--font-display-en-file), 'Palatino Linotype', Palatino,
+    Georgia, 'Times New Roman', serif;
+  --font-display-ar: var(--font-display-ar-file), 'Noto Naskh Arabic', 'Amiri',
+    Georgia, serif;
+
+  --font-sans-current: var(--font-sans-en);
+  --font-display-current: var(--font-display-en);
+}
+
+:root[lang='ar'] {
+  --font-sans-current: var(--font-sans-ar);
+  --font-display-current: var(--font-display-ar);
+  hyphens: none;
+  overflow-wrap: anywhere;
+}
+
+body {
+  font-family: var(--font-sans-current);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--foreground);
+  overflow-wrap: break-word;
+}
+
+.type-display,
+.type-h1,
+.type-h2,
+.type-h3 {
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+.type-display {
+  font-family: var(--font-display-current);
+  font-size: var(--text-display);
+  font-weight: 500;
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.type-h1 {
+  font-family: var(--font-display-current);
+  font-size: var(--text-h1);
+  font-weight: 500;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+.type-h2 {
+  font-family: var(--font-display-current);
+  font-size: var(--text-h2);
+  font-weight: 500;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+.type-h3 {
+  font-family: var(--font-display-current);
+  font-size: var(--text-h3);
+  font-weight: 500;
+  line-height: var(--leading-heading);
+}
+
+:root[lang='ar'] .type-display,
+:root[lang='ar'] .type-h1,
+:root[lang='ar'] .type-h2,
+:root[lang='ar'] .type-h3 {
+  font-weight: 400;
+}
+
+.type-body-lg {
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-body);
+}
+
+.type-body {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+.type-label {
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.type-nav {
+  font-size: var(--text-nav);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-nav);
+}

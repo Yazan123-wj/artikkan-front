@@ -1,0 +1,666 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "categories": "Categories",
+    "products": "Products",
+    "projects": "Projects",
+    "journal": "Journal",
+    "contact": "Contact",
+    "inquiry": "Request an Inquiry",
+    "privacyPolicy": "Privacy policy",
+    "terms": "Terms"
+  },
+  "language": {
+    "en": "English",
+    "ar": "Arabic",
+    "enShort": "EN",
+    "arShort": "AR",
+    "switcherLabel": "Language"
+  },
+  "placeholder": {
+    "sectionUnderDevelopment": "Section under development",
+    "comingSoon": "Coming soon"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainMenu": "Main menu",
+    "logo": "Artikkan Gallery",
+    "loading": "Loading Artikkan",
+    "backToTop": "Back to top"
+  },
+  "meta": {
+    "siteTitle": "Artikkan",
+    "description": "Artikkan"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This page is not available. Continue exploring Artikkan.",
+    "home": "Back to home"
+  },
+  "home": {
+    "about": {
+      "eyebrow": "About Artikkan",
+      "headline": "Crafted spaces. Enduring character.",
+      "headlineLines": [
+        "Crafted spaces.",
+        "Enduring character."
+      ],
+      "body": "Artikkan brings together considered design, refined materials and meticulous craftsmanship to create furniture and interiors with a distinctive presence. Every detail is shaped to elevate the spaces in which life unfolds.",
+      "cta": "Discover Artikkan",
+      "imageAlt": "Artikkan furniture and interior craftsmanship"
+    },
+    "statistics": {
+      "heading": "Artikkan in numbers",
+      "experience": "Years of experience",
+      "projects": "Completed projects",
+      "clients": "Clients served",
+      "collections": "Collections"
+    },
+    "categories": {
+      "eyebrow": "Collections",
+      "headline": "A considered range.",
+      "cta": "View categories",
+      "galleryLabel": "Featured categories",
+      "seating": "Seating",
+      "tables": "Tables",
+      "unit-cabinets": "Units & Cabinets",
+      "home-decor": "Home Decor",
+      "accessories": "Accessories",
+      "seatingAlt": "Artikkan seating and lounge furniture",
+      "tablesAlt": "Artikkan tables and consoles",
+      "unitCabinetsAlt": "Artikkan units and cabinets",
+      "homeDecorAlt": "Artikkan home decor",
+      "accessoriesAlt": "Artikkan accessories"
+    },
+    "gallery": {
+      "eyebrow": "Gallery",
+      "headline": "Selected views.",
+      "regionLabel": "Image gallery. Drag to browse.",
+      "lounge": "Lounge",
+      "majlis": "Majlis",
+      "living": "Living",
+      "dining": "Dining",
+      "hallway": "Hallway",
+      "console": "Console"
+    },
+    "products": {
+      "eyebrow": "Selected pieces",
+      "headline": "Distinctive by design.",
+      "intro": "Explore a selection of Artikkan pieces. Contact our team for product details and pricing.",
+      "viewAll": "View all products",
+      "enquire": "Enquire about this piece",
+      "pieces": {
+        "candle-holder": {
+          "name": "Candle Holder",
+          "alt": "Artikkan Candle Holder"
+        },
+        "coasters": {
+          "name": "Coasters",
+          "alt": "Artikkan Coasters"
+        },
+        "container": {
+          "name": "Container",
+          "alt": "Artikkan Container"
+        },
+        "mobkhar": {
+          "name": "Mobkhar",
+          "alt": "Artikkan Mobkhar"
+        },
+        "napkin-holder": {
+          "name": "Napkin Holder",
+          "alt": "Artikkan Napkin Holder"
+        },
+        "tissue-box": {
+          "name": "Tissue Box",
+          "alt": "Artikkan Tissue Box"
+        },
+        "artk-aw-wv-01": {
+          "name": "Artwork 01",
+          "alt": "Artikkan Artwork 01"
+        },
+        "artk-aw-wv-01a": {
+          "name": "Artwork 01A",
+          "alt": "Artikkan Artwork 01A"
+        },
+        "artk-aw-wv-01b": {
+          "name": "Artwork 01B",
+          "alt": "Artikkan Artwork 01B"
+        },
+        "artk-bst-01": {
+          "name": "Book Stand 01",
+          "alt": "Artikkan Book Stand 01"
+        },
+        "artk-shf-01": {
+          "name": "Display Shelf 01",
+          "alt": "Artikkan Display Shelf 01"
+        },
+        "artk-shf-02": {
+          "name": "Display Shelf 02",
+          "alt": "Artikkan Display Shelf 02"
+        },
+        "artk-shf-03": {
+          "name": "Display Shelf 03",
+          "alt": "Artikkan Display Shelf 03"
+        },
+        "artk-mr-wp-01": {
+          "name": "Mirror 01",
+          "alt": "Artikkan Mirror 01"
+        },
+        "artk-mr-wv-01": {
+          "name": "Mirror 01",
+          "alt": "Artikkan Mirror 01"
+        },
+        "artk-mr-wv-01a": {
+          "name": "Mirror 01A",
+          "alt": "Artikkan Mirror 01A"
+        },
+        "artk-mbh-wv-01": {
+          "name": "Phone Holder 01",
+          "alt": "Artikkan Phone Holder 01"
+        },
+        "artk-pfr-wv-01": {
+          "name": "Photo Frame 01",
+          "alt": "Artikkan Photo Frame 01"
+        },
+        "artk-plr-wv-01": {
+          "name": "Planter 01",
+          "alt": "Artikkan Planter 01"
+        },
+        "artk-try-01": {
+          "name": "Serving Tray 01",
+          "alt": "Artikkan Serving Tray 01"
+        },
+        "artk-ben-01": {
+          "name": "Bench 01",
+          "alt": "Artikkan Bench 01"
+        },
+        "artk-ben-02": {
+          "name": "Bench 02",
+          "alt": "Artikkan Bench 02"
+        },
+        "artk-ben-03": {
+          "name": "Bench 03",
+          "alt": "Artikkan Bench 03"
+        },
+        "artk-ben-04": {
+          "name": "Bench 04",
+          "alt": "Artikkan Bench 04"
+        },
+        "artk-ben-05": {
+          "name": "Bench 05",
+          "alt": "Artikkan Bench 05"
+        },
+        "artk-ch-01-wp": {
+          "name": "Chair 01 · Walnut Polished",
+          "alt": "Artikkan Chair 01 · Walnut Polished"
+        },
+        "artk-ch-01-wv": {
+          "name": "Chair 01 · Walnut Veneer",
+          "alt": "Artikkan Chair 01 · Walnut Veneer"
+        },
+        "artk-ch-02": {
+          "name": "Chair 02",
+          "alt": "Artikkan Chair 02"
+        },
+        "artk-ch-03": {
+          "name": "Chair 03",
+          "alt": "Artikkan Chair 03"
+        },
+        "artk-ch-04-wv": {
+          "name": "Chair 04 · Walnut Veneer",
+          "alt": "Artikkan Chair 04 · Walnut Veneer"
+        },
+        "artk-pof-01": {
+          "name": "Pouf 01",
+          "alt": "Artikkan Pouf 01"
+        },
+        "artk-pof-02-wp": {
+          "name": "Pouf 02 · Walnut Polished",
+          "alt": "Artikkan Pouf 02 · Walnut Polished"
+        },
+        "artk-pof-02-wv": {
+          "name": "Pouf 02 · Walnut Veneer",
+          "alt": "Artikkan Pouf 02 · Walnut Veneer"
+        },
+        "artk-pof-03": {
+          "name": "Pouf 03",
+          "alt": "Artikkan Pouf 03"
+        },
+        "artk-pof-04": {
+          "name": "Pouf 04",
+          "alt": "Artikkan Pouf 04"
+        },
+        "artk-sof-01": {
+          "name": "Sofa 01",
+          "alt": "Artikkan Sofa 01"
+        },
+        "artk-sof-02": {
+          "name": "Sofa 02",
+          "alt": "Artikkan Sofa 02"
+        },
+        "artk-sof-03": {
+          "name": "Sofa 03",
+          "alt": "Artikkan Sofa 03"
+        },
+        "artk-sof-04": {
+          "name": "Sofa 04",
+          "alt": "Artikkan Sofa 04"
+        },
+        "artk-sof-05": {
+          "name": "Sofa 05",
+          "alt": "Artikkan Sofa 05"
+        },
+        "artk-ct-01": {
+          "name": "Center Table 01",
+          "alt": "Artikkan Center Table 01"
+        },
+        "artk-ct-02": {
+          "name": "Center Table 02",
+          "alt": "Artikkan Center Table 02"
+        },
+        "artk-ct-03-wv": {
+          "name": "Center Table 03 · Walnut Veneer",
+          "alt": "Artikkan Center Table 03 · Walnut Veneer"
+        },
+        "artk-cot-01-a": {
+          "name": "Console Table",
+          "alt": "Artikkan Console Table"
+        },
+        "artk-cot-01": {
+          "name": "Console Table 01",
+          "alt": "Artikkan Console Table 01"
+        },
+        "artk-cot-02": {
+          "name": "Console Table 02",
+          "alt": "Artikkan Console Table 02"
+        },
+        "artk-dt-01": {
+          "name": "Dining Table 01",
+          "alt": "Artikkan Dining Table 01"
+        },
+        "artk-dt-02": {
+          "name": "Dining Table 02",
+          "alt": "Artikkan Dining Table 02"
+        },
+        "artk-dt-03": {
+          "name": "Dining Table 03",
+          "alt": "Artikkan Dining Table 03"
+        },
+        "artk-dst-01": {
+          "name": "Side Table 01",
+          "alt": "Artikkan Side Table 01"
+        },
+        "artk-st-02-wp": {
+          "name": "Side Table 02 · Walnut Polished",
+          "alt": "Artikkan Side Table 02 · Walnut Polished"
+        },
+        "artk-st-02-wv": {
+          "name": "Side Table 02 · Walnut Veneer",
+          "alt": "Artikkan Side Table 02 · Walnut Veneer"
+        },
+        "artk-un-01": {
+          "name": "Unit Cabinet 01",
+          "alt": "Artikkan Unit Cabinet 01"
+        },
+        "artk-un-02-wp": {
+          "name": "Unit Cabinet 02 · Walnut Polished",
+          "alt": "Artikkan Unit Cabinet 02 · Walnut Polished"
+        },
+        "artk-un-04": {
+          "name": "Unit Cabinet 04",
+          "alt": "Artikkan Unit Cabinet 04"
+        },
+        "artk-un-07c": {
+          "name": "Unit Cabinet 07C",
+          "alt": "Artikkan Unit Cabinet 07C"
+        }
+      }
+    },
+    "projects": {
+      "heading": "Selected Projects",
+      "viewAll": "View all projects",
+      "viewProject": "View Project",
+      "piecesLabel": "Pieces in this project",
+      "viewDetails": "View details",
+      "pendingPhotography": "Photography to be supplied",
+      "pendingProduct": "Product to be confirmed",
+      "entries": {
+        "one": {
+          "name": "Majlis Gathering",
+          "subtitle": "A generous seating room of soft forms, warm timber and measured afternoon light.",
+          "alt": "Artikkan sofa and lounge seating in warm light"
+        },
+        "two": {
+          "name": "Dining Atelier",
+          "subtitle": "A dining space for lingering: a long table, considered chairs, and quiet surfaces.",
+          "alt": "Artikkan dining table with chairs in afternoon light"
+        }
+      }
+    },
+    "journal": {
+      "eyebrow": "The Artikkan Journal",
+      "headline": "Ideas, materials & spaces.",
+      "intro": "Perspectives on design, craftsmanship and the spaces we inhabit."
+    },
+    "contact": {
+      "label": "Contact",
+      "headline": "Let’s talk about your space.",
+      "intro": "Whether you’re exploring a particular piece or planning a project, our team can help with product details and pricing.",
+      "emailLabel": "Email",
+      "phoneLabel": "Telephone",
+      "addressLabel": "Showroom",
+      "hoursLabel": "Opening hours",
+      "socialLabel": "Follow",
+      "pendingDetails": "",
+      "emailPending": "",
+      "mapTitle": "Artikkan showroom location",
+      "mapEnable": "Click to explore the map",
+      "directions": "Get directions",
+      "form": {
+        "name": "Full name",
+        "email": "Email address",
+        "phone": "Telephone",
+        "type": "Enquiry type",
+        "typeEmpty": "Select an enquiry type",
+        "product": "Product name or reference",
+        "message": "Message",
+        "submit": "Send enquiry",
+        "types": {
+          "product": "Product details & pricing",
+          "project": "Project enquiry",
+          "general": "General enquiry"
+        },
+        "errors": {
+          "name": "Please enter your name.",
+          "email": "Please enter a valid email address.",
+          "type": "Please choose an enquiry type.",
+          "message": "Please enter a message."
+        },
+        "unconnected": "The enquiry form is not connected yet. Please write to",
+        "unconnectedNoEmail": "The enquiry form is not connected yet. An enquiry email has not been configured.",
+        "privacy": "We use these details only to respond to your enquiry. See our <privacy>privacy policy</privacy>."
+      }
+    }
+  },
+  "journal": {
+    "eyebrow": "The Artikkan Journal",
+    "headline": "Ideas, materials & spaces.",
+    "intro": "Perspectives on design, craftsmanship and the spaces we inhabit.",
+    "readArticle": "Read Article",
+    "viewJournal": "View the Journal",
+    "backToJournal": "Back to Journal",
+    "searchLabel": "Search articles",
+    "searchPlaceholder": "Search titles and excerpts",
+    "searchSubmit": "Search",
+    "filtersLabel": "Categories",
+    "allCategories": "All",
+    "resetFilters": "Reset search and filters",
+    "empty": "No articles found. Try another search or explore all articles.",
+    "emptyAction": "Explore all articles",
+    "paginationLabel": "Journal pages",
+    "previousPage": "Previous",
+    "nextPage": "Next",
+    "pageOf": "Page {current} of {total}",
+    "datePending": "Recently",
+    "draftLabel": "",
+    "draftNotice": "",
+    "shareLabel": "Share this article",
+    "shareWhatsapp": "Share on WhatsApp",
+    "shareLinkedin": "Share on LinkedIn",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "copyFailed": "Could not copy. Copy the link below.",
+    "leadImageCaption": "Lead image",
+    "categories": {
+      "design": "Design",
+      "materials": "Materials",
+      "craft": "Craft"
+    }
+  },
+  "aboutPage": {
+    "eyebrow": "About Artikkan",
+    "headline": "Crafted spaces. Enduring character.",
+    "headlineLines": [
+      "Crafted spaces.",
+      "Enduring character."
+    ],
+    "intro": "Artikkan brings together considered design, refined materials and meticulous craftsmanship to create furniture and interiors with a distinctive presence. Every detail is shaped to elevate the spaces in which life unfolds.",
+    "leadAlt": "Artikkan furniture and interior craftsmanship",
+    "draftNotice": "",
+    "pullQuote": "Every detail is shaped to elevate the spaces in which life unfolds.",
+    "pullQuoteLabel": "Brand statement",
+    "quoteImageAlt": "Artikkan interior atmosphere",
+    "valuesEyebrow": "Core values",
+    "valuesTitle": "What we hold to",
+    "valuesIntro": "Three qualities that shape every Artikkan commission.",
+    "values": {
+      "design": "Considered design",
+      "designNote": "Form, proportion and a clear sense of place.",
+      "materials": "Refined materials",
+      "materialsNote": "Timber, metal and textile chosen to deepen with time.",
+      "craft": "Meticulous craftsmanship",
+      "craftNote": "Joinery and finish resolved by hand."
+    },
+    "statsNotice": "Artikkan in numbers",
+    "differenceEyebrow": "What makes Artikkan different",
+    "differenceTitle": "A distinctive presence",
+    "differenceLead": "Considered design, refined materials and meticulous craftsmanship.",
+    "craftEyebrow": "Materials & craft",
+    "craftTitle": "Materials and craftsmanship",
+    "craftLead": "Refined materials and meticulous craftsmanship at every scale.",
+    "craftAlt": "Artikkan furniture craftsmanship",
+    "stillsEyebrow": "In the studio",
+    "stillsTitle": "Selected views",
+    "stillsIntro": "Selected views from the Artikkan catalogue.",
+    "stills": {
+      "lounge": "Lounge",
+      "majlis": "Majlis",
+      "living": "Living",
+      "dining": "Dining",
+      "hallway": "Hallway",
+      "console": "Console"
+    },
+    "teamEyebrow": "People",
+    "teamTitle": "Team and expertise",
+    "teamIntro": "A close studio of designers, makers and client partners — shaping each commission with the same care given to a single piece.",
+    "contactCta": "Speak with our team",
+    "teamMembers": {
+      "lina": {
+        "name": "Lina Haddad",
+        "role": "Creative Director",
+        "bio": "Guides the gallery’s design language and the story of every room, from first sketch to installation."
+      },
+      "omar": {
+        "name": "Omar Nasser",
+        "role": "Head of Craft",
+        "bio": "Works with makers to refine joinery, finish and proportion until each piece feels inevitable."
+      },
+      "maya": {
+        "name": "Maya Khalil",
+        "role": "Interior Atelier",
+        "bio": "Composes materials, light and scale so interiors hold a quiet, distinctive presence."
+      },
+      "rami": {
+        "name": "Rami Abboud",
+        "role": "Client Relations",
+        "bio": "The first conversation and the last detail — from enquiry through to the finished space."
+      }
+    }
+  },
+  "categoriesPage": {
+    "eyebrow": "Collections",
+    "headline": "A considered range.",
+    "headlineLines": [
+      "A considered",
+      "range."
+    ],
+    "intro": "Five collections, one language. Each opens the catalogue with that filter applied.",
+    "count": "05 collections",
+    "indexLabel": "Product collections",
+    "viewCollection": "View collection",
+    "indexes": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05"
+    ],
+    "ledes": {
+      "seating": "Sofas, chairs and benches composed for gathering and rest.",
+      "tables": "Dining, console and side tables with quiet presence.",
+      "unit-cabinets": "Storage and display units shaped for daily life.",
+      "home-decor": "Shelves, mirrors and objects that complete a room.",
+      "accessories": "Small pieces for hospitality and everyday ritual."
+    }
+  },
+  "productsPage": {
+    "eyebrow": "Catalogue",
+    "categoryEyebrow": "Collection",
+    "headline": "Distinctive by design.",
+    "headlineLines": [
+      "Distinctive",
+      "by design."
+    ],
+    "intro": "Explore Artikkan pieces. Contact our team for product details and pricing.",
+    "pieceCount": "{count} pieces",
+    "allCollections": "All collections",
+    "searchLabel": "Search",
+    "searchPlaceholder": "Search pieces",
+    "searchSubmit": "Search",
+    "filtersLabel": "Collections",
+    "allCategories": "All",
+    "sortLabel": "Sort",
+    "sortFeatured": "Featured",
+    "sortName": "Name",
+    "resetFilters": "Clear",
+    "empty": "No pieces in this view. Try another collection, or browse the full catalogue.",
+    "emptyAction": "View all pieces",
+    "viewDetails": "View details",
+    "paginationLabel": "Product pages",
+    "previousPage": "Previous",
+    "nextPage": "Next",
+    "pageOf": "Page {current} of {total}",
+    "backToProducts": "Back to Products",
+    "enquire": "Enquire about this piece",
+    "enquireContact": "Enquire via contact",
+    "specsTitle": "Specifications",
+    "materials": "Materials",
+    "dimensions": "Dimensions",
+    "finishes": "Finishes",
+    "specsPending": "",
+    "descriptionPending": "",
+    "relatedTitle": "Related pieces",
+    "zoom": "Zoom image",
+    "closeZoom": "Close",
+    "galleryLabel": "Product images"
+  },
+  "enquiryModal": {
+    "eyebrow": "Enquiry",
+    "title": "Enquire about this piece",
+    "lede": "Share a few details and our team will respond with product information and pricing.",
+    "close": "Close",
+    "name": "Full name",
+    "email": "Email address",
+    "phone": "Telephone",
+    "message": "Message",
+    "submit": "Send enquiry",
+    "openedMail": "Opening your email app to send this enquiry.",
+    "missingEmail": "An enquiry email has not been configured yet.",
+    "privacy": "We use these details only to respond to your enquiry. See our <privacy>privacy policy</privacy>.",
+    "errors": {
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email address.",
+      "message": "Please add a short message."
+    }
+  },
+  "projectsPage": {
+    "eyebrow": "Projects",
+    "headline": "Selected projects.",
+    "intro": "Interiors and furniture compositions shaped with Artikkan pieces.",
+    "draftNotice": "",
+    "viewProject": "View Project",
+    "backToProjects": "Back to Projects",
+    "overviewTitle": "Overview",
+    "roleTitle": "Artikkan’s role",
+    "rolePending": "Artikkan supplied furniture and spatial composition — selecting pieces, refining finishes and aligning proportion with the architecture of the room.",
+    "metaPending": "",
+    "locationLabel": "Location",
+    "yearLabel": "Year",
+    "typeLabel": "Type",
+    "galleryTitle": "Gallery",
+    "piecesTitle": "Pieces in this project",
+    "leadAlt": "Artikkan project interior",
+    "locations": {
+      "one": "Doha, Qatar",
+      "two": "Doha, Qatar"
+    },
+    "years": {
+      "one": "2024",
+      "two": "2025"
+    },
+    "types": {
+      "one": "Residential majlis",
+      "two": "Private dining"
+    }
+  },
+  "footer": {
+    "brandLine": "Considered design. Distinctive spaces.",
+    "explore": "Explore",
+    "connect": "Connect",
+    "about": "About Us",
+    "email": "Email",
+    "telephone": "Telephone",
+    "showroom": "Showroom",
+    "copyright": "© {year} Artikkan. All rights reserved.",
+    "exploreLabel": "Explore Artikkan",
+    "connectLabel": "Contact Artikkan",
+    "legalLabel": "Legal",
+    "cta": "Enquire",
+    "ctaLabel": "Enquire with Artikkan"
+  },
+  "legal": {
+    "termsTitle": "Terms of use",
+    "termsIntro": "These terms govern your use of the Artikkan website and related enquiry services.",
+    "termsSections": [
+      {
+        "heading": "Using this site",
+        "body": "The Artikkan website presents our furniture catalogue, journal and project stories for information and enquiry. Content may be updated without notice as collections evolve."
+      },
+      {
+        "heading": "Enquiries and projects",
+        "body": "Product details, availability and pricing are confirmed privately after enquiry. Commissioned work is subject to a separate agreement covering scope, timeline and materials."
+      },
+      {
+        "heading": "Intellectual property",
+        "body": "Photography, copy and design on this site belong to Artikkan or its licensors. You may not reproduce them for commercial use without written permission."
+      },
+      {
+        "heading": "Contact",
+        "body": "Questions about these terms can be sent to enquire@artikkan.com."
+      }
+    ],
+    "privacyTitle": "Privacy policy",
+    "privacyIntro": "This policy explains how Artikkan handles personal information shared through the website.",
+    "privacySections": [
+      {
+        "heading": "Information we collect",
+        "body": "When you send an enquiry we receive the details you provide — typically your name, email, telephone and message. We do not sell personal data."
+      },
+      {
+        "heading": "How we use it",
+        "body": "We use enquiry details only to respond to your request, prepare proposals and improve how we communicate about our collections."
+      },
+      {
+        "heading": "Retention",
+        "body": "We keep correspondence for as long as needed to complete your enquiry or as required for legitimate business records, then delete or archive it securely."
+      },
+      {
+        "heading": "Your choices",
+        "body": "You may ask to update or remove your contact details by writing to enquire@artikkan.com."
+      }
+    ]
+  }
+}
