@@ -8,13 +8,11 @@ import { getMapEmbedSrc, getVerifiedContact } from '@/config/contact';
 type HomeContactSectionProps = {
   locale: string;
   enquiryEmail: string | null;
-  initialProduct?: string | null;
 };
 
 export async function HomeContactSection({
   locale,
   enquiryEmail,
-  initialProduct = null,
 }: HomeContactSectionProps) {
   const t = await getTranslations('home.contact');
   const contact = getVerifiedContact();
@@ -43,10 +41,7 @@ export async function HomeContactSection({
             </div>
 
             <div data-contact-reveal>
-              <ContactForm
-                enquiryEmail={enquiryEmail}
-                initialProduct={initialProduct}
-              />
+              <ContactForm enquiryEmail={enquiryEmail} />
             </div>
           </div>
 

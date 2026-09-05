@@ -26,7 +26,6 @@ import { createPageMetadata } from '@/lib/metadata';
 
 type HomePageProps = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ product?: string | string[] }>;
 };
 
 export async function generateMetadata({ params }: HomePageProps) {
@@ -34,13 +33,8 @@ export async function generateMetadata({ params }: HomePageProps) {
   return createPageMetadata({ locale, pathname: '/', titleKey: 'home' });
 }
 
-export default async function HomePage({ params, searchParams }: HomePageProps) {
+export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
-  const productParam = await searchParams;
-  const productValue = Array.isArray(productParam.product)
-    ? productParam.product[0]
-    : productParam.product;
-  const initialProduct = productValue?.trim() || null;
   preload(HERO_MEDIA.poster, { as: 'image' });
   const aboutImageAvailable = publicAssetExists(ABOUT_IMAGE.src);
   const categoryImageAvailability = Object.fromEntries(
@@ -100,11 +94,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         productImageAvailability={productImageAvailability}
       />
       <HomeCollaboratorsSection logos={collaboratorLogos} />
-      <HomeContactSection
-        locale={locale}
-        enquiryEmail={enquiryEmail}
-        initialProduct={initialProduct}
-      />
+      <HomeContactSection locale={locale} enquiryEmail={enquiryEmail} />
     </>
   );
 }

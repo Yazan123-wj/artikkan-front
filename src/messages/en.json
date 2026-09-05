@@ -6,8 +6,8 @@
     "products": "Products",
     "projects": "Projects",
     "journal": "Journal",
-    "contact": "Contact",
-    "inquiry": "Request an Inquiry",
+    "contact": "Newsletter",
+    "inquiry": "Subscribe",
     "privacyPolicy": "Privacy policy",
     "terms": "Terms"
   },
@@ -365,9 +365,9 @@
       }
     },
     "contact": {
-      "label": "Contact",
-      "headline": "Let’s talk about your space.",
-      "intro": "Whether you’re exploring a particular piece or planning a project, our team can help with product details and pricing.",
+      "label": "Newsletter",
+      "headline": "Stay close to the work.",
+      "intro": "Notes on collections, rooms and openings — sent occasionally, never in haste.",
       "emailLabel": "Email",
       "phoneLabel": "Telephone",
       "addressLabel": "Showroom",
@@ -381,26 +381,14 @@
       "form": {
         "name": "Full name",
         "email": "Email address",
-        "phone": "Telephone",
-        "type": "Enquiry type",
-        "typeEmpty": "Select an enquiry type",
-        "product": "Product name or reference",
-        "message": "Message",
-        "submit": "Send enquiry",
-        "types": {
-          "product": "Product details & pricing",
-          "project": "Project enquiry",
-          "general": "General enquiry"
-        },
+        "submit": "Subscribe",
         "errors": {
-          "name": "Please enter your name.",
-          "email": "Please enter a valid email address.",
-          "type": "Please choose an enquiry type.",
-          "message": "Please enter a message."
+          "email": "Please enter a valid email address."
         },
-        "unconnected": "The enquiry form is not connected yet. Please write to",
-        "unconnectedNoEmail": "The enquiry form is not connected yet. An enquiry email has not been configured.",
-        "privacy": "We use these details only to respond to your enquiry. See our <privacy>privacy policy</privacy>."
+        "success": "Thank you. You’re on the list.",
+        "unconnected": "The newsletter is not connected yet. Please write to",
+        "unconnectedNoEmail": "The newsletter is not connected yet. An email has not been configured.",
+        "privacy": "We use your email only for the Artikkan newsletter. See our <privacy>privacy policy</privacy>."
       }
     }
   },
@@ -684,8 +672,8 @@
     "exploreLabel": "Explore Artikkan",
     "connectLabel": "Contact Artikkan",
     "legalLabel": "Legal",
-    "cta": "Enquire",
-    "ctaLabel": "Enquire with Artikkan"
+    "cta": "Subscribe",
+    "ctaLabel": "Subscribe to the Artikkan newsletter"
   },
   "legal": {
     "termsTitle": "Terms of use",
