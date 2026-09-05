@@ -1,9 +1,15 @@
 import { featuredCategories } from '@/config/home-content';
 import { catalogProducts, featuredProducts } from '@/config/products';
+import {
+  PRODUCT_SUBCATEGORY_IDS,
+  categorySubcategories,
+  productSubKeyById,
+} from '@/config/subcategories';
 import type { AppLocale } from '@/i18n/routing';
 import type {
   FeaturedProduct,
   FeaturedProductCategoryKey,
+  ProductSubcategoryId,
 } from '@/types/product';
 
 export const PRODUCT_PAGE_SIZE = 12;
@@ -19,12 +25,18 @@ export type ProductCategoryId = (typeof PRODUCT_CATEGORY_IDS)[number];
 
 export { catalogProducts, featuredProducts, featuredCategories };
 
+function withSubKey(product: FeaturedProduct): FeaturedProduct {
+  const subKey = productSubKeyById[product.id];
+  return subKey ? { ...product, subKey } : product;
+}
+
 export function getCatalogProducts(): readonly FeaturedProduct[] {
-  return catalogProducts;
+  return catalogProducts.map(withSubKey);
 }
 
 export function getProductBySlug(slug: string): FeaturedProduct | undefined {
-  return catalogProducts.find((product) => product.slug === slug);
+  const product = catalogProducts.find((item) => item.slug === slug);
+  return product ? withSubKey(product) : undefined;
 }
 
 export function isProductCategoryId(
@@ -37,12 +49,28 @@ export function getRelatedProducts(
   product: FeaturedProduct,
   limit = 3,
 ): FeaturedProduct[] {
-  return catalogProducts
+  return getCatalogProducts()
     .filter(
       (item) =>
         item.id !== product.id && item.categoryKey === product.categoryKey,
     )
     .slice(0, limit);
+}
+
+export function isProductSubcategoryId(
+  value: string,
+): value is ProductSubcategoryId {
+  return PRODUCT_SUBCATEGORY_IDS.includes(value as ProductSubcategoryId);
+}
+
+export function subcategoryBelongsToCategory(
+  sub: string,
+  category: string,
+): sub is ProductSubcategoryId {
+  return (
+    isProductCategoryId(category) &&
+    categorySubcategories[category].includes(sub as ProductSubcategoryId)
+  );
 }
 
 export function productMatchesCategory(
@@ -56,19 +84,39 @@ export function productMatchesCategory(
   return product.categoryKey === category;
 }
 
+export function productMatchesSubcategory(
+  product: FeaturedProduct,
+  subcategory: string | undefined,
+): boolean {
+  if (!subcategory || subcategory === 'all') {
+    return true;
+  }
+
+  return product.subKey === subcategory;
+}
+
 export function filterProducts(
   products: readonly FeaturedProduct[],
   locale: AppLocale,
   names: Record<string, string>,
   query: string,
   category: string | undefined,
+  subcategory?: string,
 ): FeaturedProduct[] {
   const needle = query.trim().toLowerCase();
   const categoryId =
     category && isProductCategoryId(category) ? category : undefined;
+  const subcategoryId =
+    categoryId && subcategory && subcategoryBelongsToCategory(subcategory, categoryId)
+      ? subcategory
+      : undefined;
 
   return products.filter((product) => {
     if (categoryId && product.categoryKey !== categoryId) {
+      return false;
+    }
+
+    if (subcategoryId && product.subKey !== subcategoryId) {
       return false;
     }
 
@@ -78,10 +126,12 @@ export function filterProducts(
 
     const name = names[product.nameKey] ?? product.slug;
     const categoryLabel = names[product.categoryKey] ?? product.categoryKey;
+    const subLabel = product.subKey ? (names[product.subKey] ?? product.subKey) : '';
 
     return (
       name.toLowerCase().includes(needle) ||
       categoryLabel.toLowerCase().includes(needle) ||
+      subLabel.toLowerCase().includes(needle) ||
       product.slug.toLowerCase().includes(needle)
     );
   });
@@ -128,6 +178,7 @@ export function paginateProducts(
 export function parseProductSearchParams(searchParams: {
   q?: string | string[];
   category?: string | string[];
+  sub?: string | string[];
   sort?: string | string[];
   page?: string | string[];
 }) {
@@ -135,13 +186,19 @@ export function parseProductSearchParams(searchParams: {
     Array.isArray(value) ? value[0] : value;
 
   const q = first(searchParams.q)?.trim() ?? '';
-  const category = first(searchParams.category)?.trim() || 'all';
+  const categoryRaw = first(searchParams.category)?.trim() || 'all';
+  const category = isProductCategoryId(categoryRaw) ? categoryRaw : 'all';
+  const subRaw = first(searchParams.sub)?.trim() || 'all';
   const sort = first(searchParams.sort)?.trim() || 'featured';
   const page = Number.parseInt(first(searchParams.page) ?? '1', 10);
 
   return {
     q,
-    category: isProductCategoryId(category) ? category : 'all',
+    category,
+    sub:
+      category !== 'all' && subcategoryBelongsToCategory(subRaw, category)
+        ? subRaw
+        : 'all',
     sort: PRODUCT_SORTS.includes(sort as ProductSort)
       ? (sort as ProductSort)
       : 'featured',
@@ -152,6 +209,7 @@ export function parseProductSearchParams(searchParams: {
 export function productListHref(input: {
   q?: string;
   category?: string;
+  sub?: string;
   sort?: string;
   page?: number;
 }): string {
@@ -162,6 +220,14 @@ export function productListHref(input: {
   }
   if (input.category && input.category !== 'all') {
     params.set('category', input.category);
+  }
+  if (
+    input.category &&
+    input.category !== 'all' &&
+    input.sub &&
+    input.sub !== 'all'
+  ) {
+    params.set('sub', input.sub);
   }
   if (input.sort && input.sort !== 'featured') {
     params.set('sort', input.sort);
@@ -177,4 +243,4 @@ export function categoryProductsHref(categoryId: string): string {
   return productListHref({ category: categoryId });
 }
 
-export type { FeaturedProductCategoryKey };
+export type { FeaturedProductCategoryKey, ProductSubcategoryId };

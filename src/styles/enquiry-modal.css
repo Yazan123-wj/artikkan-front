@@ -52,7 +52,7 @@
 
 .enquiry-modal-title {
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 :root[lang='ar'] .enquiry-modal-title {
@@ -127,7 +127,7 @@
   margin: 0.35rem 0 0;
   font-size: var(--text-body-lg);
   line-height: var(--leading-heading);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 :root[lang='ar'] .enquiry-modal-piece-name {

@@ -92,6 +92,7 @@
       "intro": "Explore a selection of Artikkan pieces. Contact our team for product details and pricing.",
       "viewAll": "View all products",
       "enquire": "Enquire about this piece",
+      "exploreProduct": "Explore product",
       "pieces": {
         "candle-holder": {
           "name": "Candle Holder",
@@ -340,10 +341,28 @@
         }
       }
     },
-    "journal": {
-      "eyebrow": "The Artikkan Journal",
-      "headline": "Ideas, materials & spaces.",
-      "intro": "Perspectives on design, craftsmanship and the spaces we inhabit."
+    "collaborators": {
+      "eyebrow": "Clients & Collaborators",
+      "headline": "Shared rooms. Shared work.",
+      "intro": "Residences, hospitality rooms and design ateliers Artikkan works alongside.",
+      "columns": {
+        "client": "Client",
+        "collaborator": "Collaborator"
+      },
+      "names": {
+        "darAlQamar": "Dar Al Qamar",
+        "atelierHanan": "Atelier Hanan",
+        "quietCourt": "The Quiet Court",
+        "maisonWadi": "Maison Wadi",
+        "studioSaffron": "Studio Saffron",
+        "oliveCourt": "Olive Court",
+        "alMada": "Al Mada Atelier",
+        "cedarHouse": "House of Cedar",
+        "gulfLight": "Gulf Light Rooms",
+        "longTable": "The Long Table",
+        "northResidences": "Residences North",
+        "qasrStudio": "Qasr Studio"
+      }
     },
     "contact": {
       "label": "Contact",
@@ -452,6 +471,27 @@
     "craftTitle": "Materials and craftsmanship",
     "craftLead": "Refined materials and meticulous craftsmanship at every scale.",
     "craftAlt": "Artikkan furniture craftsmanship",
+    "journeyEyebrow": "The journey",
+    "journeyTitle": "From production to delivery",
+    "journeyIntro": "A clear path from the workshop to the room — each stage held to the same standard as the finished piece.",
+    "journey": {
+      "specify": {
+        "title": "Specification",
+        "body": "Materials, finishes and proportions are confirmed against the space, so production begins with a settled brief."
+      },
+      "produce": {
+        "title": "Production",
+        "body": "Each piece is made in sequence — structure, joinery and form resolved before any surface is closed."
+      },
+      "finish": {
+        "title": "Finishing",
+        "body": "Edges, grain and hardware are reviewed by hand. Nothing leaves the studio until the finish feels inevitable."
+      },
+      "deliver": {
+        "title": "Delivery",
+        "body": "Pieces arrive protected, placed and aligned in the room — the last step of the same considered process."
+      }
+    },
     "stillsEyebrow": "In the studio",
     "stillsTitle": "Selected views",
     "stillsIntro": "Selected views from the Artikkan catalogue.",
@@ -531,7 +571,33 @@
     "searchPlaceholder": "Search pieces",
     "searchSubmit": "Search",
     "filtersLabel": "Collections",
+    "filtersSubLabel": "Types",
     "allCategories": "All",
+    "subs": {
+      "sofa": "Sofas",
+      "pouf": "Poufs",
+      "chair": "Chairs",
+      "bench": "Benches",
+      "console-table": "Console tables",
+      "center-table": "Center tables",
+      "dining-table": "Dining tables",
+      "side-table": "Side tables",
+      "unit-cabinet": "Units & cabinets",
+      "display-shelf": "Display shelves",
+      "artwork": "Artwork",
+      "mirror": "Mirrors",
+      "photo-frame": "Photo frames",
+      "book-stand": "Book stands",
+      "planter": "Planters",
+      "serving-tray": "Serving trays",
+      "phone-holder": "Phone holders",
+      "mobkhar": "Mobkhars",
+      "coasters": "Coasters",
+      "candle-holder": "Candle holders",
+      "tissue-box": "Tissue boxes",
+      "container": "Containers",
+      "napkin-holder": "Napkin holders"
+    },
     "sortLabel": "Sort",
     "sortFeatured": "Featured",
     "sortName": "Name",

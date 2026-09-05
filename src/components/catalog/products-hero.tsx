@@ -45,7 +45,7 @@ export function ProductsHero({
         <div className="products-hero-copy">
           <p className="products-hero-eyebrow type-label">{eyebrow}</p>
           <h1 className="products-hero-headline type-display">
-            {headlineLines.map((line) => (
+            {(headlineLines ?? []).map((line) => (
               <span key={line} className="products-hero-line">
                 <span className="products-hero-line-inner">{line}</span>
               </span>

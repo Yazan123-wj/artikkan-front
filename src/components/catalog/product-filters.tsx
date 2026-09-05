@@ -1,13 +1,18 @@
 'use client';
 
 import { LocalizedLink } from '@/components/shared/localized-link';
-import { productListHref } from '@/lib/catalog';
+
+export type ProductFilterItem = {
+  id: string;
+  href: string;
+  label: string;
+};
 
 type ProductFiltersProps = {
   query: string;
-  category: string;
-  categories: readonly string[];
-  categoryLabels: Record<string, string>;
+  filterItems?: readonly ProductFilterItem[];
+  activeId: string;
+  allHref: string;
   searchLabel: string;
   searchPlaceholder: string;
   searchSubmit: string;
@@ -18,9 +23,9 @@ type ProductFiltersProps = {
 
 export function ProductFilters({
   query,
-  category,
-  categories,
-  categoryLabels,
+  filterItems = [],
+  activeId,
+  allHref,
   searchLabel,
   searchPlaceholder,
   searchSubmit,
@@ -32,24 +37,24 @@ export function ProductFilters({
     <div className="products-toolbar site-container">
       <nav className="products-cats" aria-label={filtersLabel}>
         <LocalizedLink
-          href={productListHref({ category: 'all' })}
+          href={allHref}
           className={
-            category === 'all' ? 'products-cat is-active' : 'products-cat'
+            activeId === 'all' ? 'products-cat is-active' : 'products-cat'
           }
-          aria-current={category === 'all' ? 'page' : undefined}
+          aria-current={activeId === 'all' ? 'page' : undefined}
         >
           {allLabel}
         </LocalizedLink>
-        {categories.map((id) => (
+        {filterItems.map((item) => (
           <LocalizedLink
-            key={id}
-            href={productListHref({ category: id })}
+            key={item.id}
+            href={item.href}
             className={
-              category === id ? 'products-cat is-active' : 'products-cat'
+              activeId === item.id ? 'products-cat is-active' : 'products-cat'
             }
-            aria-current={category === id ? 'page' : undefined}
+            aria-current={activeId === item.id ? 'page' : undefined}
           >
-            {categoryLabels[id] ?? id}
+            {item.label}
           </LocalizedLink>
         ))}
       </nav>

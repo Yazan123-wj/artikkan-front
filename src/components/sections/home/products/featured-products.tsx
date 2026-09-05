@@ -91,6 +91,7 @@ export function FeaturedProducts({
                 imageAlt={pieceCopy(t, product.nameKey, 'alt')}
                 enquireLabel={t('enquire')}
                 enquiryEmail={enquiryEmail}
+                exploreLabel={t('exploreProduct')}
               />
             ))}
           </div>

@@ -14,6 +14,7 @@ type ProductCardProps = {
   imageAlt: string;
   enquireLabel: string;
   enquiryEmail: string | null;
+  exploreLabel?: string;
 };
 
 export function ProductCard({
@@ -23,6 +24,7 @@ export function ProductCard({
   imageAlt,
   enquireLabel,
   enquiryEmail,
+  exploreLabel,
 }: ProductCardProps) {
   const locale = useLocale();
   const href = `/products/${product.slug}`;
@@ -64,18 +66,29 @@ export function ProductCard({
         </h3>
       </div>
 
-      <ProductEnquireButton
-        label={enquireLabel}
-        enquiryEmail={enquiryEmail}
-        product={{
-          name,
-          category,
-          slug: product.slug,
-          reference: product.reference,
-          imageSrc: image.src,
-          imageAlt,
-        }}
-      />
+      {exploreLabel ? (
+        <LocalizedLink href={href} className="featured-product-enquire touch-target">
+          <span className="featured-product-enquire-label">{exploreLabel}</span>
+          <span className="featured-product-enquire-arrow" aria-hidden="true">
+            <svg viewBox="0 0 28 12" fill="none">
+              <path d="M0 6h26M21.5 1.5 27 6l-5.5 4.5" />
+            </svg>
+          </span>
+        </LocalizedLink>
+      ) : (
+        <ProductEnquireButton
+          label={enquireLabel}
+          enquiryEmail={enquiryEmail}
+          product={{
+            name,
+            category,
+            slug: product.slug,
+            reference: product.reference,
+            imageSrc: image.src,
+            imageAlt,
+          }}
+        />
+      )}
     </article>
   );
 }

@@ -64,15 +64,6 @@ export function getFeaturedArticle(): JournalArticle | undefined {
   return journalArticles.find((article) => article.featured);
 }
 
-export function getHomeJournalPreview(limit = 3) {
-  const featured = getFeaturedArticle();
-  const articles = getListedArticles()
-    .filter((article) => article.id !== featured?.id)
-    .slice(0, limit);
-
-  return { featured, articles };
-}
-
 export function getArticleCategories(): readonly JournalArticle['categoryId'][] {
   return [...new Set(journalArticles.map((article) => article.categoryId))];
 }

@@ -79,9 +79,14 @@ export function Hero() {
 
     ScrollTrigger.getById(HERO_SCROLL_ID)?.kill();
 
-    const controls = header?.querySelectorAll('[data-header-controls]');
+    const chrome = header?.closest('.site-chrome');
     const reduced = prefersReducedMotion();
     const mobileQuery = window.matchMedia(MOBILE_HERO_QUERY);
+
+    const setNavDocked = (docked: boolean) => {
+      header?.classList.toggle('is-nav-docked', docked);
+      chrome?.classList.toggle('is-nav-docked', docked);
+    };
 
     gsap.set(logo, {
       xPercent: -50,
@@ -101,7 +106,7 @@ export function Hero() {
         xPercent: -50,
         yPercent: -50,
       });
-      gsap.set(controls ?? [], { autoAlpha: 1 });
+      setNavDocked(true);
       section.classList.add('is-reduced');
       return;
     }
@@ -292,6 +297,7 @@ export function Hero() {
           invalidateOnRefresh: true,
           onRefreshInit: recapture,
           onUpdate: (self) => {
+            setNavDocked(self.progress >= LOGO_DOCK_PROGRESS);
             applySequenceProgress(self.progress);
           },
         },
@@ -311,19 +317,6 @@ export function Hero() {
         },
         0,
       );
-
-      if (controls?.length) {
-        timeline.fromTo(
-          controls,
-          { autoAlpha: 0 },
-          {
-            autoAlpha: 1,
-            duration: LOGO_DOCK_PROGRESS,
-            ease: 'power2.out',
-          },
-          0,
-        );
-      }
 
       timeline.to({}, { duration: 1 - LOGO_DOCK_PROGRESS }, LOGO_DOCK_PROGRESS);
     }, section);
@@ -398,6 +391,7 @@ export function Hero() {
       window.removeEventListener('touchmove', onTouchMove);
       mobileQuery.removeEventListener('change', onMedia);
       video?.pause();
+      setNavDocked(false);
       ctx.revert();
       ScrollTrigger.getById(HERO_SCROLL_ID)?.kill();
     };

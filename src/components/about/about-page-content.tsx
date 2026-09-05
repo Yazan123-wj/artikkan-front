@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { AboutPageHero } from '@/components/about/about-page-hero';
 import { AboutPullquoteBand } from '@/components/about/about-pullquote-band';
 import { AboutValuesShowcase } from '@/components/about/about-values-showcase';
+import { AboutJourneySection } from '@/components/about/about-journey-section';
 import { AboutTeamSection } from '@/components/about/about-team-section';
 import { ImageCurtain } from '@/components/motion/image-curtain';
 import { StatisticsSection } from '@/components/sections/home/statistics';
@@ -143,6 +144,38 @@ export async function AboutPageContent() {
           </div>
         </div>
       </section>
+
+      <AboutJourneySection
+        eyebrow={t('journeyEyebrow')}
+        title={t('journeyTitle')}
+        intro={t('journeyIntro')}
+        steps={[
+          {
+            id: 'specify',
+            index: '01',
+            title: t('journey.specify.title'),
+            body: t('journey.specify.body'),
+          },
+          {
+            id: 'produce',
+            index: '02',
+            title: t('journey.produce.title'),
+            body: t('journey.produce.body'),
+          },
+          {
+            id: 'finish',
+            index: '03',
+            title: t('journey.finish.title'),
+            body: t('journey.finish.body'),
+          },
+          {
+            id: 'deliver',
+            index: '04',
+            title: t('journey.deliver.title'),
+            body: t('journey.deliver.body'),
+          },
+        ]}
+      />
 
       <AboutTeamSection
         eyebrow={t('teamEyebrow')}

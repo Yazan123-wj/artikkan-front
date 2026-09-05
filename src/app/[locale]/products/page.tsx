@@ -11,6 +11,7 @@ type ProductsPageProps = {
   searchParams: Promise<{
     q?: string | string[];
     category?: string | string[];
+    sub?: string | string[];
     sort?: string | string[];
     page?: string | string[];
   }>;

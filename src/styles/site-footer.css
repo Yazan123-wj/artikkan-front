@@ -40,7 +40,7 @@
   max-width: 11em;
   font-family: var(--font-display-current);
   font-size: clamp(1.85rem, 2.4vw + 0.85rem, 3.15rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.12;
   letter-spacing: var(--tracking-heading);
   color: #f4f1ea;

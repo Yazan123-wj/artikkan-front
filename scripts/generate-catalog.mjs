@@ -314,7 +314,8 @@ function productTs(p) {
     id: '${p.id}',
     slug: '${p.slug}',
     nameKey: '${p.nameKey}',
-    categoryKey: '${p.categoryKey}',${ref}
+    categoryKey: '${p.categoryKey}',
+    subKey: '${p.sub}',${ref}
     image: {
       src: '${p.src}',
       width: ${p.width},

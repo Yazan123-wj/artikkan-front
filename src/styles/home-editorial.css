@@ -73,7 +73,7 @@
   margin: 0;
   max-width: 14ch;
   overflow-wrap: break-word;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 :root[lang='ar'] .about-headline {
@@ -416,7 +416,7 @@
 
 .categories-headline {
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
   max-width: 16ch;
 }
 
@@ -518,7 +518,7 @@
 
 .home-gallery-headline {
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
   max-width: 16ch;
 }
 
@@ -547,7 +547,7 @@
 
 .home-gallery-headline {
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
   max-width: 16ch;
 }
 

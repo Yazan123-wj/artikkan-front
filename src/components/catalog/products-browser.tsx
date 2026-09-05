@@ -3,7 +3,10 @@
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { CatalogProductCard } from '@/components/catalog/catalog-product-card';
-import { ProductFilters } from '@/components/catalog/product-filters';
+import {
+  ProductFilters,
+  type ProductFilterItem,
+} from '@/components/catalog/product-filters';
 import { ProductsHero } from '@/components/catalog/products-hero';
 import { LocalizedLink } from '@/components/shared/localized-link';
 import type { FeaturedProduct } from '@/types/product';
@@ -12,6 +15,7 @@ export type CatalogListItem = {
   product: FeaturedProduct;
   name: string;
   category: string;
+  subcategory?: string;
   imageAlt: string;
   imageAvailable: boolean;
 };
@@ -24,9 +28,9 @@ type ProductsBrowserProps = {
   collectionsLabel?: string;
   items: readonly CatalogListItem[];
   initialQuery: string;
-  category: string;
-  categories: readonly string[];
-  categoryLabels: Record<string, string>;
+  filterItems: readonly ProductFilterItem[];
+  activeFilterId: string;
+  allHref: string;
   searchLabel: string;
   searchPlaceholder: string;
   searchSubmit: string;
@@ -45,9 +49,9 @@ export function ProductsBrowser({
   collectionsLabel,
   items,
   initialQuery,
-  category,
-  categories,
-  categoryLabels,
+  filterItems,
+  activeFilterId,
+  allHref,
   searchLabel,
   searchPlaceholder,
   searchSubmit,
@@ -70,6 +74,7 @@ export function ProductsBrowser({
       return (
         item.name.toLowerCase().includes(needle) ||
         item.category.toLowerCase().includes(needle) ||
+        Boolean(item.subcategory?.toLowerCase().includes(needle)) ||
         item.product.slug.toLowerCase().includes(needle)
       );
     });
@@ -88,9 +93,9 @@ export function ProductsBrowser({
 
       <ProductFilters
         query={query}
-        category={category}
-        categories={categories}
-        categoryLabels={categoryLabels}
+        filterItems={filterItems ?? []}
+        activeId={activeFilterId}
+        allHref={allHref}
         searchLabel={searchLabel}
         searchPlaceholder={searchPlaceholder}
         searchSubmit={searchSubmit}

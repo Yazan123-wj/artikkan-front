@@ -148,22 +148,28 @@
 
 .site-header.is-home .site-header-controls {
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
+.site-header.is-home.is-nav-docked .site-header-controls,
 .site-header:not(.is-home) .site-header-controls {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-/* !important beats the GSAP-scrubbed inline opacity from the hero timeline,
-   keeping the close button visible until the menu finishes closing. */
+/* Close / language stay usable if the menu is already open. */
 .site-header.is-menu-open .site-header-controls {
-  opacity: 1 !important;
-  visibility: visible !important;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-.site-chrome.is-on-light .site-header.is-home .site-header-controls {
-  opacity: 1 !important;
-  visibility: visible !important;
+/* Mid-dock wordmark must not sit on top of the overlay. */
+.site-chrome.is-menu-open:not(.is-nav-docked) .artikkan-wordmark.is-hero {
+  opacity: 0 !important;
+  visibility: hidden;
 }
 
 .site-header.is-interior {
@@ -197,6 +203,12 @@
   /* Filter only — GSAP owns the transform during the docking animation. */
   .site-chrome.is-nav-ready .artikkan-wordmark.is-hero {
     transition: filter 0.28s var(--ease-standard);
+  }
+
+  .site-chrome.is-nav-ready .site-header.is-home .site-header-controls {
+    transition:
+      opacity 0.28s var(--ease-standard),
+      visibility 0.28s var(--ease-standard);
   }
 }
 
@@ -406,7 +418,7 @@
 .menu-link {
   font-family: var(--font-display-current);
   font-size: clamp(2rem, 7vw, 4.25rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.03em;
   color: inherit;

@@ -7,6 +7,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { BRAND_ASSETS, ENTRANCE, HERO_MEDIA, MOBILE_HERO_QUERY } from '@/config/hero';
 import { MOTION } from '@/config/motion';
+import { playEntranceAudio, preloadEntranceAudio } from '@/lib/entrance-audio';
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import {
   decodeImage,
@@ -74,6 +75,7 @@ export function LoadingScreen() {
     const run = async () => {
       const started = performance.now();
       const isMobile = window.matchMedia(MOBILE_HERO_QUERY).matches;
+      preloadEntranceAudio();
 
       await withTimeout(
         Promise.all([
@@ -98,6 +100,7 @@ export function LoadingScreen() {
       }
 
       markEntered();
+      playEntranceAudio();
 
       if (reduced) {
         tween = gsap.to(screen, {

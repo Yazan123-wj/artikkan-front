@@ -24,11 +24,37 @@ export type FeaturedProductCategoryKey =
   | 'home-decor'
   | 'accessories';
 
+export type ProductSubcategoryId =
+  | 'sofa'
+  | 'pouf'
+  | 'chair'
+  | 'bench'
+  | 'console-table'
+  | 'center-table'
+  | 'dining-table'
+  | 'side-table'
+  | 'unit-cabinet'
+  | 'display-shelf'
+  | 'artwork'
+  | 'mirror'
+  | 'photo-frame'
+  | 'book-stand'
+  | 'planter'
+  | 'serving-tray'
+  | 'phone-holder'
+  | 'mobkhar'
+  | 'coasters'
+  | 'candle-holder'
+  | 'tissue-box'
+  | 'container'
+  | 'napkin-holder';
+
 export type FeaturedProduct = {
   id: string;
   slug: string;
   nameKey: FeaturedProductNameKey;
   categoryKey: FeaturedProductCategoryKey;
+  subKey?: ProductSubcategoryId;
   image: FeaturedProductImage;
   hoverImage?: FeaturedProductImage;
   reference?: string;

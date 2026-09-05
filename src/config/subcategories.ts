@@ -1,0 +1,126 @@
+import type {
+  FeaturedProductCategoryKey,
+  ProductSubcategoryId,
+} from '@/types/product';
+
+/**
+ * Subcollections taken from the client photography folders
+ * (`scripts/generate-catalog.mjs` / `tmp-catalog-inventory.json`).
+ */
+export const PRODUCT_SUBCATEGORY_IDS = [
+  'sofa',
+  'pouf',
+  'chair',
+  'bench',
+  'console-table',
+  'center-table',
+  'dining-table',
+  'side-table',
+  'unit-cabinet',
+  'display-shelf',
+  'artwork',
+  'mirror',
+  'photo-frame',
+  'book-stand',
+  'planter',
+  'serving-tray',
+  'phone-holder',
+  'mobkhar',
+  'coasters',
+  'candle-holder',
+  'tissue-box',
+  'container',
+  'napkin-holder',
+] as const satisfies readonly ProductSubcategoryId[];
+
+export const categorySubcategories: Record<
+  FeaturedProductCategoryKey,
+  readonly ProductSubcategoryId[]
+> = {
+  seating: ['sofa', 'chair', 'pouf', 'bench'],
+  tables: ['console-table', 'center-table', 'dining-table', 'side-table'],
+  'unit-cabinets': ['unit-cabinet'],
+  'home-decor': [
+    'display-shelf',
+    'artwork',
+    'mirror',
+    'photo-frame',
+    'book-stand',
+    'planter',
+    'serving-tray',
+    'phone-holder',
+  ],
+  accessories: [
+    'mobkhar',
+    'coasters',
+    'candle-holder',
+    'tissue-box',
+    'container',
+    'napkin-holder',
+  ],
+};
+
+export const productSubKeyById: Record<string, ProductSubcategoryId> = {
+  'artk-sof-01': 'sofa',
+  'artk-sof-02': 'sofa',
+  'artk-sof-03': 'sofa',
+  'artk-sof-04': 'sofa',
+  'artk-sof-05': 'sofa',
+  'artk-pof-01': 'pouf',
+  'artk-pof-02-wp': 'pouf',
+  'artk-pof-02-wv': 'pouf',
+  'artk-pof-03': 'pouf',
+  'artk-pof-04': 'pouf',
+  'artk-ch-01-wp': 'chair',
+  'artk-ch-01-wv': 'chair',
+  'artk-ch-02': 'chair',
+  'artk-ch-03': 'chair',
+  'artk-ch-04-wv': 'chair',
+  'artk-ben-01': 'bench',
+  'artk-ben-02': 'bench',
+  'artk-ben-03': 'bench',
+  'artk-ben-04': 'bench',
+  'artk-ben-05': 'bench',
+  'artk-cot-01': 'console-table',
+  'artk-cot-01-a': 'console-table',
+  'artk-cot-02': 'console-table',
+  'artk-ct-01': 'center-table',
+  'artk-ct-02': 'center-table',
+  'artk-ct-03-wv': 'center-table',
+  'artk-dt-01': 'dining-table',
+  'artk-dt-02': 'dining-table',
+  'artk-dt-03': 'dining-table',
+  'artk-dst-01': 'side-table',
+  'artk-st-02-wp': 'side-table',
+  'artk-st-02-wv': 'side-table',
+  'artk-un-01': 'unit-cabinet',
+  'artk-un-02-wp': 'unit-cabinet',
+  'artk-un-04': 'unit-cabinet',
+  'artk-un-07c': 'unit-cabinet',
+  'artk-shf-01': 'display-shelf',
+  'artk-shf-02': 'display-shelf',
+  'artk-shf-03': 'display-shelf',
+  'artk-aw-wv-01': 'artwork',
+  'artk-aw-wv-01a': 'artwork',
+  'artk-aw-wv-01b': 'artwork',
+  'artk-mr-wp-01': 'mirror',
+  'artk-mr-wv-01': 'mirror',
+  'artk-mr-wv-01a': 'mirror',
+  'artk-pfr-wv-01': 'photo-frame',
+  'artk-bst-01': 'book-stand',
+  'artk-plr-wv-01': 'planter',
+  'artk-try-01': 'serving-tray',
+  'artk-mbh-wv-01': 'phone-holder',
+  mobkhar: 'mobkhar',
+  coasters: 'coasters',
+  'candle-holder': 'candle-holder',
+  'tissue-box': 'tissue-box',
+  container: 'container',
+  'napkin-holder': 'napkin-holder',
+};
+
+export function getSubcategoriesForCategory(
+  category: FeaturedProductCategoryKey,
+): readonly ProductSubcategoryId[] {
+  return categorySubcategories[category] ?? [];
+}

@@ -1,5 +1,7 @@
 import { MOTION } from '@/config/motion';
 
+export const ENTRANCE_AUDIO = '/media/audio/artikkan-entrance.mp3';
+
 export const HERO_MEDIA = {
   poster: '/media/hero/artikkan-hero-poster.jpg',
   desktopVideo: '/media/hero/artikkan-hero-desktop.mp4',

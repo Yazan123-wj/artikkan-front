@@ -51,7 +51,7 @@
 .about-page-headline {
   margin: 0;
   max-width: 11ch;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.12;
 }
 
@@ -165,7 +165,7 @@
 .about-page-quote-text {
   margin: 0;
   max-width: 16ch;
-  font-weight: 500;
+  font-weight: 400;
   line-height: var(--leading-heading);
   color: #f7f4ee;
 }
@@ -195,7 +195,7 @@
   max-width: 14ch;
   font-family: var(--font-display-current);
   font-size: clamp(2rem, 3vw + 1rem, 3.25rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: var(--leading-heading);
 }
 
@@ -264,7 +264,7 @@
   margin: 0;
   font-family: var(--font-display-current);
   font-size: clamp(1.25rem, 1vw + 1rem, 1.65rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.15;
 }
 
@@ -325,7 +325,7 @@
 .about-page-section-title {
   margin: 0;
   max-width: 14ch;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 :root[lang='ar'] .about-page-section-title {
@@ -403,6 +403,85 @@
   }
 }
 
+/* Production-to-delivery journey */
+
+.about-page-journey {
+  padding-block: clamp(3.5rem, 8vw, 6.5rem);
+  border-block-start: 1px solid var(--border);
+}
+
+.about-page-journey-header {
+  max-width: 38rem;
+  margin-block-end: clamp(2.25rem, 5vw, 3.5rem);
+}
+
+.about-page-journey-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-page-journey-step {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: 1rem 1.25rem;
+  padding-block: 1.35rem;
+  border-block-start: 1px solid var(--border);
+}
+
+.about-page-journey-step:last-child {
+  border-block-end: 1px solid var(--border);
+}
+
+.about-page-journey-index {
+  margin: 0.2rem 0 0;
+  color: var(--muted-foreground);
+}
+
+.about-page-journey-copy {
+  min-width: 0;
+}
+
+.about-page-journey-step-title {
+  margin: 0;
+  font-family: var(--font-display-current);
+  font-size: clamp(1.25rem, 1vw + 1rem, 1.65rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+:root[lang='ar'] .about-page-journey-step-title {
+  font-weight: 400;
+}
+
+.about-page-journey-step-body {
+  margin: 0.55rem 0 0;
+  max-width: 36rem;
+  color: var(--muted-foreground);
+}
+
+@media (min-width: 1024px) {
+  .about-page-journey-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(3rem, 6vw, 6rem);
+    align-items: start;
+  }
+
+  .about-page-journey-header {
+    position: sticky;
+    top: calc(var(--header-height) + 1.5rem);
+    margin-block-end: 0;
+  }
+
+  .about-page-journey-step {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    padding-block: 1.6rem;
+  }
+}
+
 /* Team */
 
 .about-page-team {
@@ -427,7 +506,7 @@
   max-width: 14ch;
   font-family: var(--font-display-current);
   font-size: clamp(2rem, 3vw + 1rem, 3.25rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: var(--leading-heading);
 }
 
@@ -469,7 +548,7 @@
   margin: 0.4rem 0 0;
   font-family: var(--font-display-current);
   font-size: clamp(1.35rem, 1vw + 1rem, 1.75rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.15;
 }
 

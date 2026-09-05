@@ -1,21 +1,17 @@
 /*
-  Temporary type stacks until Artikkan confirms brand fonts.
-
-  Replace these stacks with next/font/local files from public/fonts:
-  - English sans
-  - Arabic sans (must retain Arabic shaping and fallbacks)
-  - Optional editorial / display face
+  Site typeface: Chalet London Nineteen Eighty.
+  Arabic pages keep a Naskh fallback after Chalet for Arabic glyphs.
 */
 
 :root {
-  --font-sans-en: var(--font-sans-en-file, system-ui), -apple-system, 'Segoe UI',
+  --font-chalet-stack: var(--font-chalet), system-ui, -apple-system, 'Segoe UI',
     Helvetica, Arial, sans-serif;
-  --font-sans-ar: var(--font-sans-ar-file, 'Noto Sans Arabic'), 'Segoe UI',
-    Tahoma, Arial, sans-serif;
-  --font-display-en: var(--font-display-en-file), 'Palatino Linotype', Palatino,
-    Georgia, 'Times New Roman', serif;
-  --font-display-ar: var(--font-display-ar-file), 'Noto Naskh Arabic', 'Amiri',
-    Georgia, serif;
+  --font-sans-en: var(--font-chalet-stack);
+  --font-sans-ar: var(--font-chalet), 'Noto Sans Arabic', 'Segoe UI', Tahoma,
+    Arial, sans-serif;
+  --font-display-en: var(--font-chalet-stack);
+  --font-display-ar: var(--font-chalet), 'Noto Naskh Arabic', 'Noto Sans Arabic',
+    Arial, sans-serif;
 
   --font-sans-current: var(--font-sans-en);
   --font-display-current: var(--font-display-en);
@@ -47,7 +43,7 @@ body {
 .type-display {
   font-family: var(--font-display-current);
   font-size: var(--text-display);
-  font-weight: 500;
+  font-weight: 400;
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
 }
@@ -55,7 +51,7 @@ body {
 .type-h1 {
   font-family: var(--font-display-current);
   font-size: var(--text-h1);
-  font-weight: 500;
+  font-weight: 400;
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-heading);
 }
@@ -63,7 +59,7 @@ body {
 .type-h2 {
   font-family: var(--font-display-current);
   font-size: var(--text-h2);
-  font-weight: 500;
+  font-weight: 400;
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-heading);
 }
@@ -71,15 +67,8 @@ body {
 .type-h3 {
   font-family: var(--font-display-current);
   font-size: var(--text-h3);
-  font-weight: 500;
-  line-height: var(--leading-heading);
-}
-
-:root[lang='ar'] .type-display,
-:root[lang='ar'] .type-h1,
-:root[lang='ar'] .type-h2,
-:root[lang='ar'] .type-h3 {
   font-weight: 400;
+  line-height: var(--leading-heading);
 }
 
 .type-body-lg {

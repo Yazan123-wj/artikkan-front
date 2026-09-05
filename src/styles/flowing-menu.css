@@ -36,7 +36,7 @@
   text-decoration: none;
   white-space: nowrap;
   font-family: var(--font-display-current);
-  font-weight: 500;
+  font-weight: 400;
   font-size: clamp(1.35rem, 4.2vh, 3.25rem);
   letter-spacing: -0.03em;
   line-height: 1;

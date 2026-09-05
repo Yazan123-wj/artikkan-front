@@ -35,7 +35,7 @@
 .products-hero-headline {
   margin: 0;
   max-width: 12ch;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.12;
 }
 
@@ -253,7 +253,7 @@
   margin: 0.4rem 0 0;
   font-family: var(--font-display-current);
   font-size: clamp(1.35rem, 1vw + 1rem, 1.85rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.15;
 }
 

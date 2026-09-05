@@ -35,7 +35,7 @@
 .categories-hero-headline {
   margin: 0;
   max-width: 13ch;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.12;
 }
 
@@ -166,7 +166,7 @@
   margin: 0;
   font-family: var(--font-display-current);
   font-size: clamp(1.75rem, 2vw + 1rem, 2.75rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.08;
 }
 

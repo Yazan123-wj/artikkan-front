@@ -5,7 +5,7 @@ import { HomeGallerySection } from '@/components/sections/home/gallery';
 import { Hero } from '@/components/sections/home/hero';
 import { FeaturedProducts } from '@/components/sections/home/products';
 import { FeaturedProjects } from '@/components/sections/home/projects';
-import { HomeJournalSection } from '@/components/sections/home/journal';
+import { HomeCollaboratorsSection } from '@/components/sections/home/collaborators';
 import { HomeContactSection } from '@/components/sections/home/contact';
 import { StatisticsSection } from '@/components/sections/home/statistics';
 import { HERO_MEDIA, heroFrameUrl } from '@/config/hero';
@@ -14,7 +14,10 @@ import {
   featuredCategories,
   homeGalleryItems,
 } from '@/config/home-content';
-import { journalArticles } from '@/config/journal';
+import {
+  homeCollaborators,
+  resolveCollaboratorLogo,
+} from '@/config/collaborators';
 import { featuredProducts } from '@/config/products';
 import { featuredProjects } from '@/config/projects';
 import { getEnquiryEmail } from '@/config/site';
@@ -61,10 +64,10 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       Boolean(project.image && publicAssetExists(project.image.src)),
     ]),
   );
-  const journalImageAvailability = Object.fromEntries(
-    journalArticles.map((article) => [
-      article.id,
-      publicAssetExists(article.image.src),
+  const collaboratorLogos = Object.fromEntries(
+    homeCollaborators.map((item) => [
+      item.id,
+      resolveCollaboratorLogo(item.id, publicAssetExists),
     ]),
   );
   const enquiryEmail = getEnquiryEmail();
@@ -96,10 +99,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         projectImageAvailability={projectImageAvailability}
         productImageAvailability={productImageAvailability}
       />
-      <HomeJournalSection
-        locale={locale}
-        imageAvailability={journalImageAvailability}
-      />
+      <HomeCollaboratorsSection logos={collaboratorLogos} />
       <HomeContactSection
         locale={locale}
         enquiryEmail={enquiryEmail}
