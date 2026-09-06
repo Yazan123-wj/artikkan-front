@@ -5,9 +5,10 @@ import { CatalogProductCard } from '@/components/catalog/catalog-product-card';
 import { ProductDetailEnquire } from '@/components/catalog/product-detail-enquire';
 import { ProductGallery } from '@/components/catalog/product-gallery';
 import { productDetails } from '@/config/product-details';
+import { getProductCardImage } from '@/config/product-card-images';
 import { getEnquiryEmail } from '@/config/site';
 import { publicAssetExists } from '@/lib/assets';
-import { getRelatedProducts } from '@/lib/catalog';
+import { getProductImages, getRelatedProducts } from '@/lib/catalog';
 import { productPieceKey } from '@/lib/product-messages';
 import type { FeaturedProduct } from '@/types/product';
 
@@ -54,10 +55,8 @@ export async function ProductDetailContent({
 
         <div className="product-detail-layout">
           <ProductGallery
-            images={[product.image]}
+            images={getProductImages(product)}
             alt={imageAlt}
-            zoomLabel={t('zoom')}
-            closeLabel={t('closeZoom')}
             galleryLabel={t('galleryLabel')}
           />
 
@@ -117,7 +116,7 @@ export async function ProductDetailContent({
                   category={tCategories(item.categoryKey)}
                   imageAlt={tProducts(productPieceKey(item.nameKey, 'alt'))}
                   viewDetailsLabel={t('viewDetails')}
-                  imageAvailable={publicAssetExists(item.image.src)}
+                  imageAvailable={publicAssetExists(getProductCardImage(item).src)}
                 />
               ))}
             </div>

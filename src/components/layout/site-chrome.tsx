@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import { LogoDockProvider } from '@/components/navigation/logo-dock-context';
 import { SiteHeader } from '@/components/navigation/site-header';
+import { MusicControl } from '@/components/layout/music-control';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { LoadingScreen } from '@/components/motion/loading-screen';
 import { PageTransition } from '@/components/motion/page-transition';
@@ -32,6 +33,7 @@ export function SiteChrome({ children }: SiteChromeProps) {
         <PageTransition>{children}</PageTransition>
       </main>
       <SiteFooter />
+      <MusicControl />
     </LogoDockProvider>
   );
 }

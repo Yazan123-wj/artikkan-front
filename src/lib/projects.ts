@@ -38,7 +38,7 @@ export const projectGalleryStills = {
       objectPosition: 'center center',
     },
     {
-      src: '/images/catalog/products/artk-ct-01.jpg',
+      src: '/images/catalog/products/artk-sof-02.jpg',
       width: 300,
       height: 217,
       objectPosition: 'center center',
@@ -50,7 +50,7 @@ export const projectGalleryStills = {
       objectPosition: 'center 62%',
     },
     {
-      src: '/images/catalog/products/artk-shf-01.jpg',
+      src: '/images/catalog/products/artk-ch-02.jpg',
       width: 300,
       height: 217,
       objectPosition: 'center center',
@@ -59,7 +59,7 @@ export const projectGalleryStills = {
   two: [
     projectLayoutStills.two,
     {
-      src: '/images/catalog/products/artk-dt-01.jpg',
+      src: '/images/catalog/products/artk-sof-05.jpg',
       width: 300,
       height: 217,
       objectPosition: 'center center',
@@ -71,7 +71,7 @@ export const projectGalleryStills = {
       objectPosition: 'center center',
     },
     {
-      src: '/images/catalog/products/artk-cot-02.jpg',
+      src: '/images/catalog/products/artk-ben-04.jpg',
       width: 300,
       height: 217,
       objectPosition: 'center center',
@@ -83,7 +83,7 @@ export const projectGalleryStills = {
       objectPosition: 'center 48%',
     },
     {
-      src: '/images/catalog/products/artk-un-04.jpg',
+      src: '/images/catalog/products/artk-ch-03.jpg',
       width: 300,
       height: 217,
       objectPosition: 'center center',

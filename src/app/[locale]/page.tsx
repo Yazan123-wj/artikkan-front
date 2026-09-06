@@ -18,6 +18,7 @@ import {
   homeCollaborators,
   resolveCollaboratorLogo,
 } from '@/config/collaborators';
+import { getProductCardImage } from '@/config/product-card-images';
 import { featuredProducts } from '@/config/products';
 import { featuredProjects } from '@/config/projects';
 import { getEnquiryEmail } from '@/config/site';
@@ -26,6 +27,7 @@ import { createPageMetadata } from '@/lib/metadata';
 
 type HomePageProps = {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ product?: string | string[] }>;
 };
 
 export async function generateMetadata({ params }: HomePageProps) {
@@ -33,8 +35,13 @@ export async function generateMetadata({ params }: HomePageProps) {
   return createPageMetadata({ locale, pathname: '/', titleKey: 'home' });
 }
 
-export default async function HomePage({ params }: HomePageProps) {
+export default async function HomePage({ params, searchParams }: HomePageProps) {
   const { locale } = await params;
+  const productParam = await searchParams;
+  const productValue = Array.isArray(productParam.product)
+    ? productParam.product[0]
+    : productParam.product;
+  const initialProduct = productValue?.trim() || null;
   preload(HERO_MEDIA.poster, { as: 'image' });
   const aboutImageAvailable = publicAssetExists(ABOUT_IMAGE.src);
   const categoryImageAvailability = Object.fromEntries(
@@ -49,7 +56,7 @@ export default async function HomePage({ params }: HomePageProps) {
   const productImageAvailability = Object.fromEntries(
     featuredProducts.map((product) => [
       product.id,
-      publicAssetExists(product.image.src),
+      publicAssetExists(getProductCardImage(product).src),
     ]),
   );
   const projectImageAvailability = Object.fromEntries(
@@ -61,7 +68,7 @@ export default async function HomePage({ params }: HomePageProps) {
   const collaboratorLogos = Object.fromEntries(
     homeCollaborators.map((item) => [
       item.id,
-      resolveCollaboratorLogo(item.id, publicAssetExists),
+      resolveCollaboratorLogo(item, publicAssetExists),
     ]),
   );
   const enquiryEmail = getEnquiryEmail();
@@ -94,7 +101,11 @@ export default async function HomePage({ params }: HomePageProps) {
         productImageAvailability={productImageAvailability}
       />
       <HomeCollaboratorsSection logos={collaboratorLogos} />
-      <HomeContactSection locale={locale} enquiryEmail={enquiryEmail} />
+      <HomeContactSection
+        locale={locale}
+        enquiryEmail={enquiryEmail}
+        initialProduct={initialProduct}
+      />
     </>
   );
 }

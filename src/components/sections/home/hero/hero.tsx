@@ -3,9 +3,10 @@
 /* Hero poster must keep source proportions; do not route through next/image. */
 /* eslint-disable @next/next/no-img-element */
 
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useLogoDock } from '@/components/navigation/logo-dock-context';
+import { HeroProductCta } from '@/components/sections/home/hero/hero-product-cta';
 import {
   getHeroSequenceVariant,
   HERO_MEDIA,
@@ -13,6 +14,7 @@ import {
   LOGO_DOCK_PROGRESS,
   MOBILE_HERO_QUERY,
 } from '@/config/hero';
+import { getHeroProductIdAtSequence } from '@/config/hero-products';
 import { gsap, prefersReducedMotion, ScrollTrigger } from '@/lib/gsap';
 import {
   canvasIsSupported,
@@ -63,7 +65,17 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const productIdRef = useRef<string | null>(null);
+  const [productId, setProductId] = useState<string | null>(null);
   const { headerRef, navSlotRef, wordmarkRef } = useLogoDock();
+
+  const setHeroProduct = (nextId: string | null) => {
+    if (productIdRef.current === nextId) {
+      return;
+    }
+    productIdRef.current = nextId;
+    setProductId(nextId);
+  };
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -108,6 +120,7 @@ export function Hero() {
       });
       setNavDocked(true);
       section.classList.add('is-reduced');
+      setHeroProduct(null);
       return;
     }
 
@@ -131,6 +144,7 @@ export function Hero() {
 
       runtime.fallback = true;
       section.classList.add('is-fallback');
+      setHeroProduct(null);
 
       if (!video) {
         return;
@@ -207,6 +221,7 @@ export function Hero() {
     const applySequenceProgress = (progress: number) => {
       if (progress <= LOGO_DOCK_PROGRESS) {
         setTargetFrame(1);
+        setHeroProduct(null);
         return;
       }
 
@@ -217,6 +232,9 @@ export function Hero() {
           sequenceProgress,
           getHeroFrameCount(runtime.variant),
         ),
+      );
+      setHeroProduct(
+        runtime.fallback ? null : getHeroProductIdAtSequence(sequenceProgress),
       );
     };
 
@@ -392,6 +410,7 @@ export function Hero() {
       mobileQuery.removeEventListener('change', onMedia);
       video?.pause();
       setNavDocked(false);
+      setHeroProduct(null);
       ctx.revert();
       ScrollTrigger.getById(HERO_SCROLL_ID)?.kill();
     };
@@ -430,6 +449,7 @@ export function Hero() {
         />
       </div>
       <div className="hero-overlay" aria-hidden="true" />
+      <HeroProductCta productId={productId} />
     </section>
   );
 }

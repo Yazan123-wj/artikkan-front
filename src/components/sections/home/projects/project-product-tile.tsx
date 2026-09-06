@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useLocale } from 'next-intl';
 import { LocalizedLink } from '@/components/shared/localized-link';
+import { getProductCardImage } from '@/config/product-card-images';
 import { cn } from '@/lib/utils';
 import type { FeaturedProduct } from '@/types/product';
 
@@ -25,8 +26,8 @@ export function ProjectProductTile({
 }: ProjectProductTileProps) {
   const locale = useLocale();
   const href = product ? `/products/${product.slug}` : null;
-  const image = product?.image;
-  const showImage = Boolean(image && imageAvailable);
+  const image = product ? getProductCardImage(product) : undefined;
+  const showImage = Boolean(image);
   const objectPosition =
     image && locale === 'ar'
       ? (image.objectPositionRtl ?? image.objectPosition)

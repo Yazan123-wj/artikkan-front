@@ -507,6 +507,143 @@
   pointer-events: none;
 }
 
+.hero-product-cta {
+  position: absolute;
+  left: 50%;
+  bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1.75rem;
+  width: min(28rem, calc(100% - 2.5rem));
+  min-height: var(--touch-target);
+  padding: 0.85rem 1.2rem 0.9rem 1.3rem;
+  background: rgb(16 14 12 / 0.58);
+  backdrop-filter: blur(16px) saturate(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(1.05);
+  border: 1px solid rgb(244 241 234 / 0.2);
+  color: #f4f1ea;
+  text-decoration: none;
+  transform: translate(-50%, 0.7rem);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hero-product-cta.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.hero-product-cta-name {
+  margin: 0;
+  color: rgb(244 241 234 / 0.62);
+}
+
+.hero-product-cta-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-inline-start: auto;
+}
+
+.hero-product-cta-label {
+  position: relative;
+  font-size: var(--text-nav);
+  letter-spacing: var(--tracking-nav);
+  line-height: var(--leading-label);
+}
+
+.hero-product-cta-label::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -0.28em;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+.hero-product-cta-arrow {
+  display: inline-flex;
+  width: 1.75rem;
+  height: 0.75rem;
+  flex-shrink: 0;
+}
+
+.hero-product-cta-arrow svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-product-cta-arrow path {
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-linecap: square;
+}
+
+[dir='rtl'] .hero-product-cta-arrow {
+  transform: scaleX(-1);
+}
+
+.hero-product-cta:focus-visible {
+  outline: 1px solid rgb(244 241 234 / 0.7);
+  outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+  .hero-product-cta {
+    bottom: calc(2.75rem + env(safe-area-inset-bottom, 0px));
+    width: min(32rem, calc(100% - 4rem));
+    padding: 1rem 1.45rem 1.05rem 1.55rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-product-cta {
+    transition:
+      opacity var(--duration-base) var(--ease-standard),
+      transform var(--duration-base) var(--ease-standard),
+      visibility var(--duration-base) var(--ease-standard),
+      background-color var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-product-cta:hover,
+  .hero-product-cta:focus-visible {
+    background: rgb(16 14 12 / 0.78);
+    border-color: rgb(244 241 234 / 0.42);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-product-cta-arrow {
+      transition: transform var(--duration-base) var(--ease-standard);
+    }
+
+    .hero-product-cta:hover .hero-product-cta-arrow,
+    .hero-product-cta:focus-visible .hero-product-cta-arrow {
+      transform: translateX(0.28rem);
+    }
+
+    [dir='rtl'] .hero-product-cta:hover .hero-product-cta-arrow,
+    [dir='rtl'] .hero-product-cta:focus-visible .hero-product-cta-arrow {
+      transform: scaleX(-1) translateX(0.28rem);
+    }
+  }
+
+  .hero-product-cta:hover .hero-product-cta-label::after,
+  .hero-product-cta:focus-visible .hero-product-cta-label::after {
+    opacity: 0.85;
+  }
+}
+
 .hero-sr-only {
   position: absolute;
   width: 1px;
@@ -546,5 +683,121 @@ main.has-header-offset {
   .menu-overlay.is-open .menu-overlay-inner {
     visibility: visible;
     opacity: 1;
+  }
+}
+
+.music-control {
+  position: fixed;
+  right: max(1.25rem, env(safe-area-inset-right, 0px));
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  z-index: var(--z-overlay);
+  width: 3.25rem;
+  height: 3.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  appearance: none;
+  border: 1px solid rgb(244 241 234 / 0.36);
+  border-radius: 50%;
+  background: rgb(16 14 12 / 0.36);
+  color: #f4f1ea;
+  cursor: pointer;
+  box-shadow:
+    0 10px 28px rgb(12 10 8 / 0.28),
+    inset 0 1px 0 rgb(244 241 234 / 0.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.2);
+}
+
+.music-control::before {
+  content: '';
+  position: absolute;
+  inset: 0.28rem;
+  border-radius: inherit;
+  border: 1px solid rgb(244 241 234 / 0.16);
+  pointer-events: none;
+}
+
+.music-control-icons {
+  position: relative;
+  display: block;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.music-control-icons svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.music-control-play {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.music-control-stop {
+  opacity: 0;
+  transform: scale(0.72);
+}
+
+.music-control-icons[data-playing='true'] .music-control-play {
+  opacity: 0;
+  transform: scale(0.72);
+}
+
+.music-control-icons[data-playing='true'] .music-control-stop {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.music-control[aria-pressed='false'] .music-control-icons {
+  margin-inline-start: 0.12rem;
+}
+
+.music-control:focus-visible {
+  outline: 1px solid rgb(244 241 234 / 0.7);
+  outline-offset: 3px;
+}
+
+html.is-loading .music-control {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .music-control {
+    transition:
+      background-color var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard),
+      box-shadow var(--duration-base) var(--ease-standard),
+      transform var(--duration-base) var(--ease-standard);
+  }
+
+  .music-control-icons svg {
+    transition:
+      opacity var(--duration-fast) var(--ease-standard),
+      transform var(--duration-fast) var(--ease-standard);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .music-control:hover,
+  .music-control:focus-visible {
+    background: rgb(16 14 12 / 0.52);
+    border-color: rgb(244 241 234 / 0.62);
+    box-shadow:
+      0 12px 32px rgb(12 10 8 / 0.34),
+      inset 0 1px 0 rgb(244 241 234 / 0.28);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .music-control:hover,
+    .music-control:focus-visible {
+      transform: scale(1.04);
+    }
   }
 }

@@ -169,7 +169,7 @@ export const journalArticles: readonly JournalArticle[] = [
       {
         type: 'figure',
         image: {
-          src: '/images/catalog/products/artk-dt-02.jpg',
+          src: '/images/catalog/products/artk-sof-04.jpg',
           width: 300,
           height: 217,
           objectPosition: 'center center',
@@ -201,7 +201,7 @@ export const journalArticles: readonly JournalArticle[] = [
     status: 'published',
     publishedAt: '2025-04-02T09:00:00.000Z',
     image: {
-      src: '/images/catalog/products/artk-un-01.jpg',
+      src: '/images/catalog/products/artk-ben-03.jpg',
       width: 300,
       height: 217,
       objectPosition: 'center center',

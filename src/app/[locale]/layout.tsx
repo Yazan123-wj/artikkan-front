@@ -5,7 +5,7 @@ import { SiteChrome } from '@/components/layout/site-chrome';
 import { SkipToContent } from '@/components/shared/skip-to-content';
 import { routing } from '@/i18n/routing';
 import { getLocaleDirection } from '@/lib/constants';
-import { fontChalet } from '@/lib/fonts';
+import { fontAlexandria, fontChalet } from '@/lib/fonts';
 
 type LocaleLayoutProps = {
   children: React.ReactNode;
@@ -28,11 +28,13 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
+  const typeface = locale === 'ar' ? fontAlexandria : fontChalet;
+
   return (
     <html
       lang={locale}
       dir={getLocaleDirection(locale)}
-      className={`${fontChalet.variable} ${fontChalet.className}`}
+      className={`${fontChalet.variable} ${fontAlexandria.variable} ${typeface.className}`}
     >
       <body>
         <NextIntlClientProvider>

@@ -50,3 +50,4 @@ export function getVerifiedContact() {
 }
 
 export const CONTACT_ENDPOINT = null;
+export const NEWSLETTER_ENDPOINT = null;

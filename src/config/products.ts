@@ -1,8 +1,10 @@
+import { withApprovedProductImage } from '@/config/product-card-images';
 import type { FeaturedProduct } from '@/types/product';
 
 /**
  * Artikkan catalogue — sourced from client product photography.
  * Homepage featured grid uses `featuredProducts`; full browse uses `catalogProducts`.
+ * Extra product-page stills: set `images`, or add `{id}-2.jpg` … `{id}-8.jpg`.
  */
 export const featuredProducts = [
   {
@@ -13,8 +15,8 @@ export const featuredProducts = [
     reference: 'ARTK-SOF-01',
     image: {
       src: '/images/catalog/products/artk-sof-01.jpg',
-      width: 300,
-      height: 217,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -69,8 +71,8 @@ export const featuredProducts = [
     reference: 'ARTK-CH-01',
     image: {
       src: '/images/catalog/products/artk-ch-01-wv.jpg',
-      width: 300,
-      height: 217,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -83,8 +85,8 @@ export const featuredProducts = [
     reference: 'ARTK-BEN-01',
     image: {
       src: '/images/catalog/products/artk-ben-01.jpg',
-      width: 300,
-      height: 217,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -388,8 +390,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-BEN-02',
     image: {
       src: '/images/catalog/products/artk-ben-02.jpg',
-      width: 300,
-      height: 217,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -402,8 +404,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-BEN-03',
     image: {
       src: '/images/catalog/products/artk-ben-03.jpg',
-      width: 300,
-      height: 217,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -416,8 +418,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-BEN-04',
     image: {
       src: '/images/catalog/products/artk-ben-04.jpg',
-      width: 263,
-      height: 217,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -430,8 +432,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-BEN-05',
     image: {
       src: '/images/catalog/products/artk-ben-05.jpg',
-      width: 300,
-      height: 217,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -444,8 +446,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-CH-01',
     image: {
       src: '/images/catalog/products/artk-ch-01-wp.jpg',
-      width: 221,
-      height: 191,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -458,8 +460,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-CH-02',
     image: {
       src: '/images/catalog/products/artk-ch-02.jpg',
-      width: 253,
-      height: 205,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -472,8 +474,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-CH-03',
     image: {
       src: '/images/catalog/products/artk-ch-03.jpg',
-      width: 253,
-      height: 210,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -486,8 +488,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-CH-04',
     image: {
       src: '/images/catalog/products/artk-ch-04-wv.jpg',
-      width: 223,
-      height: 200,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -570,8 +572,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-SOF-02',
     image: {
       src: '/images/catalog/products/artk-sof-02.jpg',
-      width: 300,
-      height: 200,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -584,8 +586,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-SOF-03',
     image: {
       src: '/images/catalog/products/artk-sof-03.jpg',
-      width: 300,
-      height: 217,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -598,8 +600,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-SOF-04',
     image: {
       src: '/images/catalog/products/artk-sof-04.jpg',
-      width: 218,
-      height: 159,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -612,8 +614,8 @@ export const additionalCatalogProducts = [
     reference: 'ARTK-SOF-05',
     image: {
       src: '/images/catalog/products/artk-sof-05.jpg',
-      width: 300,
-      height: 217,
+      width: 822,
+      height: 1024,
       fit: 'contain',
       objectPosition: 'center center',
     },
@@ -796,11 +798,13 @@ export const catalogProducts = [
 export function getFeaturedProductById(
   id: string,
 ): FeaturedProduct | undefined {
-  return featuredProducts.find((product) => product.id === id);
+  const product = featuredProducts.find((item) => item.id === id);
+  return product ? withApprovedProductImage(product) : undefined;
 }
 
 export function getCatalogProductById(
   id: string,
 ): FeaturedProduct | undefined {
-  return catalogProducts.find((product) => product.id === id);
+  const product = catalogProducts.find((item) => item.id === id);
+  return product ? withApprovedProductImage(product) : undefined;
 }

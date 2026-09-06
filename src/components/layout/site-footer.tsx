@@ -5,7 +5,7 @@
 
 import { useRef } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { EditorialLink } from '@/components/shared/editorial-link';
+import { FooterNewsletter } from '@/components/layout/footer-newsletter';
 import { LocalizedLink } from '@/components/shared/localized-link';
 import { getVerifiedContact } from '@/config/contact';
 import { BRAND_ASSETS } from '@/config/hero';
@@ -87,13 +87,7 @@ export function SiteFooter() {
               />
             </LocalizedLink>
             <p className="site-footer-brand-line">{t('brandLine')}</p>
-            <EditorialLink
-              href="/#contact"
-              className="site-footer-cta"
-              aria-label={t('ctaLabel')}
-            >
-              {t('cta')}
-            </EditorialLink>
+            <FooterNewsletter />
           </div>
 
           <nav

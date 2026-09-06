@@ -1,17 +1,17 @@
 /*
-  Site typeface: Chalet London Nineteen Eighty.
-  Arabic pages keep a Naskh fallback after Chalet for Arabic glyphs.
+  English: Chalet London Nineteen Eighty.
+  Arabic: Alexandria, with a system Arabic fallback after it.
 */
 
 :root {
   --font-chalet-stack: var(--font-chalet), system-ui, -apple-system, 'Segoe UI',
     Helvetica, Arial, sans-serif;
+  --font-alexandria-stack: var(--font-alexandria), 'Noto Sans Arabic',
+    'Segoe UI', Tahoma, Arial, sans-serif;
   --font-sans-en: var(--font-chalet-stack);
-  --font-sans-ar: var(--font-chalet), 'Noto Sans Arabic', 'Segoe UI', Tahoma,
-    Arial, sans-serif;
+  --font-sans-ar: var(--font-alexandria-stack);
   --font-display-en: var(--font-chalet-stack);
-  --font-display-ar: var(--font-chalet), 'Noto Naskh Arabic', 'Noto Sans Arabic',
-    Arial, sans-serif;
+  --font-display-ar: var(--font-alexandria-stack);
 
   --font-sans-current: var(--font-sans-en);
   --font-display-current: var(--font-display-en);
@@ -20,6 +20,8 @@
 :root[lang='ar'] {
   --font-sans-current: var(--font-sans-ar);
   --font-display-current: var(--font-display-ar);
+  --tracking-display: 0;
+  --tracking-heading: 0;
   hyphens: none;
   overflow-wrap: anywhere;
 }

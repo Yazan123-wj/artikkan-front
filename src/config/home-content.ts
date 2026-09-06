@@ -129,22 +129,22 @@ export const homeGalleryItems = [
   },
   {
     id: 'living',
-    image: '/images/catalog/products/artk-un-01.jpg',
+    image: '/images/catalog/products/artk-sof-04.jpg',
     labelKey: 'living',
   },
   {
     id: 'dining',
-    image: '/images/catalog/products/artk-dt-01.jpg',
+    image: '/images/catalog/products/artk-ch-02.jpg',
     labelKey: 'dining',
   },
   {
     id: 'hallway',
-    image: '/images/catalog/products/artk-shf-01.jpg',
+    image: '/images/catalog/products/artk-ben-02.jpg',
     labelKey: 'hallway',
   },
   {
     id: 'console',
-    image: '/images/catalog/products/artk-cot-02.jpg',
+    image: '/images/catalog/products/artk-ch-03.jpg',
     labelKey: 'console',
   },
 ] as const satisfies readonly HomeGalleryItem[];

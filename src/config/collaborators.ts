@@ -4,28 +4,36 @@ export type Collaborator = {
   id: string;
   nameKey: string;
   kind: CollaboratorKind;
+  logoId?: string;
 };
 
 /**
- * Drop logo files in `public/images/collaborators/` using the id as the filename:
- *   dar-al-qamar.svg | .png | .webp | .jpg
- * The first matching file is used. Until a file is added, the name shows as a wordmark.
+ * Logo files live in `public/images/collaborators/{logoId|id}.png`.
  */
 export const COLLABORATOR_LOGO_EXTS = ['svg', 'png', 'webp', 'jpg'] as const;
 
 export const homeCollaborators = [
-  { id: 'dar-al-qamar', nameKey: 'darAlQamar', kind: 'client' },
-  { id: 'atelier-hanan', nameKey: 'atelierHanan', kind: 'collaborator' },
-  { id: 'quiet-court', nameKey: 'quietCourt', kind: 'client' },
-  { id: 'maison-wadi', nameKey: 'maisonWadi', kind: 'client' },
-  { id: 'studio-saffron', nameKey: 'studioSaffron', kind: 'collaborator' },
-  { id: 'olive-court', nameKey: 'oliveCourt', kind: 'client' },
-  { id: 'al-mada', nameKey: 'alMada', kind: 'collaborator' },
-  { id: 'cedar-house', nameKey: 'cedarHouse', kind: 'client' },
-  { id: 'gulf-light', nameKey: 'gulfLight', kind: 'collaborator' },
-  { id: 'long-table', nameKey: 'longTable', kind: 'client' },
-  { id: 'north-residences', nameKey: 'northResidences', kind: 'client' },
-  { id: 'qasr-studio', nameKey: 'qasrStudio', kind: 'collaborator' },
+  { id: 'qatar-airways', nameKey: 'qatarAirways', kind: 'client' },
+  { id: 'barzan-holdings', nameKey: 'barzanHoldings', kind: 'client' },
+  { id: 'sharq-law-firm', nameKey: 'sharqLawFirm', kind: 'client' },
+  { id: 'the-group', nameKey: 'theGroup', kind: 'collaborator' },
+  { id: 'qatar-foundation', nameKey: 'qatarFoundation', kind: 'client' },
+  { id: 'memac-ogilvy', nameKey: 'memacOgilvy', kind: 'collaborator' },
+  {
+    id: 'power-international-holding',
+    nameKey: 'powerInternationalHolding',
+    kind: 'client',
+  },
+  { id: 'qfb', nameKey: 'qfb', kind: 'client' },
+  { id: 'qia', nameKey: 'qia', kind: 'client' },
+  { id: 'st-regis', nameKey: 'stRegis', kind: 'client' },
+  { id: 'qdb', nameKey: 'qdb', kind: 'client' },
+  {
+    id: 'qatar-airways-2',
+    nameKey: 'qatarAirways',
+    kind: 'client',
+    logoId: 'qatar-airways',
+  },
 ] as const satisfies readonly Collaborator[];
 
 export function collaboratorLogoCandidates(id: string): string[] {
@@ -35,8 +43,12 @@ export function collaboratorLogoCandidates(id: string): string[] {
 }
 
 export function resolveCollaboratorLogo(
-  id: string,
+  item: Pick<Collaborator, 'id' | 'logoId'>,
   exists: (path: string) => boolean,
 ): string | null {
-  return collaboratorLogoCandidates(id).find((path) => exists(path)) ?? null;
+  return (
+    collaboratorLogoCandidates(item.logoId ?? item.id).find((path) =>
+      exists(path),
+    ) ?? null
+  );
 }

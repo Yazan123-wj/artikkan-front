@@ -56,6 +56,7 @@ export type FeaturedProduct = {
   categoryKey: FeaturedProductCategoryKey;
   subKey?: ProductSubcategoryId;
   image: FeaturedProductImage;
+  images?: readonly FeaturedProductImage[];
   hoverImage?: FeaturedProductImage;
   reference?: string;
 };

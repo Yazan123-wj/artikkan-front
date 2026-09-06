@@ -39,10 +39,10 @@ export const headerNavigation = {
 /** Marquee stills for the fullscreen flowing menu. Local brand assets only. */
 export const menuPreviewImages = {
   home: '/media/hero/artikkan-hero-poster.jpg',
-  about: '/images/home/artikkan-about.jpg',
+  about: '/images/menu/menu-about.jpg',
   categories: '/images/catalog/categories/seating-hero.jpg',
   products: '/images/catalog/products/artk-sof-01.jpg',
-  projects: '/images/catalog/products/artk-dt-01.jpg',
-  journal: '/images/catalog/products/artk-un-01.jpg',
-  contact: '/images/catalog/products/artk-cot-02.jpg',
+  projects: '/images/menu/menu-projects.jpg',
+  journal: '/images/menu/menu-journal.jpg',
+  contact: '/images/menu/menu-newsletter.jpg',
 } as const satisfies Record<MainNavItem['id'], string>;

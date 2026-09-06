@@ -173,6 +173,51 @@
   min-width: 0;
 }
 
+.product-detail-gallery.has-thumbs {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+  direction: ltr;
+}
+
+.product-detail-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.product-detail-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.product-detail-thumb.is-active {
+  border-color: var(--foreground);
+}
+
+.product-detail-thumb:focus-visible {
+  outline: 1px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+.product-detail-thumb-image {
+  object-fit: cover;
+}
+
+.product-detail-thumb-image.is-contain {
+  object-fit: contain;
+  padding: 0.35rem;
+  box-sizing: border-box;
+}
+
 .product-detail-stage {
   position: relative;
   width: 100%;
@@ -192,26 +237,28 @@
   box-sizing: border-box;
 }
 
-.product-detail-zoom {
-  position: absolute;
-  inset-inline-end: 0.75rem;
-  inset-block-end: 0.75rem;
-  min-height: var(--touch-target);
-  min-width: var(--touch-target);
-  padding: 0.55rem 0.85rem;
-  border: 0;
-  background: var(--background);
-  color: var(--foreground);
-  font: inherit;
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  cursor: pointer;
+.product-detail-stage-image.is-zoomable {
+  transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
 }
 
-:root[lang='ar'] .product-detail-zoom {
-  letter-spacing: 0;
-  text-transform: none;
+@media (hover: hover) and (pointer: fine) {
+  .product-detail-stage:hover {
+    cursor: zoom-in;
+  }
+
+  .product-detail-stage.is-zoomed .product-detail-stage-image.is-zoomable {
+    transform: scale(2.15);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .product-detail-stage-image.is-zoomable {
+    transition: transform 180ms var(--ease-standard);
+  }
+
+  .product-detail-stage.is-zoomed .product-detail-stage-image.is-zoomable {
+    transition: none;
+  }
 }
 
 .product-detail-panel {
@@ -294,40 +341,20 @@
   height: 0.9rem;
 }
 
-.product-zoom-dialog {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-modal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--page-gutter);
-  background: rgb(22 22 22 / 0.86);
-}
+@media (max-width: 767px) {
+  .product-detail-gallery.has-thumbs {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-.product-zoom-dialog-image {
-  position: relative;
-  width: min(92vw, 72rem);
-  height: min(86dvh, 52rem);
-}
+  .product-detail-thumbs {
+    grid-row: 2;
+    flex-direction: row;
+    overflow-x: auto;
+  }
 
-.product-zoom-dialog-image img {
-  object-fit: contain;
-}
-
-.product-zoom-close {
-  position: absolute;
-  inset-block-start: 0.75rem;
-  inset-inline-end: 0.75rem;
-  z-index: 1;
-  min-height: var(--touch-target);
-  min-width: var(--touch-target);
-  border: 0;
-  background: var(--background);
-  color: var(--foreground);
-  font: inherit;
-  font-size: var(--text-nav);
-  cursor: pointer;
+  .product-detail-thumb {
+    flex: 0 0 4.25rem;
+  }
 }
 
 .product-related {
@@ -599,13 +626,6 @@
   margin-block-start: 1.75rem;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  @media (prefers-reduced-motion: no-preference) {
-    .product-detail-stage-image {
-      transition: transform var(--duration-slow) var(--ease-standard);
-    }
-  }
-}
 
 /* Legal pages (terms + privacy) */
 .legal-page {

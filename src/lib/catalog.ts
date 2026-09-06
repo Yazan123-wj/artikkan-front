@@ -1,4 +1,9 @@
 import { featuredCategories } from '@/config/home-content';
+import {
+  getApprovedStillId,
+  getProductCardImage,
+  withApprovedProductImage,
+} from '@/config/product-card-images';
 import { catalogProducts, featuredProducts } from '@/config/products';
 import {
   PRODUCT_SUBCATEGORY_IDS,
@@ -6,9 +11,11 @@ import {
   productSubKeyById,
 } from '@/config/subcategories';
 import type { AppLocale } from '@/i18n/routing';
+import { publicAssetExists } from '@/lib/assets';
 import type {
   FeaturedProduct,
   FeaturedProductCategoryKey,
+  FeaturedProductImage,
   ProductSubcategoryId,
 } from '@/types/product';
 
@@ -26,8 +33,9 @@ export type ProductCategoryId = (typeof PRODUCT_CATEGORY_IDS)[number];
 export { catalogProducts, featuredProducts, featuredCategories };
 
 function withSubKey(product: FeaturedProduct): FeaturedProduct {
+  const withImage = withApprovedProductImage(product);
   const subKey = productSubKeyById[product.id];
-  return subKey ? { ...product, subKey } : product;
+  return subKey ? { ...withImage, subKey } : withImage;
 }
 
 export function getCatalogProducts(): readonly FeaturedProduct[] {
@@ -37,6 +45,62 @@ export function getCatalogProducts(): readonly FeaturedProduct[] {
 export function getProductBySlug(slug: string): FeaturedProduct | undefined {
   const product = catalogProducts.find((item) => item.slug === slug);
   return product ? withSubKey(product) : undefined;
+}
+
+function pushImage(
+  list: FeaturedProductImage[],
+  seen: Set<string>,
+  image: FeaturedProductImage | undefined,
+) {
+  if (!image || seen.has(image.src) || !publicAssetExists(image.src)) {
+    return;
+  }
+
+  seen.add(image.src);
+  list.push(image);
+}
+
+function productFamilyKey(id: string): string {
+  return id
+    .replace(/-(wp|wv)$/i, '')
+    .replace(/-([a-z])$/i, '')
+    .replace(/(\d+)[a-z]$/i, '$1');
+}
+
+/** Primary still plus extra views, family variants, and numbered stills on disk. */
+export function getProductImages(
+  product: FeaturedProduct,
+): FeaturedProductImage[] {
+  const images: FeaturedProductImage[] = [];
+  const seen = new Set<string>();
+  const family = productFamilyKey(product.id);
+
+  const display = getProductCardImage(product);
+  const stillId = getApprovedStillId(product.id);
+
+  pushImage(images, seen, display);
+
+  for (const sibling of catalogProducts) {
+    if (sibling.id === product.id) {
+      continue;
+    }
+    if (productFamilyKey(sibling.id) !== family) {
+      continue;
+    }
+    const siblingStill = getApprovedStillId(sibling.id);
+    if (siblingStill === sibling.id) {
+      pushImage(images, seen, getProductCardImage(sibling));
+    }
+  }
+
+  for (let index = 2; index <= 3; index += 1) {
+    pushImage(images, seen, {
+      ...display,
+      src: `/images/catalog/products/${stillId}-${index}.jpg`,
+    });
+  }
+
+  return images;
 }
 
 export function isProductCategoryId(

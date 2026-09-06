@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useLocale } from 'next-intl';
 import { LocalizedLink } from '@/components/shared/localized-link';
+import { getProductCardImage } from '@/config/product-card-images';
 import { cn } from '@/lib/utils';
 import type { FeaturedProduct } from '@/types/product';
 
@@ -25,7 +26,7 @@ export function CatalogProductCard({
 }: CatalogProductCardProps) {
   const locale = useLocale();
   const href = `/products/${product.slug}`;
-  const { image } = product;
+  const image = getProductCardImage(product);
   const objectPosition =
     locale === 'ar'
       ? (image.objectPositionRtl ?? image.objectPosition)
@@ -45,7 +46,7 @@ export function CatalogProductCard({
               alt={imageAlt}
               fill
               sizes="(min-width: 1440px) 28vw, (min-width: 768px) 44vw, calc(100vw - 2.5rem)"
-              quality={85}
+              quality={92}
               className={cn(
                 'products-card-image',
                 image.fit === 'contain' ? 'is-contain' : 'is-cover',

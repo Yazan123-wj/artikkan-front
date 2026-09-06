@@ -2,6 +2,7 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ProductsBrowser } from '@/components/catalog/products-browser';
 import { routing, type AppLocale } from '@/i18n/routing';
+import { getProductCardImage } from '@/config/product-card-images';
 import { publicAssetExists } from '@/lib/assets';
 import {
   featuredCategories,
@@ -71,7 +72,7 @@ export async function ProductsIndex({ locale, searchParams }: ProductsIndexProps
     category: tCategories(product.categoryKey),
     subcategory: product.subKey ? t(`subs.${product.subKey}`) : undefined,
     imageAlt: tProducts(productPieceKey(product.nameKey, 'alt')),
-    imageAvailable: publicAssetExists(product.image.src),
+    imageAvailable: publicAssetExists(getProductCardImage(product).src),
   }));
 
   const headlineLines = activeCategory

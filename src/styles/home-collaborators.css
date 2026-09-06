@@ -75,14 +75,14 @@
   justify-content: center;
   width: 100%;
   max-width: 11rem;
-  min-height: 3.4rem;
+  min-height: 3.75rem;
 }
 
 .home-collaborators-logo {
   width: auto;
   max-width: 100%;
   height: auto;
-  max-height: 3.4rem;
+  max-height: 3.75rem;
   object-fit: contain;
 }
 

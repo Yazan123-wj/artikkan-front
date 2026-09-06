@@ -6,8 +6,8 @@
     "products": "Products",
     "projects": "Projects",
     "journal": "Journal",
-    "contact": "Newsletter",
-    "inquiry": "Subscribe",
+    "contact": "Contact",
+    "inquiry": "Request an Inquiry",
     "privacyPolicy": "Privacy policy",
     "terms": "Terms"
   },
@@ -29,7 +29,9 @@
     "mainMenu": "Main menu",
     "logo": "Artikkan Gallery",
     "loading": "Loading Artikkan",
-    "backToTop": "Back to top"
+    "backToTop": "Back to top",
+    "playMusic": "Play music",
+    "stopMusic": "Stop music"
   },
   "meta": {
     "siteTitle": "Artikkan",
@@ -344,30 +346,29 @@
     "collaborators": {
       "eyebrow": "Clients & Collaborators",
       "headline": "Shared rooms. Shared work.",
-      "intro": "Residences, hospitality rooms and design ateliers Artikkan works alongside.",
+      "intro": "A few of the names Artikkan is fortunate to work with.",
       "columns": {
         "client": "Client",
         "collaborator": "Collaborator"
       },
       "names": {
-        "darAlQamar": "Dar Al Qamar",
-        "atelierHanan": "Atelier Hanan",
-        "quietCourt": "The Quiet Court",
-        "maisonWadi": "Maison Wadi",
-        "studioSaffron": "Studio Saffron",
-        "oliveCourt": "Olive Court",
-        "alMada": "Al Mada Atelier",
-        "cedarHouse": "House of Cedar",
-        "gulfLight": "Gulf Light Rooms",
-        "longTable": "The Long Table",
-        "northResidences": "Residences North",
-        "qasrStudio": "Qasr Studio"
+        "qatarAirways": "Qatar Airways",
+        "barzanHoldings": "Barzan Holdings",
+        "sharqLawFirm": "Sharq Law Firm",
+        "theGroup": "The Group",
+        "qatarFoundation": "Qatar Foundation",
+        "memacOgilvy": "Memac Ogilvy",
+        "powerInternationalHolding": "Power International Holding",
+        "qfb": "QFB",
+        "qia": "QIA",
+        "stRegis": "St. Regis",
+        "qdb": "QDB"
       }
     },
     "contact": {
-      "label": "Newsletter",
-      "headline": "Stay close to the work.",
-      "intro": "Notes on collections, rooms and openings — sent occasionally, never in haste.",
+      "label": "Contact",
+      "headline": "Let’s talk about your space.",
+      "intro": "Whether you’re exploring a particular piece or planning a project, our team can help with product details and pricing.",
       "emailLabel": "Email",
       "phoneLabel": "Telephone",
       "addressLabel": "Showroom",
@@ -381,14 +382,26 @@
       "form": {
         "name": "Full name",
         "email": "Email address",
-        "submit": "Subscribe",
-        "errors": {
-          "email": "Please enter a valid email address."
+        "phone": "Telephone",
+        "type": "Enquiry type",
+        "typeEmpty": "Select an enquiry type",
+        "product": "Product name or reference",
+        "message": "Message",
+        "submit": "Send enquiry",
+        "types": {
+          "product": "Product details & pricing",
+          "project": "Project enquiry",
+          "general": "General enquiry"
         },
-        "success": "Thank you. You’re on the list.",
-        "unconnected": "The newsletter is not connected yet. Please write to",
-        "unconnectedNoEmail": "The newsletter is not connected yet. An email has not been configured.",
-        "privacy": "We use your email only for the Artikkan newsletter. See our <privacy>privacy policy</privacy>."
+        "errors": {
+          "name": "Please enter your name.",
+          "email": "Please enter a valid email address.",
+          "type": "Please choose an enquiry type.",
+          "message": "Please enter a message."
+        },
+        "unconnected": "The enquiry form is not connected yet. Please write to",
+        "unconnectedNoEmail": "The enquiry form is not connected yet. An enquiry email has not been configured.",
+        "privacy": "We use these details only to respond to your enquiry. See our <privacy>privacy policy</privacy>."
       }
     }
   },
@@ -607,9 +620,8 @@
     "specsPending": "",
     "descriptionPending": "",
     "relatedTitle": "Related pieces",
-    "zoom": "Zoom image",
-    "closeZoom": "Close",
-    "galleryLabel": "Product images"
+    "galleryLabel": "Product images",
+    "selectImage": "View image {index} of {total}"
   },
   "enquiryModal": {
     "eyebrow": "Enquiry",
@@ -672,8 +684,17 @@
     "exploreLabel": "Explore Artikkan",
     "connectLabel": "Contact Artikkan",
     "legalLabel": "Legal",
-    "cta": "Subscribe",
-    "ctaLabel": "Subscribe to the Artikkan newsletter"
+    "cta": "Enquire",
+    "ctaLabel": "Enquire with Artikkan",
+    "newsletter": {
+      "label": "Newsletter",
+      "lede": "Occasional notes on collections and openings.",
+      "email": "Email address",
+      "submit": "Subscribe",
+      "error": "Please enter a valid email address.",
+      "success": "Thank you. You’re on the list.",
+      "unconnected": "The newsletter is not connected yet."
+    }
   },
   "legal": {
     "termsTitle": "Terms of use",

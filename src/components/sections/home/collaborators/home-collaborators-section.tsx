@@ -70,9 +70,9 @@ export function HomeCollaboratorsSection({
                       src={logoSrc}
                       alt={name}
                       width={220}
-                      height={72}
+                      height={88}
                       className="home-collaborators-logo"
-                      unoptimized={logoSrc.endsWith('.svg')}
+                      sizes="176px"
                     />
                   ) : (
                     <span className="home-collaborators-wordmark">{name}</span>

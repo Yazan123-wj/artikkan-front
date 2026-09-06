@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { usePathname } from '@/i18n/navigation';
 import { prefersReducedMotion } from '@/lib/gsap';
 
-const SECTION_HASHES = new Set(['#contact', '#newsletter']);
+const CONTACT_HASH = '#contact';
 
 function scrollToContact() {
-  if (!SECTION_HASHES.has(window.location.hash)) {
+  if (window.location.hash !== CONTACT_HASH) {
     return false;
   }
 
