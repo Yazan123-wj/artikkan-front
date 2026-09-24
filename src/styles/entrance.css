@@ -97,14 +97,14 @@
 }
 
 .site-header-logo-slot {
-  width: 115px;
-  aspect-ratio: 1024 / 345;
+  width: 132px;
+  aspect-ratio: 1400 / 392;
   pointer-events: none;
 }
 
 @media (min-width: 768px) {
   .site-header-logo-slot {
-    width: 165px;
+    width: 188px;
   }
 }
 
@@ -136,13 +136,13 @@
 }
 
 .artikkan-wordmark.is-nav {
-  width: 115px;
+  width: 132px;
   mix-blend-mode: normal;
 }
 
 @media (min-width: 768px) {
   .artikkan-wordmark.is-nav {
-    width: 165px;
+    width: 188px;
   }
 }
 

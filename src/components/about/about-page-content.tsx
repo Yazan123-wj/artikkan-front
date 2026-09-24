@@ -4,10 +4,10 @@ import { AboutPageHero } from '@/components/about/about-page-hero';
 import { AboutPullquoteBand } from '@/components/about/about-pullquote-band';
 import { AboutValuesShowcase } from '@/components/about/about-values-showcase';
 import { AboutJourneySection } from '@/components/about/about-journey-section';
-import { AboutTeamSection } from '@/components/about/about-team-section';
+import { AboutFoundersSection } from '@/components/about/about-founders-section';
 import { ImageCurtain } from '@/components/motion/image-curtain';
 import { StatisticsSection } from '@/components/sections/home/statistics';
-import { ABOUT_TEAM } from '@/config/about-team';
+import { ABOUT_FOUNDERS } from '@/config/about-founders';
 import { ABOUT_IMAGE, homeGalleryItems } from '@/config/home-content';
 import { publicAssetExists } from '@/lib/assets';
 
@@ -48,11 +48,11 @@ export async function AboutPageContent() {
     },
   ] as const;
 
-  const teamMembers = ABOUT_TEAM.map((member) => ({
+  const founders = ABOUT_FOUNDERS.map((member) => ({
     ...member,
-    name: t(`teamMembers.${member.id}.name`),
-    role: t(`teamMembers.${member.id}.role`),
-    bio: t(`teamMembers.${member.id}.bio`),
+    name: t(`founders.${member.id}.name`),
+    role: t(`founders.${member.id}.role`),
+    words: t(`founders.${member.id}.words`),
     available: publicAssetExists(member.image),
   }));
 
@@ -177,12 +177,13 @@ export async function AboutPageContent() {
         ]}
       />
 
-      <AboutTeamSection
-        eyebrow={t('teamEyebrow')}
-        title={t('teamTitle')}
-        intro={t('teamIntro')}
+      <AboutFoundersSection
+        eyebrow={t('foundersEyebrow')}
+        title={t('foundersTitle')}
+        intro={t('foundersIntro')}
         contactCta={t('contactCta')}
-        members={teamMembers}
+        wordsLabel={t('foundersWordsLabel')}
+        members={founders}
       />
     </article>
   );

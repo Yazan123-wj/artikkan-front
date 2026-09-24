@@ -393,11 +393,11 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
                 {/* Transparent RGBA asset recolored via CSS filter; the
                     "-dark" file is an opaque JPEG and renders as a box. */}
                 <img
-                  src={BRAND_ASSETS.wordmark}
+                  src={BRAND_ASSETS.navWordmark}
                   alt={t('logo')}
                   className="artikkan-wordmark is-nav"
-                  width={1024}
-                  height={345}
+                  width={1400}
+                  height={392}
                   draggable={false}
                 />
               </LocalizedLink>
@@ -413,11 +413,11 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
       {isHome ? (
         <img
           ref={wordmarkRef}
-          src={BRAND_ASSETS.wordmark}
+          src={BRAND_ASSETS.navWordmark}
           alt={t('logo')}
           className="artikkan-wordmark is-hero"
-          width={1024}
-          height={345}
+          width={1400}
+          height={392}
           draggable={false}
         />
       ) : null}

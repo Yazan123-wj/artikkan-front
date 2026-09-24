@@ -14,6 +14,8 @@ export const BRAND_ASSETS = {
   /* True RGBA PNG (white artwork on transparency); recolor with CSS filter.
      Do not use artikkan-wordmark-dark.png — it is an opaque JPEG. */
   wordmark: '/logos/artikkan-wordmark.png',
+  /* Navbar lockup: artikkan + Gallery + ® */
+  navWordmark: '/logos/artikkan-nav-wordmark.png',
 } as const;
 
 /** Logo docks by this point of the pinned hero timeline. */

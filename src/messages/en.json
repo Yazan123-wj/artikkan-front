@@ -504,30 +504,21 @@
       "hallway": "Hallway",
       "console": "Console"
     },
-    "teamEyebrow": "People",
-    "teamTitle": "Team and expertise",
-    "teamIntro": "A close studio of designers, makers and client partners — shaping each commission with the same care given to a single piece.",
-    "contactCta": "Speak with our team",
-    "teamMembers": {
-      "lina": {
-        "name": "Lina Haddad",
-        "role": "Creative Director",
-        "bio": "Guides the gallery’s design language and the story of every room, from first sketch to installation."
+    "foundersEyebrow": "The studio",
+    "foundersTitle": "Meet the founders",
+    "foundersIntro": "Two voices behind Artikkan — still present in every brief, finish and room.",
+    "foundersWordsLabel": "In their words",
+    "contactCta": "Speak with us",
+    "founders": {
+      "hussam": {
+        "name": "Hussam",
+        "role": "Co-Founder",
+        "words": "A room should feel settled the moment you enter it. We make pieces that hold that quiet."
       },
-      "omar": {
-        "name": "Omar Nasser",
-        "role": "Head of Craft",
-        "bio": "Works with makers to refine joinery, finish and proportion until each piece feels inevitable."
-      },
-      "maya": {
-        "name": "Maya Khalil",
-        "role": "Interior Atelier",
-        "bio": "Composes materials, light and scale so interiors hold a quiet, distinctive presence."
-      },
-      "rami": {
-        "name": "Rami Abboud",
-        "role": "Client Relations",
-        "bio": "The first conversation and the last detail — from enquiry through to the finished space."
+      "hazar": {
+        "name": "Hazar",
+        "role": "Co-Founder",
+        "words": "Craft is a conversation with time. We choose materials and hands that will still speak in twenty years."
       }
     }
   },

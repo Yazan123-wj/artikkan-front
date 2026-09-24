@@ -10,10 +10,58 @@ import { LocalizedLink } from '@/components/shared/localized-link';
 import { getVerifiedContact } from '@/config/contact';
 import { BRAND_ASSETS } from '@/config/hero';
 import { legalNavigation, mainNavigation } from '@/config/navigation';
+import {
+  SOCIAL_LABELS,
+  type SocialPlatform,
+} from '@/config/social-links';
 import { useGsapContext } from '@/hooks/use-gsap-context';
 import { MAIN_CONTENT_ID } from '@/lib/constants';
 import { prefersReducedMotion } from '@/lib/gsap';
 import { revealElements } from '@/lib/motion-timelines';
+
+function InstagramIcon() {
+  return (
+    <svg
+      className="site-footer-social-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle className="is-dot" cx="17.4" cy="6.6" r="0.85" />
+    </svg>
+  );
+}
+
+function FacebookIcon() {
+  return (
+    <svg
+      className="site-footer-social-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+      <path
+        className="is-mark"
+        d="M13.15 18.5v-6.15h2.06l.31-2.4h-2.37V8.35c0-.7.2-1.18 1.2-1.18h1.28V5.02A16.6 16.6 0 0 0 13.9 4.9c-2.16 0-3.64 1.32-3.64 3.74v1.31H8.2v2.4h2.06V18.5h2.89Z"
+      />
+    </svg>
+  );
+}
+
+function SocialIcon({ platform }: { platform: SocialPlatform }) {
+  if (platform === 'instagram') {
+    return <InstagramIcon />;
+  }
+
+  if (platform === 'facebook') {
+    return <FacebookIcon />;
+  }
+
+  return null;
+}
 
 function BackToTopButton({ label }: { label: string }) {
   function onClick() {
@@ -78,11 +126,11 @@ export function SiteFooter() {
           <div className="site-footer-intro" data-footer-reveal>
             <LocalizedLink href="/" className="site-footer-wordmark-link">
               <img
-                src={BRAND_ASSETS.wordmark}
+                src={BRAND_ASSETS.navWordmark}
                 alt={tA11y('logo')}
                 className="site-footer-wordmark"
-                width={1024}
-                height={345}
+                width={1400}
+                height={392}
                 draggable={false}
               />
             </LocalizedLink>
@@ -150,11 +198,12 @@ export function SiteFooter() {
                   <li key={link.platform}>
                     <a
                       href={link.href}
-                      className="site-footer-link"
+                      className="site-footer-link site-footer-social"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      {link.platform}
+                      <SocialIcon platform={link.platform} />
+                      <span>{SOCIAL_LABELS[link.platform]}</span>
                     </a>
                   </li>
                 ))}

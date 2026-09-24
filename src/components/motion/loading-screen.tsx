@@ -83,6 +83,7 @@ export function LoadingScreen() {
           decodeImage(HERO_MEDIA.poster),
           decodeImage(BRAND_ASSETS.icon),
           decodeImage(BRAND_ASSETS.wordmark),
+          decodeImage(BRAND_ASSETS.navWordmark),
           reduced
             ? Promise.resolve()
             : preloadHeroSequenceStart(isMobile),
