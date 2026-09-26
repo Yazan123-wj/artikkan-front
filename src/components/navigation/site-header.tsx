@@ -15,6 +15,7 @@ import { HamburgerButton } from '@/components/navigation/hamburger-button';
 import { LanguageSwitcher } from '@/components/navigation/language-switcher';
 import { useLogoDock } from '@/components/navigation/logo-dock-context';
 import { MenuOverlay } from '@/components/navigation/menu-overlay';
+import { SiteUtilityBar } from '@/components/navigation/site-utility-bar';
 import { LocalizedLink } from '@/components/shared/localized-link';
 import { BRAND_ASSETS } from '@/config/hero';
 import { MOTION, motionPair } from '@/config/motion';
@@ -372,6 +373,7 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
         )}
       >
         <div className="site-header-backdrop" data-nav-backdrop />
+        <SiteUtilityBar />
         <div className="site-header-grid site-container">
           <div className="site-header-start site-header-controls" data-header-controls>
             <HamburgerButton
@@ -396,8 +398,8 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
                   src={BRAND_ASSETS.navWordmark}
                   alt={t('logo')}
                   className="artikkan-wordmark is-nav"
-                  width={1400}
-                  height={392}
+                  width={772}
+                  height={240}
                   draggable={false}
                 />
               </LocalizedLink>
@@ -416,8 +418,8 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
           src={BRAND_ASSETS.navWordmark}
           alt={t('logo')}
           className="artikkan-wordmark is-hero"
-          width={1400}
-          height={392}
+          width={772}
+          height={240}
           draggable={false}
         />
       ) : null}

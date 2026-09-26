@@ -45,10 +45,64 @@
   inset-inline: 0;
   top: 0;
   z-index: var(--z-header);
-  height: calc(var(--header-height) + env(safe-area-inset-top, 0px));
-  padding-top: env(safe-area-inset-top, 0px);
+  display: flex;
+  flex-direction: column;
+  height: calc(var(--chrome-height) + env(safe-area-inset-top, 0px));
   color: #f4f1ea;
   pointer-events: none;
+}
+
+.site-utility-bar {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  min-height: calc(var(--utility-bar-height) + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+  background: #fff;
+  color: #161616;
+  pointer-events: auto;
+}
+
+.site-utility-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--utility-bar-height);
+}
+
+.site-utility-bar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.75rem;
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+}
+
+.site-utility-bar-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex: 0 0 auto;
+}
+
+.site-utility-bar-icon rect,
+.site-utility-bar-icon circle:not(.is-dot) {
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.site-utility-bar-icon .is-dot {
+  fill: currentColor;
+  stroke: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-utility-bar-link:hover {
+    opacity: 0.62;
+  }
 }
 
 .site-header-backdrop {
@@ -98,7 +152,7 @@
 
 .site-header-logo-slot {
   width: 132px;
-  aspect-ratio: 1400 / 392;
+  aspect-ratio: 771.56 / 239.75;
   pointer-events: none;
 }
 
@@ -300,7 +354,7 @@
   visibility: hidden;
   pointer-events: none;
   overflow: hidden;
-  padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+  padding-top: calc(var(--chrome-height) + env(safe-area-inset-top, 0px));
   padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
 }
 
@@ -661,7 +715,7 @@ main.is-home {
 }
 
 main.has-header-offset {
-  padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+  padding-top: calc(var(--chrome-height) + env(safe-area-inset-top, 0px));
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -3,10 +3,7 @@
 import { forwardRef, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { FlowingMenu } from '@/components/ui/flowing-menu';
-import {
-  headerNavigation,
-  menuPreviewImages,
-} from '@/config/navigation';
+import { headerNavigation } from '@/config/navigation';
 import { cn } from '@/lib/utils';
 
 type MenuOverlayProps = {
@@ -26,7 +23,6 @@ export const MenuOverlay = forwardRef<HTMLDivElement, MenuOverlayProps>(
         primary.map((item) => ({
           href: item.href,
           text: tNav(item.labelKey),
-          image: menuPreviewImages[item.id],
         })),
       [primary, tNav],
     );

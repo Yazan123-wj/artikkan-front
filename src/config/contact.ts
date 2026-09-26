@@ -1,4 +1,3 @@
-import { getEnquiryEmail } from '@/config/site';
 import { socialLinks } from '@/config/social-links';
 
 /**
@@ -31,11 +30,11 @@ export function getMapEmbedSrc(locale: string): string {
 }
 
 export function getVerifiedContact() {
-  const phone = '+974 4412 8800';
+  const phone = '+974 3331 4418';
   return {
-    email: getEnquiryEmail(),
+    email: 'info@artikkan.com',
     phone,
-    phoneHref: 'tel:+97444128800',
+    phoneHref: 'tel:+97433314418',
     address: {
       en: 'Doha, Qatar',
       ar: 'الدوحة، قطر',

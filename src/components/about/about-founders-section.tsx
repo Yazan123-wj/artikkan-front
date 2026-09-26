@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { EditorialLink } from '@/components/shared/editorial-link';
 import { useGsapContext } from '@/hooks/use-gsap-context';
 import { cn } from '@/lib/utils';
@@ -34,7 +34,6 @@ export function AboutFoundersSection({
   members,
 }: AboutFoundersSectionProps) {
   const rootRef = useRef<HTMLElement>(null);
-  const [activeId, setActiveId] = useState(members[0]?.id ?? '');
 
   useGsapContext(() => {
     const root = rootRef.current;
@@ -75,57 +74,41 @@ export function AboutFoundersSection({
         </div>
 
         <ul className="about-page-founders-track">
-          {members.map((member) => {
-            const active = member.id === activeId;
-
-            return (
-              <li key={member.id} className="about-page-founder-item">
-                <button
-                  type="button"
-                  className={cn(
-                    'about-page-founder-panel',
-                    active && 'is-active',
-                  )}
-                  data-about-founder
-                  aria-pressed={active}
-                  onClick={() => setActiveId(member.id)}
-                  onMouseEnter={() => setActiveId(member.id)}
-                  onFocus={() => setActiveId(member.id)}
-                >
-                  <div className="about-page-founder-media">
-                    {member.available ? (
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        quality={88}
-                        sizes="(min-width: 1024px) 48vw, calc(100vw - 2.5rem)"
-                        className="about-page-media-img"
-                      />
-                    ) : (
-                      <span className="about-page-media-pending" />
-                    )}
-                    <span
-                      className="about-page-founder-scrim"
-                      aria-hidden="true"
-                    />
-                    <div className="about-page-founder-copy">
-                      <p className="about-page-founder-role type-label">
-                        {member.role}
-                      </p>
-                      <h3 className="about-page-founder-name">{member.name}</h3>
-                      <blockquote className="about-page-founder-words">
-                        <p>
-                          <span className="sr-only">{wordsLabel} </span>
-                          {member.words}
-                        </p>
-                      </blockquote>
-                    </div>
-                  </div>
-                </button>
-              </li>
-            );
-          })}
+          {members.map((member, index) => (
+            <li
+              key={member.id}
+              className={cn(
+                'about-page-founder',
+                index % 2 === 1 && 'is-reversed',
+              )}
+              data-about-founder
+            >
+              <div className="about-page-founder-media">
+                {member.available ? (
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    quality={88}
+                    sizes="(min-width: 768px) 42vw, calc(100vw - 2.5rem)"
+                    className="about-page-media-img"
+                  />
+                ) : (
+                  <span className="about-page-media-pending" />
+                )}
+              </div>
+              <div className="about-page-founder-copy">
+                <p className="about-page-founder-role type-label">{member.role}</p>
+                <h3 className="about-page-founder-name">{member.name}</h3>
+                <blockquote className="about-page-founder-words">
+                  <p>
+                    <span className="sr-only">{wordsLabel} </span>
+                    {member.words}
+                  </p>
+                </blockquote>
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
     </section>

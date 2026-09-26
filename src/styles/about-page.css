@@ -398,7 +398,7 @@
 
   .about-page-editorial-copy {
     position: sticky;
-    top: calc(var(--header-height) + 1.5rem);
+    top: calc(var(--chrome-height) + env(safe-area-inset-top, 0px) + 1.5rem);
     align-self: start;
   }
 }
@@ -472,7 +472,7 @@
 
   .about-page-journey-header {
     position: sticky;
-    top: calc(var(--header-height) + 1.5rem);
+    top: calc(var(--chrome-height) + env(safe-area-inset-top, 0px) + 1.5rem);
     margin-block-end: 0;
   }
 
@@ -521,31 +521,18 @@
 .about-page-founders-track {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: clamp(3rem, 7vw, 5.75rem);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.about-page-founder-item {
-  display: flex;
+.about-page-founder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.35rem, 3vw, 2.25rem);
+  align-items: center;
   min-width: 0;
-}
-
-.about-page-founder-panel {
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  text-align: inherit;
-  cursor: pointer;
-}
-
-.about-page-founder-panel:focus-visible {
-  outline: 1px solid var(--foreground);
-  outline-offset: 3px;
 }
 
 .about-page-founder-media {
@@ -559,34 +546,21 @@
   object-position: center 18%;
 }
 
-.about-page-founder-scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgb(0 0 0 / 0) 38%,
-    rgb(0 0 0 / 0.68) 100%
-  );
-}
-
 .about-page-founder-copy {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  z-index: 1;
-  padding: 1.4rem 1.3rem 1.5rem;
-  color: #f7f4ee;
+  min-width: 0;
+  max-width: 34rem;
 }
 
 .about-page-founder-role {
   margin: 0;
-  color: rgb(247 244 238 / 0.72);
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
 }
 
 .about-page-founder-name {
-  margin: 0.4rem 0 0;
+  margin: 0.5rem 0 0;
   font-family: var(--font-display-current);
-  font-size: clamp(1.6rem, 1.4vw + 1.1rem, 2.15rem);
+  font-size: clamp(1.9rem, 2vw + 1.2rem, 2.75rem);
   font-weight: 400;
   line-height: 1.1;
 }
@@ -596,50 +570,32 @@
 }
 
 .about-page-founder-words {
-  margin: 0.85rem 0 0;
-  max-width: 28rem;
+  margin: 1rem 0 0;
 }
 
 .about-page-founder-words p {
   margin: 0;
-  font-size: 0.9375rem;
-  line-height: 1.55;
-  color: rgb(247 244 238 / 0.9);
+  font-size: clamp(1.0625rem, 0.35vw + 1rem, 1.25rem);
+  line-height: 1.6;
+  color: var(--foreground);
 }
 
 @media (min-width: 768px) {
-  .about-page-founders-track {
-    flex-direction: row;
-    align-items: stretch;
-    min-height: min(72vh, 38rem);
+  .about-page-founder {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(3.5rem, 8vw, 8rem);
   }
 
-  .about-page-founder-item {
-    flex: 0.82 1 38%;
-    transition: flex var(--duration-slow) var(--ease-standard);
+  .about-page-founder.is-reversed .about-page-founder-copy {
+    order: -1;
   }
 
-  .about-page-founder-item:has(.is-active) {
-    flex: 1.35 1 62%;
+  .about-page-founder-copy {
+    justify-self: end;
   }
 
-  .about-page-founder-media {
-    aspect-ratio: auto;
-    height: 100%;
-    min-height: 32rem;
-  }
-
-  .about-page-founder-words {
-    max-height: 0;
-    margin-block-start: 0;
-    opacity: 0;
-    overflow: hidden;
-  }
-
-  .about-page-founder-panel.is-active .about-page-founder-words {
-    max-height: 8rem;
-    margin-block-start: 0.85rem;
-    opacity: 1;
+  .about-page-founder.is-reversed .about-page-founder-copy {
+    justify-self: start;
   }
 }
 
@@ -651,30 +607,5 @@
 
   .about-page-contact-cta {
     margin-block-end: 0.2rem;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  @media (prefers-reduced-motion: no-preference) {
-    .about-page-founder-media .about-page-media-img {
-      transition: transform var(--duration-slow) var(--ease-standard);
-    }
-
-    .about-page-founder-panel.is-active .about-page-media-img {
-      transform: scale(1.04);
-    }
-
-    .about-page-founder-words {
-      transition:
-        opacity var(--duration-base) var(--ease-standard),
-        max-height var(--duration-slow) var(--ease-standard),
-        margin var(--duration-base) var(--ease-standard);
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .about-page-founder-item {
-    transition: none;
   }
 }

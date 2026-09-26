@@ -129,8 +129,8 @@ export function SiteFooter() {
                 src={BRAND_ASSETS.navWordmark}
                 alt={tA11y('logo')}
                 className="site-footer-wordmark"
-                width={1400}
-                height={392}
+                width={772}
+                height={240}
                 draggable={false}
               />
             </LocalizedLink>

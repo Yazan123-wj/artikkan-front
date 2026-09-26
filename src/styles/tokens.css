@@ -35,6 +35,8 @@
   --grid-gap: 1.25rem;
   --split-gap: 1.5rem;
   --header-height: 4.25rem;
+  --utility-bar-height: 2.125rem;
+  --chrome-height: calc(var(--utility-bar-height) + var(--header-height));
   --touch-target: 2.75rem;
   --viewport-safe: 100dvh;
   --viewport-stable: 100svh;
@@ -86,6 +88,7 @@
     --grid-gap: 1.75rem;
     --split-gap: 2.5rem;
     --header-height: 5.5rem;
+    --utility-bar-height: 2.25rem;
     --duration-slow: 560ms;
   }
 }
