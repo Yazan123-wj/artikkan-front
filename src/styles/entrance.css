@@ -45,64 +45,10 @@
   inset-inline: 0;
   top: 0;
   z-index: var(--z-header);
-  display: flex;
-  flex-direction: column;
-  height: calc(var(--chrome-height) + env(safe-area-inset-top, 0px));
+  height: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
   color: #f4f1ea;
   pointer-events: none;
-}
-
-.site-utility-bar {
-  position: relative;
-  z-index: 2;
-  flex: 0 0 auto;
-  min-height: calc(var(--utility-bar-height) + env(safe-area-inset-top, 0px));
-  padding-top: env(safe-area-inset-top, 0px);
-  background: #fff;
-  color: #161616;
-  pointer-events: auto;
-}
-
-.site-utility-bar-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  height: var(--utility-bar-height);
-}
-
-.site-utility-bar-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-height: 1.75rem;
-  color: inherit;
-  text-decoration: none;
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-}
-
-.site-utility-bar-icon {
-  width: 0.85rem;
-  height: 0.85rem;
-  flex: 0 0 auto;
-}
-
-.site-utility-bar-icon rect,
-.site-utility-bar-icon circle:not(.is-dot) {
-  stroke: currentColor;
-  stroke-width: 1.4;
-}
-
-.site-utility-bar-icon .is-dot {
-  fill: currentColor;
-  stroke: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .site-utility-bar-link:hover {
-    opacity: 0.62;
-  }
 }
 
 .site-header-backdrop {
@@ -134,6 +80,62 @@
 
 .site-header-start {
   justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.site-header-contact {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.site-header-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: var(--touch-target);
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.site-header-contact-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex: 0 0 auto;
+}
+
+.site-header-contact-icon rect,
+.site-header-contact-icon circle:not(.is-dot) {
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.site-header-contact-icon .is-dot {
+  fill: currentColor;
+  stroke: none;
+}
+
+@media (max-width: 767px) {
+  .site-header-contact {
+    gap: 0.55rem;
+  }
+
+  .site-header-contact-label {
+    display: none;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-header-contact-link:hover {
+    opacity: 0.62;
+  }
 }
 
 .site-header-end {

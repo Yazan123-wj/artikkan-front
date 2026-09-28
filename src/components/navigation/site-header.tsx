@@ -15,7 +15,7 @@ import { HamburgerButton } from '@/components/navigation/hamburger-button';
 import { LanguageSwitcher } from '@/components/navigation/language-switcher';
 import { useLogoDock } from '@/components/navigation/logo-dock-context';
 import { MenuOverlay } from '@/components/navigation/menu-overlay';
-import { SiteUtilityBar } from '@/components/navigation/site-utility-bar';
+import { SiteHeaderContact } from '@/components/navigation/site-header-contact';
 import { LocalizedLink } from '@/components/shared/localized-link';
 import { BRAND_ASSETS } from '@/config/hero';
 import { MOTION, motionPair } from '@/config/motion';
@@ -373,7 +373,6 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
         )}
       >
         <div className="site-header-backdrop" data-nav-backdrop />
-        <SiteUtilityBar />
         <div className="site-header-grid site-container">
           <div className="site-header-start site-header-controls" data-header-controls>
             <HamburgerButton
@@ -382,6 +381,7 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
               openLabel={t('openMenu')}
               closeLabel={t('closeMenu')}
             />
+            <SiteHeaderContact />
           </div>
 
           <div className="site-header-center">
