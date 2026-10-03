@@ -36,6 +36,15 @@ export const homeCollaborators = [
   },
 ] as const satisfies readonly Collaborator[];
 
+export const uniqueCollaborators = homeCollaborators.filter(
+  (item, index, list) =>
+    list.findIndex(
+      (other) => (other.logoId ?? other.id) === (item.logoId ?? item.id),
+    ) === index,
+);
+
+export const HOME_COLLABORATOR_PREVIEW_COUNT = 8;
+
 export function collaboratorLogoCandidates(id: string): string[] {
   return COLLABORATOR_LOGO_EXTS.map(
     (ext) => `/images/collaborators/${id}.${ext}`,

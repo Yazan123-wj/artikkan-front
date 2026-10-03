@@ -39,7 +39,7 @@ export function CategoriesHero({
       <div className="categories-hero-grid site-container">
         <div className="categories-hero-copy">
           <p className="categories-hero-eyebrow type-label">{eyebrow}</p>
-          <h1 className="categories-hero-headline type-display">
+          <h1 className="categories-hero-headline type-h1">
             {headlineLines.map((line) => (
               <span key={line} className="categories-hero-line">
                 <span className="categories-hero-line-inner">{line}</span>

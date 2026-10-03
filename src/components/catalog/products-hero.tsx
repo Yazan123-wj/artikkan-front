@@ -44,7 +44,7 @@ export function ProductsHero({
       <div className="products-hero-grid site-container">
         <div className="products-hero-copy">
           <p className="products-hero-eyebrow type-label">{eyebrow}</p>
-          <h1 className="products-hero-headline type-display">
+          <h1 className="products-hero-headline type-h1">
             {(headlineLines ?? []).map((line) => (
               <span key={line} className="products-hero-line">
                 <span className="products-hero-line-inner">{line}</span>

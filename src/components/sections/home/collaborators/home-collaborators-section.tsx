@@ -1,9 +1,13 @@
 'use client';
 
-import Image from 'next/image';
 import { useRef } from 'react';
 import { useTranslations } from 'next-intl';
-import { homeCollaborators } from '@/config/collaborators';
+import { CollaboratorsGrid } from '@/components/sections/home/collaborators/collaborators-grid';
+import { EditorialLink } from '@/components/shared/editorial-link';
+import {
+  HOME_COLLABORATOR_PREVIEW_COUNT,
+  uniqueCollaborators,
+} from '@/config/collaborators';
 import { useGsapContext } from '@/hooks/use-gsap-context';
 import { revealElements } from '@/lib/motion-timelines';
 
@@ -16,6 +20,8 @@ export function HomeCollaboratorsSection({
 }: HomeCollaboratorsSectionProps) {
   const t = useTranslations('home.collaborators');
   const rootRef = useRef<HTMLElement>(null);
+  const preview = uniqueCollaborators.slice(0, HOME_COLLABORATOR_PREVIEW_COUNT);
+  const hasMore = uniqueCollaborators.length > preview.length;
 
   useGsapContext(() => {
     const root = rootRef.current;
@@ -50,38 +56,20 @@ export function HomeCollaboratorsSection({
           <p className="home-collaborators-intro type-body">{t('intro')}</p>
         </header>
 
-        <ul className="home-collaborators-grid">
-          {homeCollaborators.map((item) => {
-            const name = t(`names.${item.nameKey}`);
-            const logoSrc = logos[item.id];
+        <CollaboratorsGrid
+          items={preview.map((item) => ({
+            id: item.id,
+            name: t(`names.${item.nameKey}`),
+            kindLabel: t(`columns.${item.kind}`),
+            logoSrc: logos[item.id],
+          }))}
+        />
 
-            return (
-              <li
-                key={item.id}
-                className="home-collaborators-cell"
-                data-collaborator
-              >
-                <span className="home-collaborators-kind type-label">
-                  {t(`columns.${item.kind}`)}
-                </span>
-                <div className="home-collaborators-mark">
-                  {logoSrc ? (
-                    <Image
-                      src={logoSrc}
-                      alt={name}
-                      width={220}
-                      height={88}
-                      className="home-collaborators-logo"
-                      sizes="176px"
-                    />
-                  ) : (
-                    <span className="home-collaborators-wordmark">{name}</span>
-                  )}
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+        {hasMore ? (
+          <div className="home-collaborators-more">
+            <EditorialLink href="/clients">{t('viewMore')}</EditorialLink>
+          </div>
+        ) : null}
       </div>
     </section>
   );

@@ -7,6 +7,7 @@
     "projects": "Projects",
     "journal": "Journal",
     "contact": "Contact",
+    "clients": "Clients",
     "inquiry": "Request an Inquiry",
     "privacyPolicy": "Privacy policy",
     "terms": "Terms"
@@ -351,6 +352,7 @@
         "client": "Client",
         "collaborator": "Collaborator"
       },
+      "viewMore": "View more",
       "names": {
         "qatarAirways": "Qatar Airways",
         "barzanHoldings": "Barzan Holdings",
@@ -728,5 +730,11 @@
         "body": "You may ask to update or remove your contact details by writing to enquire@artikkan.com."
       }
     ]
+  },
+  "clientsPage": {
+    "eyebrow": "Clients & Collaborators",
+    "headline": "The names we work with.",
+    "intro": "Every mark here is a room, a brief, or a long conversation. These are the clients and collaborators Artikkan is fortunate to sit with.",
+    "back": "Back to home"
   }
 }

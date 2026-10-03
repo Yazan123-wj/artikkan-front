@@ -32,13 +32,13 @@
   height: 100%;
   position: relative;
   cursor: pointer;
-  text-transform: uppercase;
+  text-transform: none;
   text-decoration: none;
   white-space: nowrap;
   font-family: var(--font-display-current);
   font-weight: 400;
-  font-size: clamp(1.35rem, 4.2vh, 3.25rem);
-  letter-spacing: -0.03em;
+  font-size: clamp(1.05rem, 2.2vh, 1.65rem);
+  letter-spacing: 0;
   line-height: 1;
   color: inherit;
 }

@@ -43,7 +43,7 @@ export function AboutPageHero({
       <div className="about-page-hero-grid site-container">
         <div className="about-page-hero-copy">
           <p className="about-page-eyebrow type-label">{eyebrow}</p>
-          <h1 className="about-page-headline type-display">
+          <h1 className="about-page-headline type-h1">
             {headlineLines.map((line) => (
               <span key={line} className="about-page-headline-line">
                 <span className="about-page-headline-line-inner">{line}</span>

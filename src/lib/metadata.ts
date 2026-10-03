@@ -13,6 +13,7 @@ type NavKey =
   | 'projects'
   | 'journal'
   | 'contact'
+  | 'clients'
   | 'privacyPolicy'
   | 'terms';
 
