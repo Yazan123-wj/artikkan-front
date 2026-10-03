@@ -36,10 +36,14 @@ export const homeCollaborators = [
   },
 ] as const satisfies readonly Collaborator[];
 
+function collaboratorLogoKey(item: Collaborator): string {
+  return item.logoId ?? item.id;
+}
+
 export const uniqueCollaborators = homeCollaborators.filter(
   (item, index, list) =>
     list.findIndex(
-      (other) => (other.logoId ?? other.id) === (item.logoId ?? item.id),
+      (other) => collaboratorLogoKey(other) === collaboratorLogoKey(item),
     ) === index,
 );
 
