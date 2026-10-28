@@ -4,6 +4,8 @@ import { CategoriesPageContent } from '@/components/categories/categories-page-c
 import { routing, type AppLocale } from '@/i18n/routing';
 import { createPageMetadata } from '@/lib/metadata';
 
+export const dynamic = 'force-dynamic';
+
 type CategoriesPageProps = {
   params: Promise<{ locale: string }>;
 };

@@ -99,7 +99,7 @@ export async function fetchLiveCategories(): Promise<LiveCategory[] | null> {
   if (!API_URL) return null;
   try {
     const response = await fetch(`${API_URL}/catalog/categories`, {
-      next: { revalidate: 30 },
+      cache: 'no-store',
     });
     if (!response.ok) return null;
     const data = (await response.json()) as { categories?: LiveCategory[] };
