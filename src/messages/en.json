@@ -534,7 +534,7 @@
       "range."
     ],
     "intro": "Five collections, one language. Each opens the catalogue with that filter applied.",
-    "count": "05 collections",
+    "count": "{count} collections",
     "indexLabel": "Product collections",
     "viewCollection": "View collection",
     "indexes": [

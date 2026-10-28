@@ -4,6 +4,13 @@ import { CategoriesIndex } from '@/components/categories/categories-index';
 import { featuredCategories } from '@/config/home-content';
 import { publicAssetExists } from '@/lib/assets';
 import { categoryProductsHref } from '@/lib/catalog';
+import type { AppLocale } from '@/i18n/routing';
+import {
+  fetchLiveCategories,
+  liveAssetAvailable,
+  liveMedia,
+  liveName,
+} from '@/lib/live-catalog';
 
 const CATEGORY_FALLBACKS: Record<string, string> = {
   seating: '/images/catalog/categories/seating-hero.jpg',
@@ -13,30 +20,59 @@ const CATEGORY_FALLBACKS: Record<string, string> = {
   accessories: '/images/catalog/categories/accessories-hero.jpg',
 };
 
-export async function CategoriesPageContent() {
+function imageReady(src: string) {
+  return liveAssetAvailable(src) || publicAssetExists(src);
+}
+
+type CategoriesPageContentProps = {
+  locale: AppLocale;
+};
+
+export async function CategoriesPageContent({ locale }: CategoriesPageContentProps) {
   const t = await getTranslations('categoriesPage');
   const tCategories = await getTranslations('home.categories');
   const headlineLines = t.raw('headlineLines') as readonly string[];
-  const indexes = t.raw('indexes') as readonly string[];
+  const live = await fetchLiveCategories();
 
-  const items = featuredCategories.map((category, index) => {
-    const preferred = category.image;
-    const fallback = CATEGORY_FALLBACKS[category.id] ?? preferred;
-    const image = publicAssetExists(preferred) ? preferred : fallback;
-
-    return {
-      id: category.id,
-      href: categoryProductsHref(category.id),
-      index: indexes[index] ?? String(index + 1).padStart(2, '0'),
-      title: tCategories(category.labelKey),
-      lede: t(`ledes.${category.id}`),
-      cta: t('viewCollection'),
-      image,
-      alt: tCategories(category.altKey),
-      available: publicAssetExists(image),
-      featured: index === 0,
-    };
-  });
+  const items =
+    live && live.length > 0
+      ? live.map((category, index) => {
+          const raw = category.imageSrc || CATEGORY_FALLBACKS[category.slug] || '';
+          const image = liveMedia(raw);
+          return {
+            id: category.slug,
+            href: categoryProductsHref(category.slug),
+            index: String(index + 1).padStart(2, '0'),
+            title: liveName(category.name, locale),
+            lede:
+              liveName(category.lede, locale) ||
+              (CATEGORY_FALLBACKS[category.slug]
+                ? t(`ledes.${category.slug}` as 'ledes.seating')
+                : ''),
+            cta: t('viewCollection'),
+            image,
+            alt: liveName(category.name, locale),
+            available: Boolean(image) && imageReady(raw),
+            featured: index === 0,
+          };
+        })
+      : featuredCategories.map((category, index) => {
+          const preferred = category.image;
+          const fallback = CATEGORY_FALLBACKS[category.id] ?? preferred;
+          const image = publicAssetExists(preferred) ? preferred : fallback;
+          return {
+            id: category.id,
+            href: categoryProductsHref(category.id),
+            index: String(index + 1).padStart(2, '0'),
+            title: tCategories(category.labelKey),
+            lede: t(`ledes.${category.id}`),
+            cta: t('viewCollection'),
+            image,
+            alt: tCategories(category.altKey),
+            available: publicAssetExists(image),
+            featured: index === 0,
+          };
+        });
 
   return (
     <article className="categories-page">
@@ -44,7 +80,7 @@ export async function CategoriesPageContent() {
         eyebrow={t('eyebrow')}
         headlineLines={headlineLines}
         intro={t('intro')}
-        count={t('count')}
+        count={t('count', { count: String(items.length).padStart(2, '0') })}
       />
       <CategoriesIndex label={t('indexLabel')} items={items} />
     </article>

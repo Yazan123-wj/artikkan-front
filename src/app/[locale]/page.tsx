@@ -26,7 +26,13 @@ import { featuredProjects } from '@/config/projects';
 import { getEnquiryEmail } from '@/config/site';
 import { routing, type AppLocale } from '@/i18n/routing';
 import { publicAssetExists } from '@/lib/assets';
-import { fetchLiveProjects } from '@/lib/live-catalog';
+import {
+  fetchLiveCategories,
+  fetchLiveProjects,
+  liveAssetAvailable,
+  liveMedia,
+  liveName,
+} from '@/lib/live-catalog';
 import { createPageMetadata } from '@/lib/metadata';
 import {
   homeProjectRowsFromLive,
@@ -56,12 +62,32 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   const initialProduct = productValue?.trim() || null;
   preload(HERO_MEDIA.poster, { as: 'image' });
   const aboutImageAvailable = publicAssetExists(ABOUT_IMAGE.src);
-  const categoryImageAvailability = Object.fromEntries(
-    featuredCategories.map((category) => [
-      category.id,
-      publicAssetExists(category.image),
-    ]),
-  );
+  const tHomeCategories = await getTranslations({
+    locale: resolvedLocale,
+    namespace: 'home.categories',
+  });
+  const liveCategories = await fetchLiveCategories();
+  const homeCategoryItems =
+    liveCategories && liveCategories.length > 0
+      ? liveCategories.map((category) => {
+          const raw = category.imageSrc || '';
+          const image = raw ? liveMedia(raw) : '';
+          const name = liveName(category.name, resolvedLocale);
+          return {
+            image,
+            label: name,
+            alt: name,
+            link: `/products?category=${category.slug}`,
+            imageAvailable: liveAssetAvailable(raw) || publicAssetExists(raw),
+          };
+        })
+      : featuredCategories.map((category) => ({
+          image: category.image,
+          label: tHomeCategories(category.labelKey),
+          alt: tHomeCategories(category.altKey),
+          link: category.href,
+          imageAvailable: publicAssetExists(category.image),
+        }));
   const galleryImageAvailability = Object.fromEntries(
     homeGalleryItems.map((item) => [item.id, publicAssetExists(item.image)]),
   );
@@ -127,7 +153,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       <Hero />
       <AboutSection imageAvailable={aboutImageAvailable} />
       <StatisticsSection />
-      <FeaturedCategories imageAvailability={categoryImageAvailability} />
+      <FeaturedCategories items={homeCategoryItems} />
       <HomeGallerySection imageAvailability={galleryImageAvailability} />
       <FeaturedProducts
         imageAvailability={productImageAvailability}

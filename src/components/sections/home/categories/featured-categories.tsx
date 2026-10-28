@@ -3,24 +3,21 @@
 import { useTranslations } from 'next-intl';
 import { AccordionGallery } from '@/components/ui/accordion-gallery';
 import { LocalizedLink } from '@/components/shared/localized-link';
-import { featuredCategories } from '@/config/home-content';
 
-type FeaturedCategoriesProps = {
-  imageAvailability: Record<string, boolean>;
+export type HomeCategoryItem = {
+  image: string;
+  label: string;
+  alt: string;
+  link: string;
+  imageAvailable: boolean;
 };
 
-export function FeaturedCategories({
-  imageAvailability,
-}: FeaturedCategoriesProps) {
-  const t = useTranslations('home.categories');
+type FeaturedCategoriesProps = {
+  items: readonly HomeCategoryItem[];
+};
 
-  const items = featuredCategories.map((category) => ({
-    image: category.image,
-    label: t(category.labelKey),
-    alt: t(category.altKey),
-    link: category.href,
-    imageAvailable: Boolean(imageAvailability[category.id]),
-  }));
+export function FeaturedCategories({ items }: FeaturedCategoriesProps) {
+  const t = useTranslations('home.categories');
 
   return (
     <section
@@ -53,7 +50,7 @@ export function FeaturedCategories({
         <div className="categories-gallery-wrap">
           <AccordionGallery
             items={items}
-            defaultIndex={2}
+            defaultIndex={Math.min(2, Math.max(items.length - 1, 0))}
             expandRatio={0.5}
             trigger="hover"
             ariaLabel={t('galleryLabel')}

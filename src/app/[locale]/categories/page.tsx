@@ -24,5 +24,5 @@ export default async function CategoriesPage({ params }: CategoriesPageProps) {
     : routing.defaultLocale;
   setRequestLocale(resolvedLocale);
 
-  return <CategoriesPageContent />;
+  return <CategoriesPageContent locale={resolvedLocale} />;
 }
