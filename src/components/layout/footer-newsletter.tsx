@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { NEWSLETTER_ENDPOINT } from '@/config/contact';
 import { prefersReducedMotion } from '@/lib/gsap';
+import { postPublicJson } from '@/lib/public-api';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -25,11 +26,12 @@ function scrollToNewsletter() {
 
 export function FooterNewsletter() {
   const t = useTranslations('footer.newsletter');
+  const locale = useLocale();
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [status, setStatus] = useState<'idle' | 'success' | 'unconnected'>(
-    'idle',
-  );
+  const [status, setStatus] = useState<
+    'idle' | 'submitting' | 'success' | 'error' | 'unconnected'
+  >('idle');
 
   useEffect(() => {
     scrollToNewsletter();
@@ -43,6 +45,9 @@ export function FooterNewsletter() {
     }
     if (status === 'unconnected') {
       return t('unconnected');
+    }
+    if (status === 'error') {
+      return t('errorSend');
     }
     return null;
   }, [status, t]);
@@ -63,7 +68,18 @@ export function FooterNewsletter() {
       return;
     }
 
-    setStatus('success');
+    setStatus('submitting');
+    void postPublicJson(NEWSLETTER_ENDPOINT, {
+      email: email.trim(),
+      locale,
+    })
+      .then(() => {
+        setEmail('');
+        setStatus('success');
+      })
+      .catch(() => {
+        setStatus('error');
+      });
   }
 
   return (

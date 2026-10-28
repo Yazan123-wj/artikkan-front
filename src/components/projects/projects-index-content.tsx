@@ -3,16 +3,47 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { ImageCurtain } from '@/components/motion/image-curtain';
 import { EditorialLink } from '@/components/shared/editorial-link';
 import { InteriorReveal } from '@/components/shared/interior-reveal';
-import { publicAssetExists } from '@/lib/assets';
+import { featuredProjects, getProjectLayoutStill } from '@/lib/projects';
+import { fetchLiveProjects, liveName } from '@/lib/live-catalog';
 import {
-  featuredProjects,
-  getProjectLayoutStill,
-} from '@/lib/projects';
+  liveToFeaturedProject,
+  projectImageAvailable,
+} from '@/lib/project-display';
 
 export async function ProjectsIndexContent() {
   const locale = await getLocale();
   const t = await getTranslations('projectsPage');
   const tHome = await getTranslations('home.projects');
+  const live = await fetchLiveProjects();
+  const rows =
+    live === null
+      ? featuredProjects.map((project) => {
+          const still = getProjectLayoutStill(project);
+          const copyKey = project.copyKey ?? 'one';
+          return {
+            id: project.id,
+            slug: project.slug,
+            placement: project.placement,
+            name: tHome(`entries.${copyKey}.name`),
+            subtitle: tHome(`entries.${copyKey}.subtitle`),
+            image: still,
+            available: projectImageAvailable(still.src),
+          };
+        })
+      : live.map((project) => {
+          const featured = liveToFeaturedProject(project);
+          return {
+            id: project.id,
+            slug: project.slug,
+            placement: featured.placement,
+            name: liveName(project.title, locale),
+            subtitle:
+              liveName(project.overview, locale) ||
+              liveName(project.type, locale),
+            image: featured.image,
+            available: projectImageAvailable(featured.image?.src),
+          };
+        });
 
   return (
     <div className="projects-page">
@@ -24,15 +55,12 @@ export async function ProjectsIndexContent() {
         </header>
 
         <div className="projects-index">
-          {featuredProjects.map((project) => {
-            const still = getProjectLayoutStill(project);
-            const available = publicAssetExists(still.src);
-            const name = tHome(`entries.${project.copyKey}.name`);
-            const subtitle = tHome(`entries.${project.copyKey}.subtitle`);
+          {rows.map((project) => {
+            const still = project.image;
             const objectPosition =
-              locale === 'ar'
+              still && locale === 'ar'
                 ? (still.objectPositionRtl ?? still.objectPosition)
-                : still.objectPosition;
+                : still?.objectPosition;
             const href = `/projects/${project.slug}`;
 
             return (
@@ -49,7 +77,7 @@ export async function ProjectsIndexContent() {
                   aspectRatio="4 / 3"
                   parallax={project.placement === 'start'}
                 >
-                  {available ? (
+                  {project.available && still ? (
                     <Image
                       src={still.src}
                       alt={t('leadAlt')}
@@ -57,9 +85,7 @@ export async function ProjectsIndexContent() {
                       quality={85}
                       sizes="(min-width: 1024px) 58vw, calc(100vw - 2.5rem)"
                       className="about-page-lead-img"
-                      style={
-                        objectPosition ? { objectPosition } : undefined
-                      }
+                      style={objectPosition ? { objectPosition } : undefined}
                     />
                   ) : (
                     <span className="journal-pending" />
@@ -67,8 +93,8 @@ export async function ProjectsIndexContent() {
                 </ImageCurtain>
                 <InteriorReveal className="project-index-copy-wrap">
                   <div className="project-index-copy" data-interior-reveal>
-                    <h2 className="type-h2">{name}</h2>
-                    <p className="type-body">{subtitle}</p>
+                    <h2 className="type-h2">{project.name}</h2>
+                    <p className="type-body">{project.subtitle}</p>
                     <EditorialLink href={href} className="project-index-cta">
                       {t('viewProject')}
                     </EditorialLink>

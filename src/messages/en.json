@@ -403,6 +403,8 @@
         },
         "unconnected": "The enquiry form is not connected yet. Please write to",
         "unconnectedNoEmail": "The enquiry form is not connected yet. An enquiry email has not been configured.",
+        "success": "Thank you. The studio has your enquiry and will reply shortly.",
+        "error": "We could not send this enquiry. Please try again, or write to",
         "privacy": "We use these details only to respond to your enquiry. See our <privacy>privacy policy</privacy>."
       }
     }
@@ -627,6 +629,8 @@
     "message": "Message",
     "submit": "Send enquiry",
     "openedMail": "Opening your email app to send this enquiry.",
+    "success": "Thank you. The studio has your enquiry and will reply shortly.",
+    "error": "We could not send this enquiry. Please try again.",
     "missingEmail": "An enquiry email has not been configured yet.",
     "privacy": "We use these details only to respond to your enquiry. See our <privacy>privacy policy</privacy>.",
     "errors": {
@@ -679,6 +683,7 @@
     "legalLabel": "Legal",
     "cta": "Enquire",
     "ctaLabel": "Enquire with Artikkan",
+    "clientSpace": "Client space",
     "newsletter": {
       "label": "Newsletter",
       "lede": "Occasional notes on collections and openings.",
@@ -686,7 +691,8 @@
       "submit": "Subscribe",
       "error": "Please enter a valid email address.",
       "success": "Thank you. You’re on the list.",
-      "unconnected": "The newsletter is not connected yet."
+      "unconnected": "The newsletter is not connected yet.",
+      "errorSend": "We could not add this address. Please try again."
     }
   },
   "legal": {

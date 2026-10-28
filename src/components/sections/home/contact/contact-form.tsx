@@ -1,9 +1,10 @@
 'use client';
 
 import { useMemo, useState, type FormEvent } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { LocalizedLink } from '@/components/shared/localized-link';
 import { CONTACT_ENDPOINT } from '@/config/contact';
+import { postPublicJson } from '@/lib/public-api';
 
 const ENQUIRY_TYPES = ['product', 'project', 'general'] as const;
 
@@ -41,22 +42,30 @@ export function ContactForm({
   initialProduct = null,
 }: ContactFormProps) {
   const t = useTranslations('home.contact.form');
+  const locale = useLocale();
   const [values, setValues] = useState<FormValues>(() =>
     initialProduct
       ? { ...emptyValues, type: 'product', product: initialProduct }
       : emptyValues,
   );
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [status, setStatus] = useState<'idle' | 'unconnected'>('idle');
+  const [status, setStatus] = useState<
+    'idle' | 'submitting' | 'success' | 'error' | 'unconnected'
+  >('idle');
 
   const showProduct = values.type === 'product';
 
   const statusMessage = useMemo(() => {
-    if (status !== 'unconnected') {
-      return null;
+    if (status === 'success') {
+      return t('success');
     }
-
-    return enquiryEmail ? t('unconnected') : t('unconnectedNoEmail');
+    if (status === 'error') {
+      return enquiryEmail ? t('error') : t('unconnectedNoEmail');
+    }
+    if (status === 'unconnected') {
+      return enquiryEmail ? t('unconnected') : t('unconnectedNoEmail');
+    }
+    return null;
   }, [enquiryEmail, status, t]);
 
   function update<K extends keyof FormValues>(key: K, value: FormValues[K]) {
@@ -89,7 +98,28 @@ export function ContactForm({
 
     if (!CONTACT_ENDPOINT) {
       setStatus('unconnected');
+      return;
     }
+
+    setStatus('submitting');
+    void postPublicJson(CONTACT_ENDPOINT, {
+      name: values.name.trim(),
+      email: values.email.trim(),
+      phone: values.phone.trim() || undefined,
+      type: values.type,
+      product: values.product.trim() || undefined,
+      productName: values.product.trim() || undefined,
+      message: values.message.trim(),
+      locale,
+      source: 'CONTACT',
+    })
+      .then(() => {
+        setValues(emptyValues);
+        setStatus('success');
+      })
+      .catch(() => {
+        setStatus('error');
+      });
   }
 
   return (
@@ -222,7 +252,7 @@ export function ContactForm({
         })}
       </p>
 
-      <button type="submit" className="home-contact-submit">
+      <button type="submit" className="home-contact-submit" disabled={status === 'submitting'}>
         <span className="home-contact-submit-label">{t('submit')}</span>
         <span className="home-contact-submit-arrow" aria-hidden="true">
           <svg viewBox="0 0 28 12" fill="none">
@@ -233,7 +263,7 @@ export function ContactForm({
 
       <p className="home-contact-status" role="status" aria-live="polite">
         {statusMessage}
-        {status === 'unconnected' && enquiryEmail ? (
+        {(status === 'unconnected' || status === 'error') && enquiryEmail ? (
           <>
             {' '}
             <a href={`mailto:${enquiryEmail}`} dir="ltr">

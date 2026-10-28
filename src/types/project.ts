@@ -20,7 +20,7 @@ export type FeaturedProjectImage = {
 export type FeaturedProject = {
   id: string;
   slug: string;
-  copyKey: FeaturedProjectCopyKey;
+  copyKey?: FeaturedProjectCopyKey;
   /**
    * Visual placement of the project photograph on desktop.
    * `start` = inline-start (left in English, right in Arabic).
@@ -31,7 +31,7 @@ export type FeaturedProject = {
    * Three catalog product `id` values for the project detail page.
    * Homepage featured rows still use the first two.
    */
-  productIds: readonly [string, string, string];
+  productIds: readonly string[];
   /** Optional flag for unfinished project records. */
   placeholder?: boolean;
   image?: FeaturedProjectImage;

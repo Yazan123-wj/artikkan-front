@@ -4,52 +4,34 @@ import { useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { ProjectRow } from '@/components/sections/home/projects/project-row';
 import { LocalizedLink } from '@/components/shared/localized-link';
-import { getFeaturedProductById } from '@/config/products';
-import { featuredProjects } from '@/config/projects';
 import { MOTION } from '@/config/motion';
 import { useGsapContext } from '@/hooks/use-gsap-context';
 import { revealElements } from '@/lib/motion-timelines';
-import { productPieceKey } from '@/lib/product-messages';
-import type { FeaturedProjectCopyKey } from '@/types/project';
+import type { FeaturedProduct } from '@/types/product';
+import type { FeaturedProject } from '@/types/project';
 
-type FeaturedProjectsProps = {
-  projectImageAvailability: Record<string, boolean>;
-  productImageAvailability: Record<string, boolean>;
+export type FeaturedProjectRowProduct = {
+  record: FeaturedProduct | undefined;
+  name: string;
+  imageAlt: string;
+  imageAvailable: boolean;
 };
 
-function resolveRowProduct(
-  productId: string,
-  t: ReturnType<typeof useTranslations<'home.projects'>>,
-  tProducts: ReturnType<typeof useTranslations<'home.products'>>,
-  productImageAvailability: Record<string, boolean>,
-) {
-  const record = getFeaturedProductById(productId);
-  const nameKey = record?.nameKey;
+export type FeaturedProjectRowData = {
+  project: FeaturedProject;
+  name: string;
+  subtitle: string;
+  imageAlt: string;
+  imageAvailable: boolean;
+  products: readonly [FeaturedProjectRowProduct, FeaturedProjectRowProduct];
+};
 
-  return {
-    record,
-    name: nameKey ? tProducts(productPieceKey(nameKey, 'name')) : t('pendingProduct'),
-    imageAlt: nameKey
-      ? tProducts(productPieceKey(nameKey, 'alt'))
-      : t('pendingPhotography'),
-    imageAvailable: Boolean(record && productImageAvailability[record.id]),
-  };
-}
+type FeaturedProjectsProps = {
+  rows: FeaturedProjectRowData[];
+};
 
-function projectCopy(
-  t: ReturnType<typeof useTranslations<'home.projects'>>,
-  copyKey: FeaturedProjectCopyKey,
-  field: 'name' | 'subtitle' | 'alt',
-) {
-  return t(`entries.${copyKey}.${field}`);
-}
-
-export function FeaturedProjects({
-  projectImageAvailability,
-  productImageAvailability,
-}: FeaturedProjectsProps) {
+export function FeaturedProjects({ rows }: FeaturedProjectsProps) {
   const t = useTranslations('home.projects');
-  const tProducts = useTranslations('home.products');
   const rootRef = useRef<HTMLElement>(null);
 
   useGsapContext(() => {
@@ -71,6 +53,10 @@ export function FeaturedProjects({
       });
     });
   }, rootRef);
+
+  if (rows.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -102,35 +88,20 @@ export function FeaturedProjects({
         </header>
 
         <div className="featured-projects-list">
-          {featuredProjects.map((project) => (
-              <ProjectRow
-                key={project.id}
-                project={project}
-                name={projectCopy(t, project.copyKey, 'name')}
-                subtitle={projectCopy(t, project.copyKey, 'subtitle')}
-                imageAlt={projectCopy(t, project.copyKey, 'alt')}
-                viewProjectLabel={t('viewProject')}
-                piecesGroupLabel={t('piecesLabel')}
-                pendingPhotographyLabel={t('pendingPhotography')}
-                pendingProductLabel={t('pendingProduct')}
-                imageAvailable={Boolean(
-                  project.image && projectImageAvailability[project.id],
-                )}
-                products={[
-                  resolveRowProduct(
-                    project.productIds[0],
-                    t,
-                    tProducts,
-                    productImageAvailability,
-                  ),
-                  resolveRowProduct(
-                    project.productIds[1],
-                    t,
-                    tProducts,
-                    productImageAvailability,
-                  ),
-                ]}
-              />
+          {rows.map((row) => (
+            <ProjectRow
+              key={row.project.id}
+              project={row.project}
+              name={row.name}
+              subtitle={row.subtitle}
+              imageAlt={row.imageAlt}
+              viewProjectLabel={t('viewProject')}
+              piecesGroupLabel={t('piecesLabel')}
+              pendingPhotographyLabel={t('pendingPhotography')}
+              pendingProductLabel={t('pendingProduct')}
+              imageAvailable={row.imageAvailable}
+              products={row.products}
+            />
           ))}
         </div>
       </div>

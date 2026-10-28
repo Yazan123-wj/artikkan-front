@@ -50,9 +50,21 @@ export function getApprovedStillId(productId: string): string {
   return PRODUCT_CARD_STILL_IDS[idHash(productId) % PRODUCT_CARD_STILL_IDS.length];
 }
 
+function isManagedMedia(src: string) {
+  return (
+    src.startsWith('http://') ||
+    src.startsWith('https://') ||
+    src.startsWith('/uploads/')
+  );
+}
+
 export function getProductCardImage(
   product: FeaturedProduct,
 ): FeaturedProductImage {
+  if (product.image?.src && isManagedMedia(product.image.src)) {
+    return product.image;
+  }
+
   const id = getApprovedStillId(product.id);
 
   return {

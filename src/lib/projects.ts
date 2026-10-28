@@ -118,7 +118,7 @@ export function getProjectLayoutStill(
 ): FeaturedProjectImage {
   return (
     project.image ??
-    projectLayoutStills[project.copyKey] ??
+    (project.copyKey ? projectLayoutStills[project.copyKey] : undefined) ??
     projectLayoutStills.one
   );
 }
@@ -127,14 +127,19 @@ export function getProjectFeatureStill(
   project: FeaturedProject,
 ): FeaturedProjectImage {
   return (
-    projectFeatureStills[project.copyKey] ?? getProjectLayoutStill(project)
+    (project.copyKey ? projectFeatureStills[project.copyKey] : undefined) ??
+    getProjectLayoutStill(project)
   );
 }
 
 export function getProjectGallery(
   project: FeaturedProject,
 ): readonly FeaturedProjectImage[] {
-  return projectGalleryStills[project.copyKey] ?? [getProjectLayoutStill(project)];
+  return (
+    (project.copyKey ? projectGalleryStills[project.copyKey] : undefined) ?? [
+      getProjectLayoutStill(project),
+    ]
+  );
 }
 
 export function getProjectProducts(

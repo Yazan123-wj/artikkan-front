@@ -1,4 +1,6 @@
 import { preload } from 'react-dom';
+import { hasLocale } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { AboutSection } from '@/components/sections/home/about';
 import { FeaturedCategories } from '@/components/sections/home/categories';
 import { HomeGallerySection } from '@/components/sections/home/gallery';
@@ -22,8 +24,14 @@ import { getProductCardImage } from '@/config/product-card-images';
 import { featuredProducts } from '@/config/products';
 import { featuredProjects } from '@/config/projects';
 import { getEnquiryEmail } from '@/config/site';
+import { routing, type AppLocale } from '@/i18n/routing';
 import { publicAssetExists } from '@/lib/assets';
+import { fetchLiveProjects } from '@/lib/live-catalog';
 import { createPageMetadata } from '@/lib/metadata';
+import {
+  homeProjectRowsFromLive,
+  homeProjectRowsFromStatic,
+} from '@/lib/project-display';
 
 type HomePageProps = {
   params: Promise<{ locale: string }>;
@@ -37,6 +45,10 @@ export async function generateMetadata({ params }: HomePageProps) {
 
 export default async function HomePage({ params, searchParams }: HomePageProps) {
   const { locale } = await params;
+  const resolvedLocale: AppLocale = hasLocale(routing.locales, locale)
+    ? locale
+    : routing.defaultLocale;
+  setRequestLocale(resolvedLocale);
   const productParam = await searchParams;
   const productValue = Array.isArray(productParam.product)
     ? productParam.product[0]
@@ -72,6 +84,31 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     ]),
   );
   const enquiryEmail = getEnquiryEmail();
+  const tProjects = await getTranslations({
+    locale: resolvedLocale,
+    namespace: 'home.projects',
+  });
+  const tProducts = await getTranslations({
+    locale: resolvedLocale,
+    namespace: 'home.products',
+  });
+  const liveProjects = await fetchLiveProjects();
+  const projectRows =
+    liveProjects === null
+      ? homeProjectRowsFromStatic(
+          (key) => tProjects(key as never),
+          (key) => tProducts(key as never),
+          productImageAvailability,
+          projectImageAvailability,
+          tProjects('pendingProduct'),
+          tProjects('pendingPhotography'),
+        )
+      : homeProjectRowsFromLive(
+          liveProjects,
+          resolvedLocale,
+          tProjects('pendingProduct'),
+          tProjects('pendingPhotography'),
+        );
 
   return (
     <>
@@ -96,13 +133,10 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         imageAvailability={productImageAvailability}
         enquiryEmail={enquiryEmail}
       />
-      <FeaturedProjects
-        projectImageAvailability={projectImageAvailability}
-        productImageAvailability={productImageAvailability}
-      />
+      <FeaturedProjects rows={projectRows} />
       <HomeCollaboratorsSection logos={collaboratorLogos} />
       <HomeContactSection
-        locale={locale}
+        locale={resolvedLocale}
         enquiryEmail={enquiryEmail}
         initialProduct={initialProduct}
       />

@@ -7,7 +7,7 @@ import { useRef } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { FooterNewsletter } from '@/components/layout/footer-newsletter';
 import { LocalizedLink } from '@/components/shared/localized-link';
-import { getVerifiedContact } from '@/config/contact';
+import { CLIENT_PANEL_URL, getVerifiedContact } from '@/config/contact';
 import { BRAND_ASSETS } from '@/config/hero';
 import { legalNavigation, mainNavigation } from '@/config/navigation';
 import {
@@ -152,6 +152,14 @@ export function SiteFooter() {
                   </LocalizedLink>
                 </li>
               ))}
+              <li>
+                <a
+                  href={`${CLIENT_PANEL_URL}/login`}
+                  className="site-footer-link"
+                >
+                  {t('clientSpace')}
+                </a>
+              </li>
             </ul>
           </nav>
 

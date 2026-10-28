@@ -5,6 +5,7 @@ import { ProductDetailContent } from '@/components/catalog/product-detail-conten
 import { catalogProducts } from '@/config/products';
 import { routing, type AppLocale } from '@/i18n/routing';
 import { getProductBySlug } from '@/lib/catalog';
+import { fetchLiveProduct, liveName, toFeaturedProduct } from '@/lib/live-catalog';
 import { createPageMetadata } from '@/lib/metadata';
 import { productPieceKey } from '@/lib/product-messages';
 
@@ -18,7 +19,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: ProductSlugPageProps) {
   const { locale, slug } = await params;
-  const product = getProductBySlug(slug);
+  const live = await fetchLiveProduct(slug);
+  const product = live ? toFeaturedProduct(live) : getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -31,7 +33,9 @@ export async function generateMetadata({ params }: ProductSlugPageProps) {
     locale: resolvedLocale,
     namespace: 'home.products',
   });
-  const title = tProducts(productPieceKey(product.nameKey, 'name'));
+  const title = live
+    ? liveName(live.name, resolvedLocale)
+    : tProducts(productPieceKey(product.nameKey, 'name'));
 
   return createPageMetadata({
     locale: resolvedLocale,
@@ -49,7 +53,8 @@ export default async function ProductSlugPage({ params }: ProductSlugPageProps) 
     : routing.defaultLocale;
   setRequestLocale(resolvedLocale);
 
-  const product = getProductBySlug(slug);
+  const live = await fetchLiveProduct(slug);
+  const product = live ? toFeaturedProduct(live) : getProductBySlug(slug);
   if (!product) {
     notFound();
   }

@@ -47,12 +47,23 @@ export function getProductBySlug(slug: string): FeaturedProduct | undefined {
   return product ? withSubKey(product) : undefined;
 }
 
+function isRemoteMedia(src: string) {
+  return (
+    src.startsWith('http://') ||
+    src.startsWith('https://') ||
+    src.startsWith('/uploads/')
+  );
+}
+
 function pushImage(
   list: FeaturedProductImage[],
   seen: Set<string>,
   image: FeaturedProductImage | undefined,
 ) {
-  if (!image || seen.has(image.src) || !publicAssetExists(image.src)) {
+  if (!image || seen.has(image.src)) {
+    return;
+  }
+  if (!isRemoteMedia(image.src) && !publicAssetExists(image.src)) {
     return;
   }
 
@@ -79,6 +90,13 @@ export function getProductImages(
   const stillId = getApprovedStillId(product.id);
 
   pushImage(images, seen, display);
+  for (const extra of product.images ?? []) {
+    pushImage(images, seen, extra);
+  }
+
+  if (isRemoteMedia(display.src)) {
+    return images;
+  }
 
   for (const sibling of catalogProducts) {
     if (sibling.id === product.id) {
@@ -168,12 +186,9 @@ export function filterProducts(
   subcategory?: string,
 ): FeaturedProduct[] {
   const needle = query.trim().toLowerCase();
-  const categoryId =
-    category && isProductCategoryId(category) ? category : undefined;
+  const categoryId = category && category !== 'all' ? category : undefined;
   const subcategoryId =
-    categoryId && subcategory && subcategoryBelongsToCategory(subcategory, categoryId)
-      ? subcategory
-      : undefined;
+    subcategory && subcategory !== 'all' ? subcategory : undefined;
 
   return products.filter((product) => {
     if (categoryId && product.categoryKey !== categoryId) {
@@ -251,16 +266,24 @@ export function parseProductSearchParams(searchParams: {
 
   const q = first(searchParams.q)?.trim() ?? '';
   const categoryRaw = first(searchParams.category)?.trim() || 'all';
-  const category = isProductCategoryId(categoryRaw) ? categoryRaw : 'all';
+  const category =
+    categoryRaw === 'all'
+      ? 'all'
+      : isProductCategoryId(categoryRaw)
+        ? categoryRaw
+        : categoryRaw;
   const subRaw = first(searchParams.sub)?.trim() || 'all';
   const sort = first(searchParams.sort)?.trim() || 'featured';
   const page = Number.parseInt(first(searchParams.page) ?? '1', 10);
+  const knownSub =
+    isProductCategoryId(category) &&
+    subcategoryBelongsToCategory(subRaw, category);
 
   return {
     q,
     category,
     sub:
-      category !== 'all' && subcategoryBelongsToCategory(subRaw, category)
+      category !== 'all' && subRaw !== 'all' && (knownSub || !isProductCategoryId(category))
         ? subRaw
         : 'all',
     sort: PRODUCT_SORTS.includes(sort as ProductSort)

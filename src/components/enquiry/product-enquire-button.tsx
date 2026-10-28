@@ -14,7 +14,9 @@ import { useLocale, useTranslations } from 'next-intl';
 import { LocalizedLink } from '@/components/shared/localized-link';
 import { useFocusTrap } from '@/hooks/use-focus-trap';
 import { useLockBodyScroll } from '@/hooks/use-lock-body-scroll';
+import { CONTACT_ENDPOINT } from '@/config/contact';
 import { buildProductEnquiryFormMailto } from '@/lib/enquiry';
+import { postPublicJson } from '@/lib/public-api';
 import { cn } from '@/lib/utils';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -73,7 +75,9 @@ export function EnquiryModal({
   const isClient = useIsClient();
   const [values, setValues] = useState<FormValues>(emptyValues);
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [status, setStatus] = useState<'idle' | 'ready' | 'missing'>('idle');
+  const [status, setStatus] = useState<
+    'idle' | 'submitting' | 'success' | 'error' | 'ready' | 'missing'
+  >('idle');
 
   useFocusTrap(open, dialogRef);
   useLockBodyScroll(open, 'is-enquiry-open');
@@ -125,6 +129,32 @@ export function EnquiryModal({
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
       setStatus('idle');
+      return;
+    }
+
+    const payload = {
+      name: values.name.trim(),
+      email: values.email.trim(),
+      phone: values.phone.trim() || undefined,
+      type: 'product' as const,
+      productSlug: product.slug,
+      productReference: product.reference,
+      productName: product.name,
+      message: values.message.trim(),
+      locale,
+      source: 'PRODUCT' as const,
+    };
+
+    if (CONTACT_ENDPOINT) {
+      setStatus('submitting');
+      void postPublicJson(CONTACT_ENDPOINT, payload)
+        .then(() => {
+          setValues(emptyValues);
+          setStatus('success');
+        })
+        .catch(() => {
+          setStatus('error');
+        });
       return;
     }
 
@@ -300,7 +330,11 @@ export function EnquiryModal({
             })}
           </p>
 
-          <button type="submit" className="enquiry-modal-submit">
+          <button
+            type="submit"
+            className="enquiry-modal-submit"
+            disabled={status === 'submitting'}
+          >
             <span className="enquiry-modal-submit-label">{t('submit')}</span>
             <span className="enquiry-modal-submit-arrow" aria-hidden="true">
               <svg viewBox="0 0 28 12" fill="none">
@@ -310,6 +344,8 @@ export function EnquiryModal({
           </button>
 
           <p className="enquiry-modal-status" role="status" aria-live="polite">
+            {status === 'success' ? t('success') : null}
+            {status === 'error' ? t('error') : null}
             {status === 'ready' ? t('openedMail') : null}
             {status === 'missing' ? t('missingEmail') : null}
           </p>

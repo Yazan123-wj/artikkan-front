@@ -12,6 +12,12 @@ import {
   parseProductSearchParams,
   productListHref,
 } from '@/lib/catalog';
+import {
+  fetchLiveCategories,
+  fetchLiveProducts,
+  liveName,
+  toFeaturedProduct,
+} from '@/lib/live-catalog';
 import { getSubcategoriesForCategory } from '@/config/subcategories';
 import { productPieceKey } from '@/lib/product-messages';
 import type { FeaturedProductNameKey } from '@/types/product';
@@ -38,13 +44,29 @@ export async function ProductsIndex({ locale, searchParams }: ProductsIndexProps
   const tCategories = await getTranslations('home.categories');
   const tCategoryCopy = await getTranslations('categoriesPage');
   const { q, category, sub } = parseProductSearchParams(searchParams);
-  const activeCategory = isProductCategoryId(category) ? category : null;
+  const liveProducts = await fetchLiveProducts();
+  const liveCategories = await fetchLiveCategories();
+  const activeCategory =
+    category !== 'all' &&
+    (liveCategories?.some((item) => item.slug === category) ||
+      isProductCategoryId(category))
+      ? category
+      : null;
+  const catalog =
+    liveProducts && liveProducts.length > 0
+      ? liveProducts.map(toFeaturedProduct)
+      : getCatalogProducts();
 
   const names = Object.fromEntries(
-    getCatalogProducts().map((product) => [
-      product.nameKey,
-      tProducts(productPieceKey(product.nameKey, 'name')),
-    ]),
+    catalog.map((product) => {
+      const live = liveProducts?.find((item) => item.slug === product.slug);
+      return [
+        product.nameKey,
+        live
+          ? liveName(live.name, resolvedLocale)
+          : tProducts(productPieceKey(product.nameKey, 'name')),
+      ];
+    }),
   ) as Record<FeaturedProductNameKey, string>;
 
   const categoryLabels = Object.fromEntries(
@@ -58,7 +80,7 @@ export async function ProductsIndex({ locale, searchParams }: ProductsIndexProps
   ) as Record<string, string>;
 
   const matches = filterProducts(
-    getCatalogProducts(),
+    catalog,
     resolvedLocale,
     { ...names, ...categoryLabels, ...subcategoryLabels },
     '',
@@ -66,36 +88,88 @@ export async function ProductsIndex({ locale, searchParams }: ProductsIndexProps
     sub,
   );
 
-  const items = matches.map((product) => ({
-    product,
-    name: tProducts(productPieceKey(product.nameKey, 'name')),
-    category: tCategories(product.categoryKey),
-    subcategory: product.subKey ? t(`subs.${product.subKey}`) : undefined,
-    imageAlt: tProducts(productPieceKey(product.nameKey, 'alt')),
-    imageAvailable: publicAssetExists(getProductCardImage(product).src),
-  }));
+  const items = matches.map((product) => {
+    const live = liveProducts?.find((item) => item.slug === product.slug);
+    const name = live
+      ? liveName(live.name, resolvedLocale)
+      : tProducts(productPieceKey(product.nameKey, 'name'));
+    const liveCategory = liveCategories?.find(
+      (item) => item.slug === product.categoryKey,
+    );
+    const categoryLabel = liveCategory
+      ? liveName(liveCategory.name, resolvedLocale)
+      : isProductCategoryId(product.categoryKey)
+        ? tCategories(product.categoryKey)
+        : product.categoryKey;
+    const liveSub = liveCategory?.subcategories.find(
+      (item) => item.slug === product.subKey,
+    );
+    const cardSrc = getProductCardImage(product).src;
+    return {
+      product,
+      name,
+      category: categoryLabel,
+      subcategory: liveSub
+        ? liveName(liveSub.name, resolvedLocale)
+        : product.subKey && isProductCategoryId(product.categoryKey)
+          ? t(`subs.${product.subKey}`)
+          : undefined,
+      imageAlt: name,
+      imageAvailable:
+        cardSrc.startsWith('http') ||
+        cardSrc.startsWith('/uploads/') ||
+        publicAssetExists(cardSrc),
+    };
+  });
 
+  const liveActive = liveCategories?.find((item) => item.slug === activeCategory);
   const headlineLines = activeCategory
-    ? [categoryLabels[activeCategory] ?? activeCategory]
+    ? [
+        liveActive
+          ? liveName(liveActive.name, resolvedLocale)
+          : (categoryLabels[activeCategory] ?? activeCategory),
+      ]
     : (t.raw('headlineLines') as readonly string[]);
   const intro = activeCategory
-    ? tCategoryCopy(`ledes.${activeCategory}`)
+    ? liveActive
+      ? liveName(liveActive.lede, resolvedLocale) || t('intro')
+      : isProductCategoryId(activeCategory)
+        ? tCategoryCopy(`ledes.${activeCategory}`)
+        : t('intro')
     : t('intro');
 
   const subcategoryIds = activeCategory
-    ? getSubcategoriesForCategory(activeCategory)
+    ? liveActive
+      ? liveActive.subcategories.map((item) => item.slug)
+      : isProductCategoryId(activeCategory)
+        ? getSubcategoriesForCategory(activeCategory)
+        : []
     : [];
   const filterItems = activeCategory
-    ? subcategoryIds.map((id) => ({
-        id,
-        href: productListHref({ category: activeCategory, sub: id }),
-        label: t(`subs.${id}`),
-      }))
-    : featuredCategories.map((item) => ({
-        id: item.id,
-        href: productListHref({ category: item.id }),
-        label: categoryLabels[item.id] ?? item.id,
-      }));
+    ? subcategoryIds.map((id) => {
+        const liveSub = liveActive?.subcategories.find((item) => item.slug === id);
+        return {
+          id,
+          href: productListHref({ category: activeCategory, sub: id }),
+          label: liveSub
+            ? liveName(liveSub.name, resolvedLocale)
+            : t(`subs.${id}`),
+        };
+      })
+    : (liveCategories && liveCategories.length > 0
+        ? liveCategories
+        : featuredCategories
+      ).map((item) => {
+        const slug = 'slug' in item ? item.slug : item.id;
+        return {
+          id: slug,
+          href: productListHref({ category: slug }),
+          label:
+            'name' in item
+              ? liveName(item.name, resolvedLocale)
+              : (categoryLabels[item.id] ?? item.id),
+        };
+      });
 
   return (
     <div className="products-page">
