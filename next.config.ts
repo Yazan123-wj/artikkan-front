@@ -7,7 +7,11 @@ function apiOrigin() {
   const origin = process.env.API_ORIGIN || process.env.NEXT_PUBLIC_API_ORIGIN;
   if (origin) return origin.replace(/\/$/, '');
   const url = process.env.NEXT_PUBLIC_API_URL ?? '';
-  return url.replace(/\/api\/v1\/?$/, '') || 'http://localhost:4000';
+  if (url) return url.replace(/\/api\/v1\/?$/, '');
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://api-production-eb86d.up.railway.app';
+  }
+  return 'http://localhost:4000';
 }
 
 const nextConfig: NextConfig = {
