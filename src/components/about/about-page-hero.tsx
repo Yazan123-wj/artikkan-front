@@ -13,6 +13,7 @@ type AboutPageHeroProps = {
   intro: string;
   leadAlt: string;
   imageAvailable: boolean;
+  imageSrc?: string;
 };
 
 export function AboutPageHero({
@@ -21,6 +22,7 @@ export function AboutPageHero({
   intro,
   leadAlt,
   imageAvailable,
+  imageSrc,
 }: AboutPageHeroProps) {
   const rootRef = useRef<HTMLElement>(null);
 
@@ -61,7 +63,7 @@ export function AboutPageHero({
           >
             {imageAvailable ? (
               <Image
-                src={ABOUT_IMAGE.src}
+                src={imageSrc || ABOUT_IMAGE.src}
                 alt={leadAlt}
                 fill
                 priority

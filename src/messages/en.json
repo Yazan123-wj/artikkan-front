@@ -612,6 +612,8 @@
     "materials": "Materials",
     "dimensions": "Dimensions",
     "finishes": "Finishes",
+    "care": "Care",
+    "custom": "Custom",
     "specsPending": "",
     "descriptionPending": "",
     "relatedTitle": "Related pieces",

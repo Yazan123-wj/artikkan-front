@@ -60,7 +60,15 @@ function captureLogoFit(
   };
 }
 
-export function Hero() {
+type HeroMedia = {
+  poster?: string;
+  videoDesktop?: string;
+  videoMobile?: string;
+};
+
+export function Hero({ media }: { media?: HeroMedia }) {
+  const poster = media?.poster || HERO_MEDIA.poster;
+  const customVideo = media?.videoDesktop || media?.videoMobile || '';
   const t = useTranslations('a11y');
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -124,6 +132,22 @@ export function Hero() {
       return;
     }
 
+    if (customVideo && video) {
+      section.classList.add('is-fallback');
+      const mobile = window.matchMedia(MOBILE_HERO_QUERY).matches;
+      video.src =
+        (mobile && media?.videoMobile ? media.videoMobile : customVideo) ||
+        customVideo;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      void video.play().catch(() => {
+        video.classList.remove('is-ready');
+      });
+      video.classList.add('is-ready');
+    }
+
     const runtime = {
       cancelled: false,
       raf: 0,
@@ -134,7 +158,7 @@ export function Hero() {
       variant: getHeroSequenceVariant(mobileQuery.matches),
       ctx: null as CanvasRenderingContext2D | null,
       stopBackground: () => undefined as void,
-      fallback: false,
+      fallback: Boolean(customVideo),
     };
 
     const enableFallback = () => {
@@ -150,7 +174,7 @@ export function Hero() {
         return;
       }
 
-      video.src = HERO_MEDIA.fallbackVideo;
+      video.src = customVideo || HERO_MEDIA.fallbackVideo;
       video.muted = true;
       video.loop = true;
       video.playsInline = true;
@@ -239,6 +263,9 @@ export function Hero() {
     };
 
     const startSequence = () => {
+      if (runtime.fallback) {
+        return;
+      }
       if (!canvas || !canvasIsSupported()) {
         enableFallback();
         return;
@@ -414,14 +441,14 @@ export function Hero() {
       ctx.revert();
       ScrollTrigger.getById(HERO_SCROLL_ID)?.kill();
     };
-  }, [headerRef, navSlotRef, wordmarkRef]);
+  }, [customVideo, headerRef, media?.videoMobile, navSlotRef, wordmarkRef]);
 
   return (
     <section ref={sectionRef} className="hero" aria-label={t('logo')}>
       <h1 className="hero-sr-only">{t('logo')}</h1>
       <div className="hero-media">
         <img
-          src={HERO_MEDIA.poster}
+          src={poster}
           alt=""
           className="hero-poster"
           width={1920}
@@ -436,7 +463,7 @@ export function Hero() {
         <video
           ref={videoRef}
           className="hero-video"
-          poster={HERO_MEDIA.poster}
+          poster={poster}
           muted
           playsInline
           loop

@@ -12,12 +12,24 @@ import { gsap } from '@/lib/gsap';
 
 type AboutSectionProps = {
   imageAvailable: boolean;
+  imageSrc?: string;
+  title?: string;
+  body?: string;
 };
 
-export function AboutSection({ imageAvailable }: AboutSectionProps) {
+export function AboutSection({
+  imageAvailable,
+  imageSrc,
+  title,
+  body,
+}: AboutSectionProps) {
   const t = useTranslations('home.about');
   const rootRef = useRef<HTMLElement>(null);
-  const headlineLines = t.raw('headlineLines') as readonly string[];
+  const headlineLines = title
+    ? title.split('\n').filter(Boolean)
+    : (t.raw('headlineLines') as readonly string[]);
+  const bodyCopy = body || t('body');
+  const mediaSrc = imageSrc || ABOUT_IMAGE.src;
 
   useGsapContext(() => {
     const root = rootRef.current;
@@ -113,7 +125,7 @@ export function AboutSection({ imageAvailable }: AboutSectionProps) {
               </span>
             ))}
           </h2>
-          <p className="about-body type-body-lg">{t('body')}</p>
+          <p className="about-body type-body-lg">{bodyCopy}</p>
           <LocalizedLink href="/about" className="about-cta touch-target">
             <span className="about-cta-label">{t('cta')}</span>
             <span className="about-cta-arrow" aria-hidden="true">
@@ -128,7 +140,7 @@ export function AboutSection({ imageAvailable }: AboutSectionProps) {
             <div className="about-media-scale">
               {imageAvailable ? (
                 <Image
-                  src={ABOUT_IMAGE.src}
+                  src={mediaSrc}
                   alt={t('imageAlt')}
                   fill
                   quality={90}

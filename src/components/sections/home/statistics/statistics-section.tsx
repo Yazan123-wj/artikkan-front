@@ -6,10 +6,28 @@ import { homeStatistics } from '@/config/home-content';
 import { formatStatisticDisplay } from '@/lib/format-number';
 import { AnimatedCounter } from './animated-counter';
 
-export function StatisticsSection() {
+type LiveStat = {
+  id: string;
+  value: number;
+  prefix: string;
+  suffix: string;
+  label: string;
+};
+
+export function StatisticsSection({ stats }: { stats?: LiveStat[] }) {
   const t = useTranslations('home.statistics');
   const locale = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
+  const items =
+    stats && stats.length > 0
+      ? stats
+      : homeStatistics.map((stat) => ({
+          id: stat.id,
+          value: stat.value,
+          prefix: stat.prefix,
+          suffix: stat.suffix,
+          label: t(stat.labelKey),
+        }));
 
   return (
     <section
@@ -22,8 +40,8 @@ export function StatisticsSection() {
       </h2>
       <div className="statistics-inner site-container">
         <ul className="statistics-grid">
-          {homeStatistics.map((stat, index) => {
-            const label = t(stat.labelKey);
+          {items.map((stat, index) => {
+            const label = stat.label;
             const finalValue = formatStatisticDisplay(
               stat.value,
               locale,

@@ -48,9 +48,7 @@ export function getVerifiedContact() {
   };
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
-
-export const CONTACT_ENDPOINT = API_URL ? `${API_URL}/enquiries` : null;
-export const NEWSLETTER_ENDPOINT = API_URL ? `${API_URL}/newsletter` : null;
+export const CONTACT_ENDPOINT = '/api/v1/enquiries';
+export const NEWSLETTER_ENDPOINT = '/api/v1/newsletter';
 export const CLIENT_PANEL_URL =
   process.env.NEXT_PUBLIC_PANEL_URL ?? 'http://localhost:3001';

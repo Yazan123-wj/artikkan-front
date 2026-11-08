@@ -11,7 +11,7 @@ import {
   getProjectGallery,
   getProjectProducts,
 } from '@/lib/projects';
-import { liveName, type LiveProject } from '@/lib/live-catalog';
+import { liveMedia, liveName, type LiveProject } from '@/lib/live-catalog';
 import {
   liveProjectProducts,
   liveToFeaturedProject,
@@ -72,10 +72,12 @@ export async function ProjectDetailContent({
       : feature.objectPosition;
   const galleryItems = (
     live
-      ? [
-          ...(featured.image ? [featured.image] : []),
-          ...livePieces.map((item) => getProductCardImage(item.product)),
-        ]
+      ? (live.gallery && live.gallery.length
+          ? live.gallery.map((src) => ({ src: liveMedia(src), width: 1600, height: 1066 }))
+          : [
+              ...(featured.image ? [featured.image] : []),
+              ...livePieces.map((item) => getProductCardImage(item.product)),
+            ])
       : getProjectGallery(featured)
   )
     .filter((image) => projectImageAvailable(image.src))

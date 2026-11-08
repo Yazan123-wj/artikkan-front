@@ -8,7 +8,6 @@ export async function postPublicJson<T>(url: string, body: Json): Promise<T> {
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
     body: JSON.stringify(body),
   });
 

@@ -7,22 +7,29 @@ import { homeGalleryItems } from '@/config/home-content';
 
 type HomeGallerySectionProps = {
   imageAvailability: Record<string, boolean>;
+  views?: { id: string; image: string }[];
 };
 
 export function HomeGallerySection({
   imageAvailability,
+  views,
 }: HomeGallerySectionProps) {
   const t = useTranslations('home.gallery');
 
   const items = useMemo(
     () =>
-      homeGalleryItems
-        .filter((item) => imageAvailability[item.id])
+      (views && views.length > 0
+        ? views.map((item) => ({ id: item.id, image: item.image }))
+        : homeGalleryItems
+      )
+        .filter((item) =>
+          views && views.length > 0 ? Boolean(item.image) : imageAvailability[item.id],
+        )
         .map((item) => ({
           image: item.image,
           text: '',
         })),
-    [imageAvailability, t],
+    [imageAvailability, t, views],
   );
 
   if (items.length < 2) {

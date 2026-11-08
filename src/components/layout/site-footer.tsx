@@ -3,7 +3,7 @@
 /* Brand marks must keep source proportions; do not route through next/image. */
 /* eslint-disable @next/next/no-img-element */
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { FooterNewsletter } from '@/components/layout/footer-newsletter';
 import { LocalizedLink } from '@/components/shared/localized-link';
@@ -88,18 +88,53 @@ function BackToTopButton({ label }: { label: string }) {
   );
 }
 
+type FooterOverride = {
+  email: string;
+  phone: string;
+  address: { en: string; ar: string };
+  instagram: string;
+  facebook: string;
+};
+
 export function SiteFooter() {
   const locale = useLocale();
   const t = useTranslations('footer');
   const tNav = useTranslations('nav');
   const tA11y = useTranslations('a11y');
   const year = new Date().getFullYear();
+  const [override, setOverride] = useState<FooterOverride | null>(null);
   const contact = getVerifiedContact();
+  const email = override?.email || contact.email;
+  const phone = override?.phone || contact.phone;
   const address =
-    contact.address && (locale === 'ar' ? contact.address.ar : contact.address.en);
+    (override?.address && (locale === 'ar' ? override.address.ar : override.address.en)) ||
+    (contact.address && (locale === 'ar' ? contact.address.ar : contact.address.en));
+  const social = [
+    ...(override?.instagram
+      ? [{ platform: 'instagram' as const, href: override.instagram }]
+      : contact.social.filter((item) => item.platform === 'instagram')),
+    ...(override?.facebook
+      ? [{ platform: 'facebook' as const, href: override.facebook }]
+      : contact.social.filter((item) => item.platform === 'facebook')),
+  ];
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetch('/api/v1/catalog/site')
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: { site?: FooterOverride & { footer?: FooterOverride } } | null) => {
+        if (cancelled) return;
+        const footer = (data as { site?: { footer?: FooterOverride } } | null)?.site?.footer;
+        if (footer) setOverride(footer);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const rootRef = useRef<HTMLElement>(null);
   const hasConnectDetails = Boolean(
-    contact.email || contact.phone || address || contact.social.length > 0,
+    email || phone || address || social.length > 0,
   );
 
   useGsapContext(() => {
@@ -172,27 +207,27 @@ export function SiteFooter() {
                 className="site-footer-list"
                 aria-labelledby="footer-connect-heading"
               >
-                {contact.email ? (
+                {email ? (
                   <li>
                     <span className="site-footer-meta">{t('email')}</span>
                     <a
-                      href={`mailto:${contact.email}`}
+                      href={`mailto:${email}`}
                       className="site-footer-link"
                       dir="ltr"
                     >
-                      {contact.email}
+                      {email}
                     </a>
                   </li>
                 ) : null}
-                {contact.phone && contact.phoneHref ? (
+                {phone ? (
                   <li>
                     <span className="site-footer-meta">{t('telephone')}</span>
                     <a
-                      href={contact.phoneHref}
+                      href={`tel:${phone.replace(/\s+/g, '')}`}
                       className="site-footer-link"
                       dir="ltr"
                     >
-                      {contact.phone}
+                      {phone}
                     </a>
                   </li>
                 ) : null}
@@ -202,7 +237,7 @@ export function SiteFooter() {
                     <span className="site-footer-text">{address}</span>
                   </li>
                 ) : null}
-                {contact.social.map((link) => (
+                {social.map((link) => (
                   <li key={link.platform}>
                     <a
                       href={link.href}

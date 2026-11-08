@@ -11,17 +11,35 @@ import {
 import { useGsapContext } from '@/hooks/use-gsap-context';
 import { revealElements } from '@/lib/motion-timelines';
 
+type LiveHomeCollaborator = {
+  id: string;
+  name: string;
+  kindLabel: string;
+  logoSrc: string | null;
+};
+
 type HomeCollaboratorsSectionProps = {
   logos: Record<string, string | null>;
+  liveItems?: LiveHomeCollaborator[];
 };
 
 export function HomeCollaboratorsSection({
   logos,
+  liveItems,
 }: HomeCollaboratorsSectionProps) {
   const t = useTranslations('home.collaborators');
   const rootRef = useRef<HTMLElement>(null);
-  const preview = uniqueCollaborators.slice(0, HOME_COLLABORATOR_PREVIEW_COUNT);
-  const hasMore = uniqueCollaborators.length > preview.length;
+  const preview =
+    liveItems
+      ? liveItems.slice(0, HOME_COLLABORATOR_PREVIEW_COUNT)
+      : uniqueCollaborators.slice(0, HOME_COLLABORATOR_PREVIEW_COUNT).map((item) => ({
+          id: item.id,
+          name: t(`names.${item.nameKey}`),
+          kindLabel: t(`columns.${item.kind}`),
+          logoSrc: logos[item.id],
+        }));
+  const hasMore =
+    (liveItems ? liveItems.length : uniqueCollaborators.length) > preview.length;
 
   useGsapContext(() => {
     const root = rootRef.current;
@@ -56,14 +74,7 @@ export function HomeCollaboratorsSection({
           <p className="home-collaborators-intro type-body">{t('intro')}</p>
         </header>
 
-        <CollaboratorsGrid
-          items={preview.map((item) => ({
-            id: item.id,
-            name: t(`names.${item.nameKey}`),
-            kindLabel: t(`columns.${item.kind}`),
-            logoSrc: logos[item.id],
-          }))}
-        />
+        <CollaboratorsGrid items={preview} />
 
         {hasMore ? (
           <div className="home-collaborators-more">

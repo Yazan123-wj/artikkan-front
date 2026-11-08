@@ -79,6 +79,8 @@ export async function ProductDetailContent({
     details?.finishes[locale as 'en' | 'ar'] ||
     details?.finishes.en ||
     '';
+  const care = live ? liveName(live.care, locale) : '';
+  const custom = live ? liveName(live.custom, locale) : '';
   const related =
     liveProducts && liveProducts.length > 0
       ? liveProducts
@@ -126,6 +128,18 @@ export async function ProductDetailContent({
                     <dt>{t('finishes')}</dt>
                     <dd>{finishes}</dd>
                   </div>
+                  {care ? (
+                    <div className="product-detail-spec">
+                      <dt>{t('care')}</dt>
+                      <dd>{care}</dd>
+                    </div>
+                  ) : null}
+                  {custom ? (
+                    <div className="product-detail-spec">
+                      <dt>{t('custom')}</dt>
+                      <dd>{custom}</dd>
+                    </div>
+                  ) : null}
                 </dl>
               </section>
 

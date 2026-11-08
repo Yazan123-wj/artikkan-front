@@ -18,11 +18,16 @@ import {
   journalArticles,
   loc,
 } from '@/lib/journal';
+import { fetchLiveArticle, liveAssetAvailable } from '@/lib/live-catalog';
+import { liveArticleToJournal } from '@/lib/live-site';
 import { createPageMetadata } from '@/lib/metadata';
 
 type JournalSlugPageProps = {
   params: Promise<{ locale: string; slug: string }>;
 };
+
+export const dynamicParams = true;
+export const dynamic = 'force-dynamic';
 
 export function generateStaticParams() {
   return journalArticles.flatMap((article) => [
@@ -33,7 +38,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: JournalSlugPageProps) {
   const { locale, slug } = await params;
-  const article = findArticleBySlug(slug);
+  const live = await fetchLiveArticle(slug);
+  const article = live ? liveArticleToJournal(live) : findArticleBySlug(slug);
 
   if (!article) {
     notFound();
@@ -69,7 +75,8 @@ export default async function JournalSlugPage({ params }: JournalSlugPageProps) 
 
   setRequestLocale(resolvedLocale);
 
-  const article = findArticleBySlug(slug);
+  const live = await fetchLiveArticle(slug);
+  const article = live ? liveArticleToJournal(live) : findArticleBySlug(slug);
 
   if (!article) {
     notFound();
@@ -77,7 +84,8 @@ export default async function JournalSlugPage({ params }: JournalSlugPageProps) 
 
   const t = await getTranslations('journal');
   const title = loc(article.title, resolvedLocale);
-  const imageAvailable = publicAssetExists(article.image.src);
+  const imageAvailable =
+    liveAssetAvailable(article.image.src) || publicAssetExists(article.image.src);
   const objectPosition =
     resolvedLocale === 'ar'
       ? (article.image.objectPositionRtl ?? article.image.objectPosition)
@@ -124,7 +132,15 @@ export default async function JournalSlugPage({ params }: JournalSlugPageProps) 
         <JournalReveal>
           <header className="journal-article-header" data-journal-reveal>
             <p className="journal-meta">
-              <span>{t(`categories.${article.categoryId}`)}</span>
+              <span>
+                {(['design', 'materials', 'craft'] as const).includes(
+                  article.categoryId as 'design' | 'materials' | 'craft',
+                )
+                  ? t(
+                      `categories.${article.categoryId as 'design' | 'materials' | 'craft'}`,
+                    )
+                  : article.categoryId}
+              </span>
               <span>
                 {formatArticleDate(
                   article.publishedAt,

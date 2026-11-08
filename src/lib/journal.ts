@@ -75,10 +75,7 @@ export function filterArticles(
   category: string | undefined,
 ): JournalArticle[] {
   const needle = query.trim().toLowerCase();
-  const categoryId =
-    category && category !== 'all'
-      ? JOURNAL_CATEGORY_IDS.find((id) => id === category)
-      : undefined;
+  const categoryId = category && category !== 'all' ? category : undefined;
 
   return articles.filter((article) => {
     if (categoryId && article.categoryId !== categoryId) {
@@ -128,11 +125,7 @@ export function parseJournalSearchParams(searchParams: {
 
   return {
     q,
-    category: JOURNAL_CATEGORY_IDS.includes(
-      category as (typeof JOURNAL_CATEGORY_IDS)[number],
-    )
-      ? category
-      : 'all',
+    category: category || 'all',
     page: Number.isFinite(page) ? page : 1,
   };
 }

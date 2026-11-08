@@ -17,6 +17,8 @@ export type LiveProduct = {
   materials: { en?: string | null; ar?: string | null } | null;
   dimensions: { en?: string | null; ar?: string | null } | null;
   finishes: { en?: string | null; ar?: string | null } | null;
+  care?: { en?: string | null; ar?: string | null } | null;
+  custom?: { en?: string | null; ar?: string | null } | null;
   published: boolean;
   featured: boolean;
 };
@@ -71,7 +73,21 @@ export async function fetchLiveProducts(): Promise<LiveProduct[] | null> {
   if (!API_URL) return null;
   try {
     const response = await fetch(`${API_URL}/catalog/products`, {
-      next: { revalidate: 30 },
+      cache: 'no-store',
+    });
+    if (!response.ok) return null;
+    const data = (await response.json()) as { products?: LiveProduct[] };
+    return data.products ?? [];
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchLiveFeaturedProducts(): Promise<LiveProduct[] | null> {
+  if (!API_URL) return null;
+  try {
+    const response = await fetch(`${API_URL}/catalog/products?featured=true`, {
+      cache: 'no-store',
     });
     if (!response.ok) return null;
     const data = (await response.json()) as { products?: LiveProduct[] };
@@ -85,7 +101,7 @@ export async function fetchLiveProduct(slug: string): Promise<LiveProduct | null
   if (!API_URL) return null;
   try {
     const response = await fetch(`${API_URL}/catalog/products/${slug}`, {
-      next: { revalidate: 30 },
+      cache: 'no-store',
     });
     if (!response.ok) return null;
     const data = (await response.json()) as { product?: LiveProduct };
@@ -127,7 +143,31 @@ export type LiveProject = {
   featured: boolean;
   placement: 'start' | 'end';
   imageSrc: string | null;
+  gallery?: string[];
   products: LiveProjectPiece[];
+};
+
+export type LiveArticle = {
+  id: string;
+  slug: { en?: string | null; ar?: string | null };
+  title: { en?: string | null; ar?: string | null };
+  excerpt: { en?: string | null; ar?: string | null };
+  body: { en?: string | null; ar?: string | null };
+  category: string;
+  status: string;
+  featured: boolean;
+  imageSrc: string | null;
+  publishedAt: string | null;
+};
+
+export type LiveCollaborator = {
+  id: string;
+  slug: string;
+  name: string;
+  kind: string;
+  logoSrc: string | null;
+  featured: boolean;
+  published: boolean;
 };
 
 export function liveAssetAvailable(src: string | null | undefined) {
@@ -143,7 +183,7 @@ export async function fetchLiveProjects(): Promise<LiveProject[] | null> {
   if (!API_URL) return null;
   try {
     const response = await fetch(`${API_URL}/catalog/projects`, {
-      next: { revalidate: 30 },
+      cache: 'no-store',
     });
     if (!response.ok) return null;
     const data = (await response.json()) as { projects?: LiveProject[] };
@@ -157,11 +197,53 @@ export async function fetchLiveProject(slug: string): Promise<LiveProject | null
   if (!API_URL) return null;
   try {
     const response = await fetch(`${API_URL}/catalog/projects/${slug}`, {
-      next: { revalidate: 30 },
+      cache: 'no-store',
     });
     if (!response.ok) return null;
     const data = (await response.json()) as { project?: LiveProject };
     return data.project ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchLiveJournal(): Promise<LiveArticle[] | null> {
+  if (!API_URL) return null;
+  try {
+    const response = await fetch(`${API_URL}/catalog/journal`, {
+      cache: 'no-store',
+    });
+    if (!response.ok) return null;
+    const data = (await response.json()) as { articles?: LiveArticle[] };
+    return data.articles ?? [];
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchLiveArticle(slug: string): Promise<LiveArticle | null> {
+  if (!API_URL) return null;
+  try {
+    const response = await fetch(`${API_URL}/catalog/journal/${encodeURIComponent(slug)}`, {
+      cache: 'no-store',
+    });
+    if (!response.ok) return null;
+    const data = (await response.json()) as { article?: LiveArticle };
+    return data.article ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchLiveCollaborators(): Promise<LiveCollaborator[] | null> {
+  if (!API_URL) return null;
+  try {
+    const response = await fetch(`${API_URL}/catalog/collaborators`, {
+      cache: 'no-store',
+    });
+    if (!response.ok) return null;
+    const data = (await response.json()) as { collaborators?: LiveCollaborator[] };
+    return data.collaborators ?? [];
   } catch {
     return null;
   }

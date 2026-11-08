@@ -7,13 +7,13 @@ import type { JournalCategoryId } from '@/types/journal';
 type JournalFiltersProps = {
   query: string;
   category: string;
-  categories: readonly JournalCategoryId[];
+  categories: readonly string[];
   searchLabel: string;
   searchPlaceholder: string;
   searchSubmit: string;
   filtersLabel: string;
   allLabel: string;
-  categoryLabels: Record<JournalCategoryId, string>;
+  categoryLabels: Record<string, string>;
   onQueryChange: (value: string) => void;
 };
 

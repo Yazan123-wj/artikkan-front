@@ -13,6 +13,11 @@ import { productPieceKey } from '@/lib/product-messages';
 type FeaturedProductsProps = {
   imageAvailability: Record<string, boolean>;
   enquiryEmail: string | null;
+  liveItems?: {
+    product: import('@/types/product').FeaturedProduct;
+    name: string;
+    category: string;
+  }[];
 };
 
 function pieceCopy(
@@ -26,6 +31,7 @@ function pieceCopy(
 export function FeaturedProducts({
   imageAvailability,
   enquiryEmail,
+  liveItems,
 }: FeaturedProductsProps) {
   const t = useTranslations('home.products');
   const tCategories = useTranslations('home.categories');
@@ -34,6 +40,14 @@ export function FeaturedProducts({
   const products = featuredProducts.filter(
     (product) => imageAvailability[product.id],
   );
+  const cards =
+    liveItems
+      ? liveItems
+      : products.map((product) => ({
+          product,
+          name: pieceCopy(t, product.nameKey, 'name'),
+          category: tCategories(product.categoryKey),
+        }));
 
   useGsapContext(() => {
     const root = rootRef.current;
@@ -80,15 +94,15 @@ export function FeaturedProducts({
           <p className="featured-products-intro type-body">{t('intro')}</p>
         </header>
 
-        {products.length > 0 ? (
+        {cards.length > 0 ? (
           <div className="featured-products-grid">
-            {products.map((product) => (
+            {cards.map((item) => (
               <ProductCard
-                key={product.id}
-                product={product}
-                name={pieceCopy(t, product.nameKey, 'name')}
-                category={tCategories(product.categoryKey)}
-                imageAlt={pieceCopy(t, product.nameKey, 'alt')}
+                key={item.product.id}
+                product={item.product}
+                name={item.name}
+                category={item.category}
+                imageAlt={item.name}
                 enquireLabel={t('enquire')}
                 enquiryEmail={enquiryEmail}
                 exploreLabel={t('exploreProduct')}

@@ -1,6 +1,6 @@
 import type { LocalizedString } from './common';
 
-export type JournalCategoryId = 'design' | 'materials' | 'craft';
+export type JournalCategoryId = string;
 
 export type JournalArticleStatus = 'draft' | 'published';
 

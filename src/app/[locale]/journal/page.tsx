@@ -9,8 +9,12 @@ import {
   getListedArticles,
   parseJournalSearchParams,
 } from '@/lib/journal';
+import { fetchLiveJournal, liveAssetAvailable } from '@/lib/live-catalog';
+import { fetchLiveSite, liveArticleToJournal, liveCopy } from '@/lib/live-site';
 import { createPageMetadata } from '@/lib/metadata';
 import type { JournalCategoryId } from '@/types/journal';
+
+export const dynamic = 'force-dynamic';
 
 type JournalPageProps = {
   params: Promise<{ locale: string }>;
@@ -52,16 +56,29 @@ export default async function JournalPage({
 
   const t = await getTranslations('journal');
   const { q, category } = parseJournalSearchParams(await searchParams);
-  const featuredArticle = getFeaturedArticle();
-  const categories = getArticleCategories();
-  const articles = getListedArticles();
+  const liveArticles = await fetchLiveJournal();
+  const site = await fetchLiveSite();
+  const articles =
+    liveArticles === null
+      ? getListedArticles()
+      : liveArticles.map(liveArticleToJournal);
+  const featuredArticle =
+    articles.find((article) => article.featured) ?? getFeaturedArticle();
+  const categories =
+    site?.journalCategories.map((item) => item.slug) ??
+    getArticleCategories();
 
   const categoryLabels = Object.fromEntries(
-    categories.map((id) => [id, t(`categories.${id}`)]),
+    (site?.journalCategories ?? []).length
+      ? site!.journalCategories.map((item) => [item.slug, liveCopy(item.name, resolvedLocale)])
+      : categories.map((id) => [id, t(`categories.${id}` as never)]),
   ) as Record<JournalCategoryId, string>;
 
   const imageAvailability = Object.fromEntries(
-    articles.map((article) => [article.id, publicAssetExists(article.image.src)]),
+    articles.map((article) => [
+      article.id,
+      liveAssetAvailable(article.image.src) || publicAssetExists(article.image.src),
+    ]),
   );
 
   return (

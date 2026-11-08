@@ -8,6 +8,8 @@ type ProjectsPageProps = {
   params: Promise<{ locale: string }>;
 };
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }: ProjectsPageProps) {
   const { locale } = await params;
   return createPageMetadata({

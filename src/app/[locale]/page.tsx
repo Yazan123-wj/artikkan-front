@@ -9,6 +9,7 @@ import { FeaturedProducts } from '@/components/sections/home/products';
 import { FeaturedProjects } from '@/components/sections/home/projects';
 import { HomeCollaboratorsSection } from '@/components/sections/home/collaborators';
 import { HomeContactSection } from '@/components/sections/home/contact';
+import { HomePromoBanners } from '@/components/sections/home/promo/home-promo-banners';
 import { StatisticsSection } from '@/components/sections/home/statistics';
 import { HERO_MEDIA, heroFrameUrl } from '@/config/hero';
 import {
@@ -28,11 +29,15 @@ import { routing, type AppLocale } from '@/i18n/routing';
 import { publicAssetExists } from '@/lib/assets';
 import {
   fetchLiveCategories,
+  fetchLiveCollaborators,
+  fetchLiveFeaturedProducts,
   fetchLiveProjects,
   liveAssetAvailable,
   liveMedia,
   liveName,
+  toFeaturedProduct,
 } from '@/lib/live-catalog';
+import { fetchLiveSite, liveCopy } from '@/lib/live-site';
 import { createPageMetadata } from '@/lib/metadata';
 import {
   homeProjectRowsFromLive,
@@ -43,6 +48,8 @@ type HomePageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ product?: string | string[] }>;
 };
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: HomePageProps) {
   const { locale } = await params;
@@ -60,8 +67,16 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     ? productParam.product[0]
     : productParam.product;
   const initialProduct = productValue?.trim() || null;
-  preload(HERO_MEDIA.poster, { as: 'image' });
-  const aboutImageAvailable = publicAssetExists(ABOUT_IMAGE.src);
+  const site = await fetchLiveSite();
+  const heroPoster = site?.hero.poster
+    ? liveMedia(site.hero.poster)
+    : HERO_MEDIA.poster;
+  preload(heroPoster, { as: 'image' });
+  const aboutImageSrc = site?.homeAbout.image
+    ? liveMedia(site.homeAbout.image)
+    : ABOUT_IMAGE.src;
+  const aboutImageAvailable =
+    liveAssetAvailable(site?.homeAbout.image) || publicAssetExists(aboutImageSrc);
   const tHomeCategories = await getTranslations({
     locale: resolvedLocale,
     namespace: 'home.categories',
@@ -88,9 +103,25 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           link: category.href,
           imageAvailable: publicAssetExists(category.image),
         }));
+  const selectedViews = (site?.selectedViews ?? []).filter((item) => item.image);
   const galleryImageAvailability = Object.fromEntries(
-    homeGalleryItems.map((item) => [item.id, publicAssetExists(item.image)]),
+    (selectedViews.length
+      ? selectedViews.map((item) => [item.id, liveAssetAvailable(item.image) || publicAssetExists(item.image)])
+      : homeGalleryItems.map((item) => [item.id, publicAssetExists(item.image)])
+    ) as [string, boolean][],
   );
+  const liveFeatured = await fetchLiveFeaturedProducts();
+  const liveFeaturedItems =
+    liveFeatured === null
+      ? undefined
+      : liveFeatured.map((product) => ({
+          product: toFeaturedProduct(product),
+          name: liveName(product.name, resolvedLocale),
+          category: liveName(
+            liveCategories?.find((item) => item.slug === product.category)?.name,
+            resolvedLocale,
+          ) || product.category,
+        }));
   const productImageAvailability = Object.fromEntries(
     featuredProducts.map((product) => [
       product.id,
@@ -103,12 +134,39 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       Boolean(project.image && publicAssetExists(project.image.src)),
     ]),
   );
+  const liveCollaborators = await fetchLiveCollaborators();
+  const homepageIds = site?.homepageCollaboratorIds ?? [];
+  const homeLiveCollaborators = (liveCollaborators ?? [])
+    .filter((item) =>
+      homepageIds.length > 0 ? homepageIds.includes(item.id) : item.featured,
+    )
+    .map((item) => ({
+      id: item.id,
+      name: item.name,
+      kindLabel: item.kind,
+      logoSrc: item.logoSrc ? liveMedia(item.logoSrc) : null,
+    }));
   const collaboratorLogos = Object.fromEntries(
     homeCollaborators.map((item) => [
       item.id,
       resolveCollaboratorLogo(item, publicAssetExists),
     ]),
   );
+  const liveStats = site?.stats.map((stat) => ({
+    id: stat.id,
+    value: stat.value,
+    prefix: stat.prefix,
+    suffix: stat.suffix,
+    label: liveCopy(stat.label, resolvedLocale),
+  }));
+  const promoBanners = (site?.promoBanners ?? [])
+    .filter((banner) => banner.enabled)
+    .map((banner) => ({
+      id: banner.id,
+      image: banner.image,
+      title: liveCopy(banner.title, resolvedLocale),
+      href: banner.href,
+    }));
   const enquiryEmail = getEnquiryEmail();
   const tProjects = await getTranslations({
     locale: resolvedLocale,
@@ -150,17 +208,47 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         href={heroFrameUrl('mobile', 1)}
         media="(max-width: 768px)"
       />
-      <Hero />
-      <AboutSection imageAvailable={aboutImageAvailable} />
-      <StatisticsSection />
+      <Hero
+        media={
+          site
+            ? {
+                poster: heroPoster,
+                videoDesktop: site.hero.videoDesktop
+                  ? liveMedia(site.hero.videoDesktop)
+                  : '',
+                videoMobile: site.hero.videoMobile
+                  ? liveMedia(site.hero.videoMobile)
+                  : '',
+              }
+            : undefined
+        }
+      />
+      <AboutSection
+        imageAvailable={aboutImageAvailable}
+        imageSrc={aboutImageSrc}
+        title={site ? liveCopy(site.homeAbout.title, resolvedLocale) : undefined}
+        body={site ? liveCopy(site.homeAbout.body, resolvedLocale) : undefined}
+      />
+      <StatisticsSection stats={liveStats} />
       <FeaturedCategories items={homeCategoryItems} />
-      <HomeGallerySection imageAvailability={galleryImageAvailability} />
+      <HomePromoBanners banners={promoBanners} />
+      <HomeGallerySection
+        imageAvailability={galleryImageAvailability}
+        views={selectedViews.map((item) => ({
+          id: item.id,
+          image: liveMedia(item.image),
+        }))}
+      />
       <FeaturedProducts
         imageAvailability={productImageAvailability}
         enquiryEmail={enquiryEmail}
+        liveItems={liveFeaturedItems}
       />
       <FeaturedProjects rows={projectRows} />
-      <HomeCollaboratorsSection logos={collaboratorLogos} />
+      <HomeCollaboratorsSection
+        logos={collaboratorLogos}
+        liveItems={liveCollaborators === null ? undefined : homeLiveCollaborators}
+      />
       <HomeContactSection
         locale={resolvedLocale}
         enquiryEmail={enquiryEmail}
