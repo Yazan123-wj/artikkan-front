@@ -49,8 +49,19 @@ export function revealElements(
     trigger,
   } = options;
 
+  const visible = nodes.filter(nodeInView);
+  const waiting = nodes.filter((node) => !nodeInView(node));
+
+  if (visible.length > 0) {
+    gsapSet(visible, { autoAlpha: 1, y: 0 });
+  }
+
+  if (waiting.length === 0) {
+    return undefined;
+  }
+
   const tween = gsap.fromTo(
-    nodes,
+    waiting,
     { autoAlpha: 0, y },
     {
       autoAlpha: 1,
@@ -70,7 +81,7 @@ export function revealElements(
   );
 
   const showVisible = () => {
-    const pending = nodes.filter((node) => {
+    const pending = waiting.filter((node) => {
       const opacity = window.getComputedStyle(node).opacity;
       return opacity === '0' && nodeInView(node);
     });

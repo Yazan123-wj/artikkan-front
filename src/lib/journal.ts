@@ -92,14 +92,18 @@ export function filterArticles(
   category: string | undefined,
 ): JournalArticle[] {
   const needle = query.trim().toLowerCase();
-  const categoryId = category && category !== 'all' ? category : undefined;
+  const normalizedCategory =
+    category && category !== 'all' ? category.trim().toLowerCase() : undefined;
 
   return articles.filter((article) => {
     if (!loc(article.title, locale)) {
       return false;
     }
 
-    if (categoryId && article.categoryId !== categoryId) {
+    if (
+      normalizedCategory &&
+      (article.categoryId ?? '').trim().toLowerCase() !== normalizedCategory
+    ) {
       return false;
     }
 
@@ -112,6 +116,32 @@ export function filterArticles(
       loc(article.excerpt, locale).toLowerCase().includes(needle)
     );
   });
+}
+
+/**
+ * Featured hero is only for the unfiltered listing. Category/search results
+ * always keep every match in the grid — including the featured article.
+ */
+export function partitionJournalList(
+  articles: readonly JournalArticle[],
+  locale: AppLocale,
+  query: string,
+  category: string | undefined,
+  featuredId?: string,
+): { featured?: JournalArticle; gridItems: JournalArticle[] } {
+  const matches = filterArticles(articles, locale, query, category);
+  const showHero = !query.trim() && (!category || category === 'all');
+  const featured = showHero
+    ? (matches.find((article) => article.id === featuredId) ??
+      matches.find((article) => article.featured))
+    : undefined;
+
+  return {
+    featured,
+    gridItems: featured
+      ? matches.filter((article) => article.id !== featured.id)
+      : matches,
+  };
 }
 
 export function paginateArticles(

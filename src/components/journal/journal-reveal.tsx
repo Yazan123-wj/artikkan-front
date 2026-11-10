@@ -18,12 +18,14 @@ export function JournalReveal({ children, className }: JournalRevealProps) {
       return;
     }
 
-    const items = root.querySelectorAll('[data-journal-reveal]');
+    const items = [...root.querySelectorAll('[data-journal-reveal]')];
     if (items.length === 0) {
       return;
     }
 
-    revealElements(items, { trigger: root });
+    items.forEach((item) => {
+      revealElements(item, { trigger: item, stagger: 0 });
+    });
   }, rootRef);
 
   return (

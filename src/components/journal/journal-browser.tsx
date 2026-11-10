@@ -7,7 +7,7 @@ import { JournalFilters } from '@/components/journal/journal-filters';
 import { JournalReveal } from '@/components/journal/journal-reveal';
 import { LocalizedLink } from '@/components/shared/localized-link';
 import type { AppLocale } from '@/i18n/routing';
-import { filterArticles, formatArticleDate } from '@/lib/journal';
+import { formatArticleDate, partitionJournalList } from '@/lib/journal';
 import type { JournalArticle, JournalCategoryId } from '@/types/journal';
 
 type JournalBrowserProps = {
@@ -51,18 +51,10 @@ export function JournalBrowser({
 }: JournalBrowserProps) {
   const [query, setQuery] = useState(initialQuery);
 
-  const matches = useMemo(
-    () => filterArticles(articles, locale, query, category),
-    [articles, locale, query, category],
+  const { featured, gridItems } = useMemo(
+    () => partitionJournalList(articles, locale, query, category, featuredId),
+    [articles, locale, query, category, featuredId],
   );
-
-  const showFeatured = !query.trim() && category === 'all';
-  const featured = showFeatured
-    ? matches.find((article) => article.id === featuredId)
-    : undefined;
-  const gridItems = featured
-    ? matches.filter((article) => article.id !== featured.id)
-    : matches;
 
   return (
     <>
