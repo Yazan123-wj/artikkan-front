@@ -363,6 +363,7 @@
 .menu-overlay.is-open {
   visibility: visible;
   pointer-events: auto;
+  background: var(--background);
 }
 
 .menu-overlay-curtain,
