@@ -5,8 +5,8 @@ export const ENTRANCE_AUDIO = '/media/audio/artikkan-entrance.mp3';
 export const HERO_MEDIA = {
   poster: '/media/hero/artikkan-hero-poster.jpg',
   desktopVideo: '/media/hero/artikkan-hero-desktop.mp4',
-  mobileVideo: '/media/hero/artikkan-hero-mobile.mp4',
-  fallbackVideo: '/media/hero/artikkan-hero-master.mp4',
+  mobileVideo: '/media/hero/artikkan-hero-desktop.mp4',
+  fallbackVideo: '/media/hero/artikkan-hero-desktop.mp4',
 } as const;
 
 export const BRAND_ASSETS = {

@@ -17,6 +17,7 @@ function apiOrigin() {
 const nextConfig: NextConfig = {
   output: process.env.VERCEL ? undefined : 'standalone',
   async rewrites() {
+    if (process.env.VERCEL) return [];
     const origin = apiOrigin();
     return [
       { source: '/api/v1/:path*', destination: `${origin}/api/v1/:path*` },
