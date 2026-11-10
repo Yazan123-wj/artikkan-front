@@ -15,7 +15,7 @@ function apiOrigin() {
 }
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  output: process.env.VERCEL ? undefined : 'standalone',
   async rewrites() {
     const origin = apiOrigin();
     return [
@@ -35,6 +35,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '**.up.railway.app',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.vercel.app',
         pathname: '/uploads/**',
       },
     ],
