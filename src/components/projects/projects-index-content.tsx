@@ -4,7 +4,7 @@ import { ImageCurtain } from '@/components/motion/image-curtain';
 import { EditorialLink } from '@/components/shared/editorial-link';
 import { InteriorReveal } from '@/components/shared/interior-reveal';
 import { featuredProjects, getProjectLayoutStill } from '@/lib/projects';
-import { fetchLiveProjects, liveName } from '@/lib/live-catalog';
+import { fetchLiveProjects, hasLocaleField, liveName } from '@/lib/live-catalog';
 import {
   liveToFeaturedProject,
   projectImageAvailable,
@@ -30,7 +30,13 @@ export async function ProjectsIndexContent() {
             available: projectImageAvailable(still.src),
           };
         })
-      : live.map((project) => {
+      : live
+          .filter(
+            (project) =>
+              hasLocaleField(project.title, locale) ||
+              Boolean(liveName(project.title, locale)),
+          )
+          .map((project) => {
           const featured = liveToFeaturedProject(project);
           return {
             id: project.id,

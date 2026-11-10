@@ -8,7 +8,7 @@ import { BRAND_ASSETS } from '@/config/hero';
 import { ABOUT_IMAGE } from '@/config/home-content';
 import { MOTION, motionPair } from '@/config/motion';
 import { useGsapContext } from '@/hooks/use-gsap-context';
-import { gsap } from '@/lib/gsap';
+import { gsap, gsapSet, isGsapTarget } from '@/lib/gsap';
 
 type AboutSectionProps = {
   imageAvailable: boolean;
@@ -44,11 +44,11 @@ export function AboutSection({
     const reveal = root.querySelector('.about-media-reveal');
     const scale = root.querySelector('.about-media-scale');
 
-    gsap.set(eyebrow, { autoAlpha: 0, y: rise });
-    gsap.set(lines, { yPercent: 100 });
-    gsap.set(follow, { autoAlpha: 0, y: rise * 0.5 });
-    gsap.set(reveal, { clipPath: 'inset(8% 6% 10% 6%)' });
-    gsap.set(scale, { scale: 1.06 });
+    gsapSet(eyebrow, { autoAlpha: 0, y: rise });
+    gsapSet(lines, { yPercent: 100 });
+    gsapSet(follow, { autoAlpha: 0, y: rise * 0.5 });
+    gsapSet(reveal, { clipPath: 'inset(8% 6% 10% 6%)' });
+    gsapSet(scale, { scale: 1.06 });
 
     const timeline = gsap.timeline({
       defaults: { ease: MOTION.ease.out },
@@ -60,9 +60,11 @@ export function AboutSection({
       },
     });
 
-    timeline
-      .to(eyebrow, { autoAlpha: 1, y: 0, duration: MOTION.about.eyebrow }, 0)
-      .to(
+    if (eyebrow) {
+      timeline.to(eyebrow, { autoAlpha: 1, y: 0, duration: MOTION.about.eyebrow }, 0);
+    }
+    if (isGsapTarget(lines)) {
+      timeline.to(
         lines,
         {
           yPercent: 0,
@@ -70,8 +72,10 @@ export function AboutSection({
           stagger: MOTION.about.lineStagger,
         },
         0.06,
-      )
-      .to(
+      );
+    }
+    if (isGsapTarget(follow)) {
+      timeline.to(
         follow,
         {
           autoAlpha: 1,
@@ -80,8 +84,10 @@ export function AboutSection({
           stagger: MOTION.about.followStagger,
         },
         MOTION.about.followAt,
-      )
-      .to(
+      );
+    }
+    if (reveal) {
+      timeline.to(
         reveal,
         {
           clipPath: 'inset(0% 0% 0% 0%)',
@@ -89,8 +95,10 @@ export function AboutSection({
           ease: MOTION.ease.inOut,
         },
         0,
-      )
-      .to(
+      );
+    }
+    if (scale) {
+      timeline.to(
         scale,
         {
           scale: 1,
@@ -99,6 +107,7 @@ export function AboutSection({
         },
         0,
       );
+    }
   }, rootRef);
 
   return (

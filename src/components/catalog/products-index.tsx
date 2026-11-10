@@ -15,6 +15,7 @@ import {
 import {
   fetchLiveCategories,
   fetchLiveProducts,
+  hasLocaleField,
   liveName,
   toFeaturedProduct,
 } from '@/lib/live-catalog';
@@ -54,7 +55,9 @@ export async function ProductsIndex({ locale, searchParams }: ProductsIndexProps
       : null;
   const catalog =
     liveProducts && liveProducts.length > 0
-      ? liveProducts.map(toFeaturedProduct)
+      ? liveProducts
+          .filter((item) => hasLocaleField(item.name, resolvedLocale))
+          .map(toFeaturedProduct)
       : getCatalogProducts();
 
   const names = Object.fromEntries(

@@ -92,14 +92,14 @@ export function JournalBrowser({
       />
 
       <JournalReveal key={`${query}-${category}`}>
-        {gridItems.length === 0 ? (
+        {gridItems.length === 0 && !featured ? (
           <div className="journal-empty">
             <p>{emptyLabel}</p>
             <LocalizedLink href="/journal" className="journal-reset">
               {emptyActionLabel}
             </LocalizedLink>
           </div>
-        ) : (
+        ) : gridItems.length === 0 ? null : (
           <div className="journal-grid">
             {gridItems.map((article) => (
               <JournalArticleCard

@@ -1,5 +1,5 @@
 import { MOTION, motionPair } from '@/config/motion';
-import { gsap } from '@/lib/gsap';
+import { gsap, gsapSet, isGsapTarget, ScrollTrigger } from '@/lib/gsap';
 
 type RevealOptions = {
   y?: number;
@@ -9,11 +9,38 @@ type RevealOptions = {
   trigger?: Element | string;
 };
 
+function revealNodes(items: gsap.TweenTarget): Element[] {
+  if (typeof NodeList !== 'undefined' && items instanceof NodeList) {
+    return [...items].filter((node): node is Element => node instanceof Element);
+  }
+  if (Array.isArray(items)) {
+    return items.filter((node): node is Element => node instanceof Element);
+  }
+  if (items instanceof Element) {
+    return [items];
+  }
+  return [];
+}
+
+function nodeInView(node: Element) {
+  const rect = node.getBoundingClientRect();
+  return rect.bottom > 0 && rect.top < (window.innerHeight || 0) + 80;
+}
+
 /** Shared fade/rise used across interior, journal, contact, and section cards. */
 export function revealElements(
   items: gsap.TweenTarget,
   options: RevealOptions = {},
-): gsap.core.Tween {
+): gsap.core.Tween | undefined {
+  if (!isGsapTarget(items)) {
+    return undefined;
+  }
+
+  const nodes = revealNodes(items);
+  if (nodes.length === 0) {
+    return undefined;
+  }
+
   const {
     y = MOTION.reveal.y,
     duration = MOTION.reveal.duration,
@@ -22,22 +49,50 @@ export function revealElements(
     trigger,
   } = options;
 
-  gsap.set(items, { autoAlpha: 0, y });
+  const tween = gsap.fromTo(
+    nodes,
+    { autoAlpha: 0, y },
+    {
+      autoAlpha: 1,
+      y: 0,
+      duration,
+      stagger,
+      ease: MOTION.ease.out,
+      scrollTrigger: trigger
+        ? {
+            trigger,
+            start,
+            once: true,
+            invalidateOnRefresh: true,
+          }
+        : undefined,
+    },
+  );
 
-  return gsap.to(items, {
-    autoAlpha: 1,
-    y: 0,
-    duration,
-    stagger,
-    ease: MOTION.ease.out,
-    scrollTrigger: trigger
-      ? {
-          trigger,
-          start,
-          once: true,
-        }
-      : undefined,
+  const showVisible = () => {
+    const pending = nodes.filter((node) => {
+      const opacity = window.getComputedStyle(node).opacity;
+      return opacity === '0' && nodeInView(node);
+    });
+    if (pending.length === 0) {
+      return;
+    }
+    gsap.to(pending, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.35,
+      overwrite: 'auto',
+      ease: MOTION.ease.out,
+    });
+  };
+
+  requestAnimationFrame(() => {
+    ScrollTrigger.refresh();
+    showVisible();
   });
+  window.setTimeout(showVisible, 320);
+
+  return tween;
 }
 
 type InteriorHeroNodes = {
@@ -54,21 +109,24 @@ export function playInteriorHero({
 }: InteriorHeroNodes): gsap.core.Timeline {
   const rise = motionPair(MOTION.hero.rise);
 
-  gsap.set(eyebrow, { autoAlpha: 0, y: rise });
-  gsap.set(lines, { yPercent: 110 });
-  gsap.set(follow, { autoAlpha: 0, y: rise * 0.65 });
+  gsapSet(eyebrow, { autoAlpha: 0, y: rise });
+  gsapSet(lines, { yPercent: 110 });
+  gsapSet(follow, { autoAlpha: 0, y: rise * 0.65 });
 
-  return gsap
-    .timeline({
-      defaults: { ease: MOTION.ease.out },
-      delay: MOTION.hero.delay,
-    })
-    .to(
+  const timeline = gsap.timeline({
+    defaults: { ease: MOTION.ease.out },
+    delay: MOTION.hero.delay,
+  });
+
+  if (eyebrow) {
+    timeline.to(
       eyebrow,
       { autoAlpha: 1, y: 0, duration: MOTION.hero.eyebrow },
       0,
-    )
-    .to(
+    );
+  }
+  if (isGsapTarget(lines)) {
+    timeline.to(
       lines,
       {
         yPercent: 0,
@@ -77,8 +135,10 @@ export function playInteriorHero({
         ease: MOTION.ease.out,
       },
       MOTION.hero.lineAt,
-    )
-    .to(
+    );
+  }
+  if (isGsapTarget(follow)) {
+    timeline.to(
       follow,
       {
         autoAlpha: 1,
@@ -88,4 +148,7 @@ export function playInteriorHero({
       },
       MOTION.hero.followAt,
     );
+  }
+
+  return timeline;
 }

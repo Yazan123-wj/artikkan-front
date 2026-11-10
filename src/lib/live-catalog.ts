@@ -41,7 +41,17 @@ export function liveName(
   locale: string,
 ) {
   if (!value) return '';
-  return (locale === 'ar' ? value.ar : value.en) || value.en || value.ar || '';
+  const primary = (locale === 'ar' ? value.ar : value.en)?.trim();
+  if (primary) return primary;
+  return (value.en || value.ar || '').trim();
+}
+
+export function hasLocaleField(
+  value: { en?: string | null; ar?: string | null } | null | undefined,
+  locale: string,
+) {
+  const primary = locale === 'ar' ? value?.ar : value?.en;
+  return Boolean(primary && primary.trim());
 }
 
 export function toFeaturedProduct(product: LiveProduct): FeaturedProduct {

@@ -31,7 +31,9 @@ import {
   fetchLiveCategories,
   fetchLiveCollaborators,
   fetchLiveFeaturedProducts,
+  fetchLiveProducts,
   fetchLiveProjects,
+  hasLocaleField,
   liveAssetAvailable,
   liveMedia,
   liveName,
@@ -111,10 +113,29 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     ) as [string, boolean][],
   );
   const liveFeatured = await fetchLiveFeaturedProducts();
-  const liveFeaturedItems =
+  let featuredSource =
     liveFeatured === null
+      ? null
+      : liveFeatured.filter(
+          (product) =>
+            hasLocaleField(product.name, resolvedLocale) &&
+            Boolean(product.image?.src),
+        );
+  if (featuredSource && featuredSource.length === 0) {
+    const liveCatalog = await fetchLiveProducts();
+    featuredSource =
+      liveCatalog === null
+        ? []
+        : liveCatalog.filter(
+            (product) =>
+              hasLocaleField(product.name, resolvedLocale) &&
+              Boolean(product.image?.src),
+          );
+  }
+  const liveFeaturedItems =
+    featuredSource === null
       ? undefined
-      : liveFeatured.map((product) => ({
+      : featuredSource.slice(0, 4).map((product) => ({
           product: toFeaturedProduct(product),
           name: liveName(product.name, resolvedLocale),
           category: liveName(

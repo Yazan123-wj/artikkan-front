@@ -108,40 +108,52 @@ export async function ProductDetailContent({
 
           <InteriorReveal>
             <div className="product-detail-panel" data-interior-reveal>
-              <p className="product-detail-category">{category}</p>
-              <h1 className="product-detail-title type-h1">{name}</h1>
+              {category ? (
+                <p className="product-detail-category">{category}</p>
+              ) : null}
+              <h1 className="product-detail-title type-h1">
+                {name || product.slug}
+              </h1>
               {description ? (
                 <p className="product-detail-body type-body">{description}</p>
               ) : null}
 
-              <section aria-label={t('specsTitle')}>
-                <dl className="product-detail-specs">
-                  <div className="product-detail-spec">
-                    <dt>{t('materials')}</dt>
-                    <dd>{materials}</dd>
-                  </div>
-                  <div className="product-detail-spec">
-                    <dt>{t('dimensions')}</dt>
-                    <dd>{dimensions}</dd>
-                  </div>
-                  <div className="product-detail-spec">
-                    <dt>{t('finishes')}</dt>
-                    <dd>{finishes}</dd>
-                  </div>
-                  {care ? (
-                    <div className="product-detail-spec">
-                      <dt>{t('care')}</dt>
-                      <dd>{care}</dd>
-                    </div>
-                  ) : null}
-                  {custom ? (
-                    <div className="product-detail-spec">
-                      <dt>{t('custom')}</dt>
-                      <dd>{custom}</dd>
-                    </div>
-                  ) : null}
-                </dl>
-              </section>
+              {materials || dimensions || finishes || care || custom ? (
+                <section aria-label={t('specsTitle')}>
+                  <dl className="product-detail-specs">
+                    {materials ? (
+                      <div className="product-detail-spec">
+                        <dt>{t('materials')}</dt>
+                        <dd>{materials}</dd>
+                      </div>
+                    ) : null}
+                    {dimensions ? (
+                      <div className="product-detail-spec">
+                        <dt>{t('dimensions')}</dt>
+                        <dd>{dimensions}</dd>
+                      </div>
+                    ) : null}
+                    {finishes ? (
+                      <div className="product-detail-spec">
+                        <dt>{t('finishes')}</dt>
+                        <dd>{finishes}</dd>
+                      </div>
+                    ) : null}
+                    {care ? (
+                      <div className="product-detail-spec">
+                        <dt>{t('care')}</dt>
+                        <dd>{care}</dd>
+                      </div>
+                    ) : null}
+                    {custom ? (
+                      <div className="product-detail-spec">
+                        <dt>{t('custom')}</dt>
+                        <dd>{custom}</dd>
+                      </div>
+                    ) : null}
+                  </dl>
+                </section>
+              ) : null}
 
               <ProductDetailEnquire
                 name={name}

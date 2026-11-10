@@ -82,23 +82,23 @@ export function liveCopy(value: LiveLocalized | undefined, locale: string) {
 
 export function liveArticleToJournal(article: LiveArticle): JournalArticle {
   const title = {
-    en: article.title.en ?? '',
-    ar: article.title.ar ?? article.title.en ?? '',
+    en: article.title.en?.trim() || '',
+    ar: article.title.ar?.trim() || article.title.en?.trim() || '',
   };
   const excerpt = {
     en: article.excerpt.en ?? '',
-    ar: article.excerpt.ar ?? '',
+    ar: article.excerpt.ar?.trim() || article.excerpt.en || '',
   };
   const body = {
     en: article.body.en ?? '',
-    ar: article.body.ar ?? '',
+    ar: article.body.ar?.trim() || article.body.en || '',
   };
   const imageSrc = article.imageSrc ? liveMedia(article.imageSrc) : '';
   return {
     id: article.id,
     slug: {
-      en: article.slug.en ?? article.id,
-      ar: article.slug.ar ?? article.slug.en ?? article.id,
+      en: article.slug.en?.trim() || article.id,
+      ar: article.slug.ar?.trim() || article.slug.en?.trim() || article.id,
     },
     title,
     excerpt,

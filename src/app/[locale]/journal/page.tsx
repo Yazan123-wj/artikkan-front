@@ -63,7 +63,8 @@ export default async function JournalPage({
       ? getListedArticles()
       : liveArticles.map(liveArticleToJournal);
   const featuredArticle =
-    articles.find((article) => article.featured) ?? getFeaturedArticle();
+    articles.find((article) => article.featured) ??
+    (liveArticles === null ? getFeaturedArticle() : articles[0]);
   const categories =
     site?.journalCategories.map((item) => item.slug) ??
     getArticleCategories();

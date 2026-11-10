@@ -460,6 +460,11 @@
   opacity: 0;
 }
 
+.menu-overlay.is-open .menu-overlay-inner {
+  visibility: visible;
+  opacity: 1;
+}
+
 .menu-overlay-inner.is-flowing {
   padding-block: 0;
   overflow: clip;

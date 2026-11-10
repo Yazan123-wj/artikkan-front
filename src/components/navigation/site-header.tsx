@@ -147,7 +147,7 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
     }
 
     if (flow) {
-      gsap.set(flow, { autoAlpha: 0, y: 0 });
+      gsap.set(flow, { clearProps: 'opacity,visibility,transform,y' });
     }
   }, []);
 
@@ -178,7 +178,7 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
 
     const parkCurtain = () => {
       gsap.set([surface, ink], { y: 0, yPercent: -101, force3D: true });
-      gsap.set(flow, { autoAlpha: 0, y: 0 });
+      gsap.set(flow, { clearProps: 'opacity,visibility,transform,y' });
     };
 
     if (!menuChrome) {
@@ -209,7 +209,7 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
       if (open) {
         gsap.set(surface, { y: 0, yPercent: 0, force3D: true });
         gsap.set(ink, { y: 0, yPercent: -101, force3D: true });
-        gsap.set(flow, { autoAlpha: 1, y: 0 });
+        gsap.set(flow, { clearProps: 'opacity,visibility,transform,y' });
         return;
       }
 
@@ -242,9 +242,8 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
         .to(ink, { yPercent: -101, duration: liftDuration })
         .fromTo(
           flow,
-          { autoAlpha: 0, y: flowRise },
+          { y: flowRise },
           {
-            autoAlpha: 1,
             y: 0,
             duration: flowIn,
             ease: MOTION.ease.out,
@@ -273,7 +272,6 @@ export function SiteHeader({ isHome }: SiteHeaderProps) {
 
     timeline
       .to(flow, {
-        autoAlpha: 0,
         y: flowExit,
         duration: MOTION.menu.flowOut,
         ease: MOTION.ease.in,

@@ -41,10 +41,15 @@ export function FeaturedProjects({ rows }: FeaturedProjectsProps) {
     }
 
     const heading = root.querySelectorAll('[data-featured-projects-reveal]');
-    revealElements(heading, { trigger: root });
+    if (heading.length > 0) {
+      revealElements(heading, { trigger: root });
+    }
 
     root.querySelectorAll('[data-featured-project-row]').forEach((row) => {
       const media = row.querySelectorAll('[data-project-reveal]');
+      if (media.length === 0) {
+        return;
+      }
       revealElements(media, {
         trigger: row,
         start: MOTION.section.start,

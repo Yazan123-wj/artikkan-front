@@ -11,8 +11,25 @@ export const JOURNAL_CATEGORY_IDS = ['design', 'materials', 'craft'] as const;
 
 export { journalArticles };
 
-export function loc(value: LocalizedString, locale: string): string {
-  return locale === 'ar' ? value.ar : value.en;
+export function loc(
+  value: LocalizedString | { en?: string | null; ar?: string | null } | null | undefined,
+  locale: string,
+  options: { fallback?: boolean } = {},
+): string {
+  if (!value) return '';
+  const fallback = options.fallback !== false;
+  const primary = (locale === 'ar' ? value.ar : value.en)?.trim();
+  if (primary) return primary;
+  if (!fallback) return '';
+  return (value.en || value.ar || '').trim();
+}
+
+export function hasLocaleCopy(
+  value: LocalizedString | { en?: string | null; ar?: string | null } | null | undefined,
+  locale: string,
+) {
+  const primary = locale === 'ar' ? value?.ar : value?.en;
+  return Boolean(primary && primary.trim());
 }
 
 export function getArticleSlug(
@@ -78,6 +95,10 @@ export function filterArticles(
   const categoryId = category && category !== 'all' ? category : undefined;
 
   return articles.filter((article) => {
+    if (!loc(article.title, locale)) {
+      return false;
+    }
+
     if (categoryId && article.categoryId !== categoryId) {
       return false;
     }
