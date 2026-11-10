@@ -109,9 +109,9 @@ export function playInteriorHero({
 }: InteriorHeroNodes): gsap.core.Timeline {
   const rise = motionPair(MOTION.hero.rise);
 
-  gsapSet(eyebrow, { autoAlpha: 0, y: rise });
+  gsapSet(eyebrow, { y: rise });
   gsapSet(lines, { yPercent: 110 });
-  gsapSet(follow, { autoAlpha: 0, y: rise * 0.65 });
+  gsapSet(follow, { y: rise * 0.65 });
 
   const timeline = gsap.timeline({
     defaults: { ease: MOTION.ease.out },
@@ -121,7 +121,7 @@ export function playInteriorHero({
   if (eyebrow) {
     timeline.to(
       eyebrow,
-      { autoAlpha: 1, y: 0, duration: MOTION.hero.eyebrow },
+      { y: 0, duration: MOTION.hero.eyebrow },
       0,
     );
   }
@@ -141,7 +141,6 @@ export function playInteriorHero({
     timeline.to(
       follow,
       {
-        autoAlpha: 1,
         y: 0,
         duration: MOTION.hero.follow,
         stagger: MOTION.hero.followStagger,

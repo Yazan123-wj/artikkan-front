@@ -534,7 +534,7 @@
       "range."
     ],
     "intro": "{count, plural, one {One collection, one language.} other {# collections, one language.}} Each opens the catalogue with that filter applied.",
-    "count": "{count} collections",
+    "count": "{count, number} collections",
     "indexLabel": "Product collections",
     "viewCollection": "View collection",
     "indexes": [

@@ -80,7 +80,7 @@ export async function CategoriesPageContent({ locale }: CategoriesPageContentPro
         eyebrow={t('eyebrow')}
         headlineLines={headlineLines}
         intro={t('intro', { count: items.length })}
-        count={t('count', { count: String(items.length).padStart(2, '0') })}
+        count={t('count', { count: items.length })}
       />
       <CategoriesIndex label={t('indexLabel')} items={items} />
     </article>
