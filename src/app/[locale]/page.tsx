@@ -149,11 +149,8 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     ]),
   );
   const liveCollaborators = await fetchLiveCollaborators();
-  const homepageIds = site?.homepageCollaboratorIds ?? [];
   const homeLiveCollaborators = (liveCollaborators ?? [])
-    .filter((item) =>
-      homepageIds.length > 0 ? homepageIds.includes(item.id) : item.featured,
-    )
+    .filter((item) => item.featured)
     .map((item) => ({
       id: item.id,
       name: item.name,

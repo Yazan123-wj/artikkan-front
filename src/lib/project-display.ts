@@ -135,7 +135,7 @@ export function liveProjectProducts(
   project: LiveProject,
   locale: string,
 ): { product: FeaturedProduct; name: string }[] {
-  return project.products.slice(0, 2)
+  return project.products
     .map((item) => {
       if (!item.product) return null;
       const product = toFeaturedProduct(item.product);

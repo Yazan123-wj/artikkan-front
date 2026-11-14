@@ -1,8 +1,8 @@
 import type { FeaturedProduct, FeaturedProductImage } from '@/types/product';
 
 /**
- * Higher-res studio stills for every product card.
- * Matching SKUs use their own photo; everything else cycles this set.
+ * Fallback studio stills for a product that has no photo of its own.
+ * A piece with its own image keeps that photo.
  */
 export const PRODUCT_CARD_STILL_IDS = [
   'artk-sof-01',
@@ -50,19 +50,14 @@ export function getApprovedStillId(productId: string): string {
   return PRODUCT_CARD_STILL_IDS[idHash(productId) % PRODUCT_CARD_STILL_IDS.length];
 }
 
-function isManagedMedia(src: string) {
-  return (
-    src.startsWith('http://') ||
-    src.startsWith('https://') ||
-    src.startsWith('/uploads/')
-  );
-}
-
 export function getProductCardImage(
   product: FeaturedProduct,
 ): FeaturedProductImage {
-  if (product.image?.src && isManagedMedia(product.image.src)) {
-    return product.image;
+  if (product.image?.src) {
+    return {
+      ...CARD_IMAGE,
+      ...product.image,
+    };
   }
 
   const id = getApprovedStillId(product.id);

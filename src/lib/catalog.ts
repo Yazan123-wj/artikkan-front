@@ -87,7 +87,8 @@ export function getProductImages(
   const family = productFamilyKey(product.id);
 
   const display = getProductCardImage(product);
-  const stillId = getApprovedStillId(product.id);
+  const ownFile = display.src.match(/\/images\/catalog\/products\/([^/]+)\.jpg$/);
+  const stillId = ownFile?.[1] ?? getApprovedStillId(product.id);
 
   pushImage(images, seen, display);
   for (const extra of product.images ?? []) {
