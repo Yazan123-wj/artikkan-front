@@ -16,6 +16,7 @@ import {
   withTimeout,
 } from '@/lib/entrance-assets';
 import { preloadHeroSequenceStart } from '@/components/sections/home/hero/hero-sequence';
+import { isReloadNavigation } from '@/lib/scroll-memory';
 
 declare global {
   interface Window {
@@ -45,8 +46,12 @@ export function LoadingScreen() {
   );
 
   useLayoutEffect(() => {
-    if (hasEntered()) {
+    if (hasEntered() || isReloadNavigation()) {
+      markEntered();
       document.documentElement.classList.remove('is-loading');
+      if (isReloadNavigation()) {
+        setState('gone');
+      }
       return;
     }
 
