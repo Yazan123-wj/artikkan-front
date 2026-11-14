@@ -55,7 +55,7 @@ export function CircularGallery({
   textColor = '#161616',
   borderRadius = 0.02,
   scrollSpeed = 2.2,
-  scrollEase = 0.05,
+  scrollEase = 0.14,
   autoplay = true,
   autoplaySpeed = 0.014,
   ariaLabel = 'Image gallery. Drag to browse.',
@@ -98,7 +98,12 @@ export function CircularGallery({
             autoplay,
             autoplaySpeed,
           });
-          observer.observe(containerRef.current);
+          const node = containerRef.current;
+          observer.observe(node);
+          const rect = node.getBoundingClientRect();
+          app.setVisible(
+            rect.bottom > -80 && rect.top < window.innerHeight + 80,
+          );
         } catch {
           app = undefined;
         }

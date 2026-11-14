@@ -44,8 +44,34 @@ type ScrollState = {
   position: number;
 };
 
+const MAX_TEXTURE_EDGE = 1024;
+const MAX_SOURCE_ITEMS = 12;
+
 function lerp(start: number, end: number, amount: number): number {
   return start + (end - start) * amount;
+}
+
+function fitTextureSource(
+  image: HTMLImageElement,
+  maxEdge = MAX_TEXTURE_EDGE,
+): HTMLImageElement | HTMLCanvasElement {
+  const width = image.naturalWidth || image.width;
+  const height = image.naturalHeight || image.height;
+  const longest = Math.max(width, height);
+  if (!longest || longest <= maxEdge) {
+    return image;
+  }
+
+  const scale = maxEdge / longest;
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(width * scale));
+  canvas.height = Math.max(1, Math.round(height * scale));
+  const context = canvas.getContext('2d');
+  if (!context) {
+    return image;
+  }
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+  return canvas;
 }
 
 function getFontSize(font: string): number {
@@ -217,7 +243,7 @@ class Media {
   }
 
   createShader() {
-    const texture = new Texture(this.gl, { generateMipmaps: true });
+    const texture = new Texture(this.gl, { generateMipmaps: false });
     this.program = new Program(this.gl, {
       depthTest: false,
       depthWrite: false,
@@ -227,15 +253,10 @@ class Media {
         attribute vec2 uv;
         uniform mat4 modelViewMatrix;
         uniform mat4 projectionMatrix;
-        uniform float uTime;
-        uniform float uSpeed;
         varying vec2 vUv;
         void main() {
           vUv = uv;
-          vec3 p = position;
-          p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5)
-            * (0.04 + uSpeed * 0.22);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
       fragment: `
@@ -271,8 +292,6 @@ class Media {
         tMap: { value: texture },
         uPlaneSizes: { value: [0, 0] },
         uImageSizes: { value: [1, 1] },
-        uSpeed: { value: 0 },
-        uTime: { value: 100 * Math.random() },
         uBorderRadius: { value: this.borderRadius },
       },
       transparent: true,
@@ -280,13 +299,26 @@ class Media {
 
     const img = new Image();
     img.decoding = 'async';
+    img.crossOrigin = 'anonymous';
     img.src = this.image;
     img.onload = () => {
-      texture.image = img;
-      this.program.uniforms.uImageSizes.value = [
-        img.naturalWidth,
-        img.naturalHeight,
-      ];
+      try {
+        const source = fitTextureSource(img);
+        texture.image = source;
+        const width =
+          source instanceof HTMLImageElement ? source.naturalWidth : source.width;
+        const height =
+          source instanceof HTMLImageElement
+            ? source.naturalHeight
+            : source.height;
+        this.program.uniforms.uImageSizes.value = [width, height];
+      } catch {
+        texture.image = img;
+        this.program.uniforms.uImageSizes.value = [
+          img.naturalWidth,
+          img.naturalHeight,
+        ];
+      }
     };
   }
 
@@ -338,10 +370,6 @@ class Media {
         this.plane.rotation.z = Math.sign(x) * Math.asin(effectiveX / radius);
       }
     }
-
-    const speed = scroll.current - scroll.last;
-    this.program.uniforms.uTime.value += 0.04;
-    this.program.uniforms.uSpeed.value = speed;
 
     const planeOffset = this.plane.scale.x / 2;
     const viewportOffset = this.viewport.width / 2;
@@ -398,7 +426,7 @@ export class CircularGalleryApp {
   planeGeometry!: Plane;
   medias: Media[] = [];
   raf = 0;
-  visible = true;
+  visible = false;
   isDown = false;
   startX = 0;
   startY = 0;
@@ -408,11 +436,13 @@ export class CircularGalleryApp {
   autoplaySpeed: number;
   private lastTick = 0;
   private boundOnResize: () => void;
+  private boundOnVisibility: () => void;
   private boundOnPointerDown: (event: PointerEvent) => void;
   private boundOnPointerMove: (event: PointerEvent) => void;
   private boundOnPointerUp: (event: PointerEvent) => void;
   private boundOnKeyDown: (event: KeyboardEvent) => void;
   private resizeObserver?: ResizeObserver;
+  private resizeTimer = 0;
 
   constructor(container: HTMLElement, options: CircularGalleryAppOptions) {
     this.container = container;
@@ -421,13 +451,29 @@ export class CircularGalleryApp {
     this.autoplaySpeed = options.autoplaySpeed ?? 0.014;
     this.rtl = document.documentElement.dir === 'rtl';
     this.scroll = {
-      ease: options.scrollEase ?? 0.05,
+      ease: options.scrollEase ?? 0.14,
       current: 0,
       target: 0,
       last: 0,
       position: 0,
     };
-    this.boundOnResize = () => this.onResize();
+    this.boundOnResize = () => {
+      window.clearTimeout(this.resizeTimer);
+      this.resizeTimer = window.setTimeout(() => this.onResize(), 80);
+    };
+    this.boundOnVisibility = () => {
+      if (document.hidden) {
+        if (this.raf) {
+          window.cancelAnimationFrame(this.raf);
+          this.raf = 0;
+        }
+        return;
+      }
+      this.lastTick = performance.now();
+      if (this.visible && !this.raf) {
+        this.update();
+      }
+    };
     this.boundOnPointerDown = (event) => this.onPointerDown(event);
     this.boundOnPointerMove = (event) => this.onPointerMove(event);
     this.boundOnPointerUp = () => this.onPointerUp();
@@ -440,14 +486,15 @@ export class CircularGalleryApp {
     this.createGeometry();
     this.createMedias(options);
     this.addEventListeners();
-    this.update();
   }
 
   createRenderer() {
+    const isNarrow = window.matchMedia('(max-width: 48rem)').matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, isNarrow ? 1.25 : 1.5);
     this.renderer = new Renderer({
       alpha: true,
       antialias: true,
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      dpr,
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0, 0, 0, 0);
@@ -467,13 +514,13 @@ export class CircularGalleryApp {
 
   createGeometry() {
     this.planeGeometry = new Plane(this.gl, {
-      heightSegments: 50,
-      widthSegments: 100,
+      heightSegments: 1,
+      widthSegments: 1,
     });
   }
 
   createMedias(options: CircularGalleryAppOptions) {
-    const source = options.items;
+    const source = options.items.slice(0, MAX_SOURCE_ITEMS);
     if (!source.length) {
       return;
     }
@@ -577,17 +624,17 @@ export class CircularGalleryApp {
   setVisible(visible: boolean) {
     this.visible = visible;
     this.lastTick = performance.now();
-    if (visible && !this.raf) {
+    if (visible && !this.raf && !document.hidden) {
       this.update();
     }
-    if (!visible && this.raf) {
+    if ((!visible || document.hidden) && this.raf) {
       window.cancelAnimationFrame(this.raf);
       this.raf = 0;
     }
   }
 
   update = () => {
-    if (!this.visible) {
+    if (!this.visible || document.hidden) {
       this.raf = 0;
       return;
     }
@@ -614,8 +661,9 @@ export class CircularGalleryApp {
   };
 
   addEventListeners() {
-    window.addEventListener('resize', this.boundOnResize);
-    this.resizeObserver = new ResizeObserver(() => this.onResize());
+    window.addEventListener('resize', this.boundOnResize, { passive: true });
+    document.addEventListener('visibilitychange', this.boundOnVisibility);
+    this.resizeObserver = new ResizeObserver(this.boundOnResize);
     this.resizeObserver.observe(this.container);
     this.container.addEventListener('pointerdown', this.boundOnPointerDown);
     this.container.addEventListener('pointermove', this.boundOnPointerMove);
@@ -628,8 +676,10 @@ export class CircularGalleryApp {
     this.visible = false;
     window.cancelAnimationFrame(this.raf);
     this.raf = 0;
+    window.clearTimeout(this.resizeTimer);
     this.resizeObserver?.disconnect();
     window.removeEventListener('resize', this.boundOnResize);
+    document.removeEventListener('visibilitychange', this.boundOnVisibility);
     this.container.removeEventListener('pointerdown', this.boundOnPointerDown);
     this.container.removeEventListener('pointermove', this.boundOnPointerMove);
     this.container.removeEventListener('pointerup', this.boundOnPointerUp);

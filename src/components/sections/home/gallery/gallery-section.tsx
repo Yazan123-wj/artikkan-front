@@ -59,7 +59,7 @@ export function HomeGallerySection({
           textColor="#161616"
           borderRadius={0.02}
           scrollSpeed={2.2}
-          scrollEase={0.05}
+          scrollEase={0.14}
           autoplay
           autoplaySpeed={0.014}
           ariaLabel={t('regionLabel')}
