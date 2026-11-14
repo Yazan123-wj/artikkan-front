@@ -19,6 +19,11 @@ export type LiveProduct = {
   finishes: { en?: string | null; ar?: string | null } | null;
   care?: { en?: string | null; ar?: string | null } | null;
   custom?: { en?: string | null; ar?: string | null } | null;
+  specifications?: {
+    id?: string;
+    title?: { en?: string | null; ar?: string | null } | null;
+    value?: { en?: string | null; ar?: string | null } | null;
+  }[];
   published: boolean;
   featured: boolean;
 };

@@ -81,6 +81,20 @@ export async function ProductDetailContent({
     '';
   const care = live ? liveName(live.care, locale) : '';
   const custom = live ? liveName(live.custom, locale) : '';
+  const liveSpecs = (live?.specifications ?? [])
+    .map((spec) => ({
+      title: liveName(spec.title, locale),
+      value: liveName(spec.value, locale),
+    }))
+    .filter((spec) => spec.title && spec.value);
+  const fallbackSpecs = [
+    materials ? { title: t('materials'), value: materials } : null,
+    dimensions ? { title: t('dimensions'), value: dimensions } : null,
+    finishes ? { title: t('finishes'), value: finishes } : null,
+    care ? { title: t('care'), value: care } : null,
+    custom ? { title: t('custom'), value: custom } : null,
+  ].filter((spec): spec is { title: string; value: string } => Boolean(spec));
+  const specs = liveSpecs.length > 0 ? liveSpecs : fallbackSpecs;
   const related =
     liveProducts && liveProducts.length > 0
       ? liveProducts
@@ -118,39 +132,18 @@ export async function ProductDetailContent({
                 <p className="product-detail-body type-body">{description}</p>
               ) : null}
 
-              {materials || dimensions || finishes || care || custom ? (
+              {specs.length > 0 ? (
                 <section aria-label={t('specsTitle')}>
                   <dl className="product-detail-specs">
-                    {materials ? (
-                      <div className="product-detail-spec">
-                        <dt>{t('materials')}</dt>
-                        <dd>{materials}</dd>
+                    {specs.map((spec) => (
+                      <div
+                        key={`${spec.title}-${spec.value}`}
+                        className="product-detail-spec"
+                      >
+                        <dt>{spec.title}</dt>
+                        <dd>{spec.value}</dd>
                       </div>
-                    ) : null}
-                    {dimensions ? (
-                      <div className="product-detail-spec">
-                        <dt>{t('dimensions')}</dt>
-                        <dd>{dimensions}</dd>
-                      </div>
-                    ) : null}
-                    {finishes ? (
-                      <div className="product-detail-spec">
-                        <dt>{t('finishes')}</dt>
-                        <dd>{finishes}</dd>
-                      </div>
-                    ) : null}
-                    {care ? (
-                      <div className="product-detail-spec">
-                        <dt>{t('care')}</dt>
-                        <dd>{care}</dd>
-                      </div>
-                    ) : null}
-                    {custom ? (
-                      <div className="product-detail-spec">
-                        <dt>{t('custom')}</dt>
-                        <dd>{custom}</dd>
-                      </div>
-                    ) : null}
+                    ))}
                   </dl>
                 </section>
               ) : null}
