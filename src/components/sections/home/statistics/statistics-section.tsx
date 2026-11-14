@@ -39,7 +39,10 @@ export function StatisticsSection({ stats }: { stats?: LiveStat[] }) {
         {t('heading')}
       </h2>
       <div className="statistics-inner site-container">
-        <ul className="statistics-grid">
+        <ul
+          className="statistics-grid"
+          style={{ ['--stat-count' as string]: String(items.length) }}
+        >
           {items.map((stat, index) => {
             const label = stat.label;
             const finalValue = formatStatisticDisplay(

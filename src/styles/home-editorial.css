@@ -259,6 +259,7 @@
 
 .statistics-item:last-child {
   border-block-end: none;
+  border-inline-end: none;
 }
 
 .statistics-value {
@@ -291,21 +292,26 @@
   .statistics-item {
     padding-block: 1.1rem;
     padding-inline: 1.25rem;
-    border-block-end: none;
-    border-inline-end: none;
+    border-block-end: 1px solid var(--border);
+    border-inline-end: 1px solid var(--border);
   }
 
   .statistics-item:nth-child(odd) {
     padding-inline-start: 0;
-    border-inline-end: 1px solid var(--border);
   }
 
   .statistics-item:nth-child(even) {
     padding-inline-end: 0;
+    border-inline-end: none;
   }
 
-  .statistics-item:nth-child(-n + 2) {
-    border-block-end: 1px solid var(--border);
+  .statistics-item:last-child {
+    border-block-end: none;
+    border-inline-end: none;
+  }
+
+  .statistics-item:nth-child(odd):nth-last-child(2) {
+    border-block-end: none;
   }
 }
 
@@ -346,17 +352,21 @@
   }
 
   .statistics-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--stat-count, 4), minmax(0, 1fr));
   }
 
   .statistics-item,
   .statistics-item:nth-child(odd),
   .statistics-item:nth-child(even),
-  .statistics-item:nth-child(-n + 2) {
+  .statistics-item:nth-child(odd):nth-last-child(2) {
     padding-block: 0.2rem;
     padding-inline: 2.25rem;
     border-block-end: none;
     border-inline-end: 1px solid var(--border);
+  }
+
+  .statistics-item:nth-child(even) {
+    padding-inline-end: 2.25rem;
   }
 
   .statistics-item:first-child {
