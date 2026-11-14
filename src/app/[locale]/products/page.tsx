@@ -6,6 +6,8 @@ import { routing, type AppLocale } from '@/i18n/routing';
 import { isProductCategoryId, parseProductSearchParams } from '@/lib/catalog';
 import { createPageMetadata } from '@/lib/metadata';
 
+export const dynamic = 'force-dynamic';
+
 type ProductsPageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{

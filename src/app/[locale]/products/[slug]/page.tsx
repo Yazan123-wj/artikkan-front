@@ -13,6 +13,9 @@ type ProductSlugPageProps = {
   params: Promise<{ locale: string; slug: string }>;
 };
 
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
 export function generateStaticParams() {
   return catalogProducts.map((product) => ({ slug: product.slug }));
 }
