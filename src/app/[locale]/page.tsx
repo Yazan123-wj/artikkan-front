@@ -30,7 +30,6 @@ import { publicAssetExists } from '@/lib/assets';
 import {
   fetchLiveCategories,
   fetchLiveCollaborators,
-  fetchLiveFeaturedProducts,
   fetchLiveProducts,
   fetchLiveProjects,
   hasLocaleField,
@@ -112,37 +111,31 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       : homeGalleryItems.map((item) => [item.id, publicAssetExists(item.image)])
     ) as [string, boolean][],
   );
-  const liveFeatured = await fetchLiveFeaturedProducts();
-  let featuredSource =
-    liveFeatured === null
-      ? null
-      : liveFeatured.filter(
-          (product) =>
-            hasLocaleField(product.name, resolvedLocale) &&
-            Boolean(product.image?.src),
-        );
+  const liveCatalog = await fetchLiveProducts();
+  const usableProducts = (liveCatalog ?? []).filter(
+    (product) =>
+      hasLocaleField(product.name, resolvedLocale) && Boolean(product.image?.src),
+  );
+  let featuredSource: typeof usableProducts | null =
+    liveCatalog === null ? null : usableProducts.filter((product) => product.featured);
   if (featuredSource && featuredSource.length === 0) {
-    const liveCatalog = await fetchLiveProducts();
-    featuredSource =
-      liveCatalog === null
-        ? []
-        : liveCatalog.filter(
-            (product) =>
-              hasLocaleField(product.name, resolvedLocale) &&
-              Boolean(product.image?.src),
-          );
+    featuredSource = usableProducts;
   }
+  const toSectionCards = (products: NonNullable<typeof liveCatalog>) =>
+    products.map((product) => ({
+      product: toFeaturedProduct(product),
+      name: liveName(product.name, resolvedLocale),
+      category:
+        liveName(
+          liveCategories?.find((item) => item.slug === product.category)?.name,
+          resolvedLocale,
+        ) || product.category,
+    }));
   const liveFeaturedItems =
-    featuredSource === null
-      ? undefined
-      : featuredSource.slice(0, 4).map((product) => ({
-          product: toFeaturedProduct(product),
-          name: liveName(product.name, resolvedLocale),
-          category: liveName(
-            liveCategories?.find((item) => item.slug === product.category)?.name,
-            resolvedLocale,
-          ) || product.category,
-        }));
+    featuredSource === null ? undefined : toSectionCards(featuredSource.slice(0, 4));
+  const cmsProductSections = (site?.productSections ?? []).filter(
+    (section) => section.enabled,
+  );
   const productImageAvailability = Object.fromEntries(
     featuredProducts.map((product) => [
       product.id,
@@ -260,11 +253,41 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           image: liveMedia(item.image),
         }))}
       />
-      <FeaturedProducts
-        imageAvailability={productImageAvailability}
-        enquiryEmail={enquiryEmail}
-        liveItems={liveFeaturedItems}
-      />
+      {cmsProductSections.length > 0
+        ? cmsProductSections.map((section) => {
+            const picked = section.productIds
+              .map((id) =>
+                usableProducts.find((item) => item.id === id || item.slug === id),
+              )
+              .filter((item): item is NonNullable<typeof item> => Boolean(item));
+            const source =
+              section.source === 'picked'
+                ? picked
+                : (featuredSource ?? usableProducts).slice(0, section.limit || 4);
+            return (
+              <FeaturedProducts
+                key={section.id}
+                imageAvailability={productImageAvailability}
+                enquiryEmail={enquiryEmail}
+                liveItems={liveCatalog === null ? undefined : toSectionCards(source)}
+                headingId={`home-products-${section.id}`}
+                copy={{
+                  eyebrow: liveCopy(section.eyebrow, resolvedLocale),
+                  headline: liveCopy(section.headline, resolvedLocale),
+                  intro: liveCopy(section.intro, resolvedLocale),
+                  ctaLabel: liveCopy(section.ctaLabel, resolvedLocale),
+                  ctaHref: section.ctaHref || '/products',
+                }}
+              />
+            );
+          })
+        : (
+            <FeaturedProducts
+              imageAvailability={productImageAvailability}
+              enquiryEmail={enquiryEmail}
+              liveItems={liveFeaturedItems}
+            />
+          )}
       <FeaturedProjects rows={projectRows} />
       <HomeCollaboratorsSection
         logos={collaboratorLogos}

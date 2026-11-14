@@ -18,6 +18,14 @@ type FeaturedProductsProps = {
     name: string;
     category: string;
   }[];
+  copy?: {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    ctaLabel: string;
+    ctaHref: string;
+  };
+  headingId?: string;
 };
 
 function pieceCopy(
@@ -32,6 +40,8 @@ export function FeaturedProducts({
   imageAvailability,
   enquiryEmail,
   liveItems,
+  copy,
+  headingId = 'home-products-heading',
 }: FeaturedProductsProps) {
   const t = useTranslations('home.products');
   const tCategories = useTranslations('home.categories');
@@ -48,6 +58,11 @@ export function FeaturedProducts({
           name: pieceCopy(t, product.nameKey, 'name'),
           category: tCategories(product.categoryKey),
         }));
+  const eyebrow = copy?.eyebrow || t('eyebrow');
+  const headline = copy?.headline || t('headline');
+  const intro = copy?.intro || t('intro');
+  const ctaLabel = copy?.ctaLabel || t('viewAll');
+  const ctaHref = copy?.ctaHref || '/products';
 
   useGsapContext(() => {
     const root = rootRef.current;
@@ -63,27 +78,31 @@ export function FeaturedProducts({
     revealElements(cards, { trigger: root });
   }, rootRef);
 
+  if (liveItems && liveItems.length === 0) {
+    return null;
+  }
+
   return (
     <section
       ref={rootRef}
       className="featured-products-section"
-      aria-labelledby="home-products-heading"
+      aria-labelledby={headingId}
     >
       <div className="site-container">
         <header className="featured-products-header">
-          <p className="featured-products-eyebrow type-label">{t('eyebrow')}</p>
+          <p className="featured-products-eyebrow type-label">{eyebrow}</p>
           <div className="featured-products-heading-row">
             <h2
-              id="home-products-heading"
+              id={headingId}
               className="featured-products-headline type-h2"
             >
-              {t('headline')}
+              {headline}
             </h2>
             <LocalizedLink
-              href="/products"
+              href={ctaHref}
               className="featured-products-cta touch-target"
             >
-              <span className="featured-products-cta-label">{t('viewAll')}</span>
+              <span className="featured-products-cta-label">{ctaLabel}</span>
               <span className="featured-products-cta-arrow" aria-hidden="true">
                 <svg viewBox="0 0 28 12" fill="none">
                   <path d="M0 6h26M21.5 1.5 27 6l-5.5 4.5" />
@@ -91,7 +110,7 @@ export function FeaturedProducts({
               </span>
             </LocalizedLink>
           </div>
-          <p className="featured-products-intro type-body">{t('intro')}</p>
+          {intro ? <p className="featured-products-intro type-body">{intro}</p> : null}
         </header>
 
         {cards.length > 0 ? (

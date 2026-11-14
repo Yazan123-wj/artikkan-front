@@ -25,6 +25,18 @@ export type LiveSite = {
   }[];
   selectedViews: { id: string; image: string; label: LiveLocalized }[];
   homepageCollaboratorIds: string[];
+  productSections?: {
+    id: string;
+    enabled: boolean;
+    eyebrow: LiveLocalized;
+    headline: LiveLocalized;
+    intro: LiveLocalized;
+    ctaLabel: LiveLocalized;
+    ctaHref: string;
+    source: 'featured' | 'picked';
+    productIds: string[];
+    limit: number;
+  }[];
   about: {
     eyebrow: LiveLocalized;
     headline: LiveLocalized;
